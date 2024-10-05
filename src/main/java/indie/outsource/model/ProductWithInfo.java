@@ -1,4 +1,4 @@
-package indie.outsource;
+package indie.outsource.model;
 
 import indie.outsource.model.products.Product;
 import lombok.*;

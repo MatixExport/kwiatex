@@ -1,4 +1,4 @@
-package indie.outsource;
+package indie.outsource.model;
 
 import lombok.Getter;
 import lombok.Setter;
