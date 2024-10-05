@@ -14,6 +14,12 @@ public class Client {
     private String surname;
     private String address;
 
+    public Client(String name, String surname, String address) {
+        this.name = name;
+        this.surname = surname;
+        this.address = address;
+    }
+
     public String getClientInfo(){
         return "Name: " + name + " Surname: " + surname;
     }
