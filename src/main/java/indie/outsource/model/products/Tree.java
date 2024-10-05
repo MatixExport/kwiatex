@@ -1,4 +1,11 @@
-package indie.outsource.model;
+package indie.outsource.model.products;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 
 public class Tree extends Plant{
     private int height;
@@ -16,13 +23,5 @@ public class Tree extends Plant{
     @Override
     public String getProductInfo() {
         return "Sapling of " + getName() + " in " + getGrowthStage() + " growth stage.";
-    }
-
-    public int getHeight() {
-        return height;
-    }
-
-    public void setHeight(int height) {
-        this.height = height;
     }
 }

@@ -1,4 +1,10 @@
-package indie.outsource.model;
+package indie.outsource.model.products;
+
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 
 public abstract class Plant extends Product{
 
@@ -9,11 +15,4 @@ public abstract class Plant extends Product{
         this.growthStage = growthStage;
     }
 
-    public int getGrowthStage() {
-        return growthStage;
-    }
-
-    public void setGrowthStage(int growthStage) {
-        this.growthStage = growthStage;
-    }
 }

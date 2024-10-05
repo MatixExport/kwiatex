@@ -1,5 +1,10 @@
-package indie.outsource.model;
+package indie.outsource.model.products;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class VegetableSeeds extends Seeds{
 
 

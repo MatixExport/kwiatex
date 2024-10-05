@@ -1,5 +1,11 @@
-package indie.outsource.model;
+package indie.outsource.model.products;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class Flower extends Plant{
 
     private String color;
@@ -19,11 +25,5 @@ public class Flower extends Plant{
         return String.format("%s %s within %d growth stage.",getColor(), getName(), getGrowthStage());
     }
 
-    public String getColor() {
-        return color;
-    }
 
-    public void setColor(String color) {
-        this.color = color;
-    }
 }
