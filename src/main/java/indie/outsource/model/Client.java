@@ -7,17 +7,19 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
+import java.util.Collection;
+
 @Entity
 @AllArgsConstructor
 @Getter
 @Setter
 @NoArgsConstructor
 @Access(AccessType.FIELD)
-public class Client {
+public class Client extends AbstractEntity {
 
     @Id
     @GeneratedValue
-    private long id;
+    private int id;
     private String name;
     private String surname;
     private String address;
@@ -31,11 +33,4 @@ public class Client {
         return "Name: " + name + " Surname: " + surname;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getId() {
-        return id;
-    }
 }

@@ -1,24 +1,41 @@
 package indie.outsource.model;
 
+import indie.outsource.model.products.Product;
+import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-
+@Entity
 @Getter
 @Setter
-public class Transaction {
+@NoArgsConstructor
+@Access(AccessType.FIELD)
+@Table(name = "shop_transaction")
+public class Transaction extends AbstractEntity {
 
-    public Transaction(int id, Client client) {
-        this.id = id;
-        this.client = client;
-    }
-
+    @Id
+    @GeneratedValue
     private int id;
+
+    @ManyToOne
+    @JoinColumn(name = "client_id")
     private Client client;
+
+    @OneToMany(
+            mappedBy = "transaction",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
     private final List<TransactionItem> items = new ArrayList<TransactionItem>();
+
+    public void addProduct(Product product, int quantity,double price) {
+        TransactionItem item = new TransactionItem(product,this,price,quantity);
+        items.add(item);
+    }
 
     public String getTransactionInfo(){
         StringBuilder info = new StringBuilder();

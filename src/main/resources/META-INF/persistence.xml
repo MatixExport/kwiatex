@@ -5,6 +5,14 @@
              version="3.0">
   <persistence-unit name="default">
     <class>indie.outsource.model.Client</class>
+    <class>indie.outsource.model.Transaction</class>
+    <class>indie.outsource.model.TransactionItem</class>
+    <class>indie.outsource.model.products.Tree</class>
+    <class>indie.outsource.model.products.Plant</class>
+    <class>indie.outsource.model.products.Seeds</class>
+    <class>indie.outsource.model.products.GrassesSeeds</class>
+    <class>indie.outsource.model.products.Flower</class>
+    <class>indie.outsource.model.products.VegetableSeeds</class>
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
     <shared-cache-mode>NONE</shared-cache-mode>
 <!--    Todo: Add bean validation-->
@@ -15,7 +23,7 @@
       <property name="jakarta.persistence.jdbc.driver" value="org.apache.derby.jdbc.EmbeddedDriver"/>
       <property name="jakarta.persistence.jdbc.user" value="nbd"/>
       <property name="jakarta.persistence.jdbc.password" value="nbd"/>
-      <property name="jakarta.persistence.schema-generation.database.action" value="create"/>
+      <property name="jakarta.persistence.schema-generation.database.action" value="drop-and-create"/>
     </properties>
   </persistence-unit>
 </persistence>

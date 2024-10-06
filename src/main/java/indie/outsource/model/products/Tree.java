@@ -1,12 +1,15 @@
 package indie.outsource.model.products;
 
+import jakarta.persistence.Entity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
-
+@Entity
+@NoArgsConstructor
 public class Tree extends Plant{
     private int height;
 

@@ -1,10 +1,14 @@
 package indie.outsource.model.products;
 
+import jakarta.persistence.Entity;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
+@Entity
+@NoArgsConstructor
 public class VegetableSeeds extends Seeds{
 
 

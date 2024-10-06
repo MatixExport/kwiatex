@@ -1,10 +1,16 @@
 package indie.outsource.model.products;
 
+import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
+@Entity
+@Inheritance(strategy = InheritanceType.JOINED)
+@Access(AccessType.FIELD)
+@NoArgsConstructor
 public abstract class Seeds extends Product {
 
     private int weight;
