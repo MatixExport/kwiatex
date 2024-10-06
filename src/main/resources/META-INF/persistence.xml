@@ -4,6 +4,18 @@
              xsi:schemaLocation="https://jakarta.ee/xml/ns/persistence https://jakarta.ee/xml/ns/persistence/persistence_3_0.xsd"
              version="3.0">
   <persistence-unit name="default">
+    <class>indie.outsource.model.Client</class>
+    <exclude-unlisted-classes>true</exclude-unlisted-classes>
+    <shared-cache-mode>NONE</shared-cache-mode>
+<!--    Todo: Add bean validation-->
+    <validation-mode>NONE</validation-mode>
 
+    <properties>
+      <property name="jakarta.persistence.jdbc.url" value="jdbc:derby:memory:target/ShopDB;create=true"/>
+      <property name="jakarta.persistence.jdbc.driver" value="org.apache.derby.jdbc.EmbeddedDriver"/>
+      <property name="jakarta.persistence.jdbc.user" value="nbd"/>
+      <property name="jakarta.persistence.jdbc.password" value="nbd"/>
+      <property name="jakarta.persistence.schema-generation.database.action" value="create"/>
+    </properties>
   </persistence-unit>
 </persistence>
