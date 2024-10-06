@@ -1,6 +1,7 @@
 package indie.outsource.managers;
 
 import indie.outsource.model.ProductWithInfo;
+import indie.outsource.model.products.Product;
 import indie.outsource.repositories.ProductRepository;
 
 public class ProductManager {
@@ -25,9 +26,7 @@ public class ProductManager {
         return productRepository.getById(productId);
     }
 
-    public void removeProductById(int productId){
-        productRepository.remove(productId);
-    }
+    public void removeProduct(ProductWithInfo product){productRepository.remove(product);}
 
     public void addProduct(ProductWithInfo product){
         productRepository.add(product);

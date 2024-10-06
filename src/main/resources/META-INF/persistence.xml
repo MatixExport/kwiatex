@@ -13,6 +13,7 @@
     <class>indie.outsource.model.products.GrassesSeeds</class>
     <class>indie.outsource.model.products.Flower</class>
     <class>indie.outsource.model.products.VegetableSeeds</class>
+    <class>indie.outsource.model.ProductWithInfo</class>
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
     <shared-cache-mode>NONE</shared-cache-mode>
 <!--    Todo: Add bean validation-->

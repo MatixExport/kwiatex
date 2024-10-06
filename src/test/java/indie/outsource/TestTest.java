@@ -1,13 +1,18 @@
 package indie.outsource;
 
+import indie.outsource.model.ProductWithInfo;
 import indie.outsource.model.Transaction;
 import indie.outsource.model.products.Tree;
+import indie.outsource.repositories.ProductRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import indie.outsource.model.Client;
+import indie.outsource.repositories.ProductRepositoryImpl;
+
+import java.util.List;
 
 
 public class TestTest {
@@ -70,5 +75,29 @@ public class TestTest {
         Client client = em.find(Client.class, client1.getId());
         em.getTransaction().commit();
         assertEquals("John Doe", client.getName()+" "+client.getSurname());
+    }
+    @Test
+    void repoTest(){
+        EntityManager em = emf.createEntityManager();
+
+        Tree tree = new Tree();
+        tree.setHeight(20);
+        tree.setName("wasd");
+        tree.setPrice(20);
+        tree.setGrowthStage(2);
+        em.persist(tree);
+
+        ProductRepository repository = new ProductRepositoryImpl(em);
+        ProductWithInfo product = new ProductWithInfo();
+        product.setQuantity(10);
+        product.setProduct(tree);
+        repository.add(product);
+        assertEquals(1,repository.getAll().size());
+        assertEquals(repository.getAll().getFirst().getProduct().getName(), tree.getName());
+
+
+
+
+
     }
 }
