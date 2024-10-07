@@ -9,14 +9,14 @@ import lombok.*;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProductWithInfo {
+public class ProductWithInfo extends AbstractEntity{
     private int quantity;
 
     @Id
     @GeneratedValue
     private int id;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "product_id")
     private Product product;
 

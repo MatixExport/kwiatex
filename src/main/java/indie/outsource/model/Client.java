@@ -8,6 +8,7 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 
 import java.util.Collection;
+import java.util.List;
 
 @Entity
 @AllArgsConstructor
@@ -23,6 +24,10 @@ public class Client extends AbstractEntity {
     private String name;
     private String surname;
     private String address;
+
+    @OneToMany(mappedBy = "client",fetch = FetchType.LAZY)
+    private List<Transaction> transactions;
+
     public Client(String name, String surname, String address) {
         this.name = name;
         this.surname = surname;
@@ -32,5 +37,7 @@ public class Client extends AbstractEntity {
     public String getClientInfo(){
         return "Name: " + name + " Surname: " + surname;
     }
+
+
 
 }

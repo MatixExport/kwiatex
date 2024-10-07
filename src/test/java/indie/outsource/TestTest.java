@@ -7,12 +7,12 @@ import indie.outsource.repositories.ProductRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
+import jakarta.persistence.Query;
+import jakarta.persistence.criteria.CriteriaQuery;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import indie.outsource.model.Client;
-import indie.outsource.repositories.ProductRepositoryImpl;
-
-import java.util.List;
+import indie.outsource.repositories.ProductRelationalRepository;
 
 
 public class TestTest {
@@ -87,11 +87,20 @@ public class TestTest {
         tree.setGrowthStage(2);
         em.persist(tree);
 
-        ProductRepository repository = new ProductRepositoryImpl(em);
+        ProductRepository repository = new ProductRelationalRepository(em);
         ProductWithInfo product = new ProductWithInfo();
         product.setQuantity(10);
         product.setProduct(tree);
         repository.add(product);
+        CriteriaQuery<ProductWithInfo> criteriaQuery = em.getCriteriaBuilder().createQuery(ProductWithInfo.class);
+        criteriaQuery.from(ProductWithInfo.class);
+
+
+        Query q = em.createQuery("Select e from ProductWithInfo e", ProductWithInfo.class);
+
+
+        //assertEquals(1,em.createQuery(criteriaQuery).getResultList().size());
+        assertEquals(1,q.getResultList().size());
         assertEquals(1,repository.getAll().size());
         assertEquals(repository.getAll().getFirst().getProduct().getName(), tree.getName());
 

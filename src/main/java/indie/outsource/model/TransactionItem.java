@@ -9,11 +9,6 @@ import lombok.Setter;
 
 import java.io.Serializable;
 
-
-
-
-
-
 @Setter
 @Entity
 @Getter

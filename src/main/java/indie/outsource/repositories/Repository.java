@@ -1,6 +1,9 @@
 package indie.outsource.repositories;
 
+import jakarta.transaction.Transactional;
+
 import java.util.List;
+
 
 public interface Repository<T> {
     List<T> getAll();
