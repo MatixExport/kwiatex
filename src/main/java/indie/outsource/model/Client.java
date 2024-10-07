@@ -16,7 +16,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @Access(AccessType.FIELD)
-public class Client extends AbstractEntity {
+public class Client extends AbstractEntity{
 
     @Id
     @GeneratedValue
