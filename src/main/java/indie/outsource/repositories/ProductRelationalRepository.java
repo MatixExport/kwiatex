@@ -11,43 +11,6 @@ public class ProductRelationalRepository extends RelationalRepository<ProductWit
         super(ProductWithInfo.class, em);
     }
 
-//    @Override
-//    public boolean decreaseProductQuantity(ProductWithInfo product, int quantity) {
-//        em.getTransaction().begin();
-//        ProductWithInfo currentProduct = em.find(ProductWithInfo.class, product.getId(),
-//                LockModeType.OPTIMISTIC);
-//        if(currentProduct.getQuantity() < quantity) {
-//            return false;
-//        }
-//        currentProduct.setQuantity(currentProduct.getQuantity() - quantity);
-//        em.merge(currentProduct);
-//        try{
-//            em.getTransaction().commit();
-//        }
-//        catch(OptimisticLockException e){
-//            em.getTransaction().rollback();
-//            return false;
-//        }
-//        return true;
-//    }
-//
-//    @Override
-//    public boolean increaseProductQuantity(ProductWithInfo product, int quantity) {
-//        em.getTransaction().begin();
-//        ProductWithInfo currentProduct = em.find(ProductWithInfo.class, product.getId(),
-//                LockModeType.OPTIMISTIC);
-//        currentProduct.setQuantity(currentProduct.getQuantity() + quantity);
-//        try{
-//            em.getTransaction().commit();
-//        }
-//        catch(OptimisticLockException e){
-//            em.getTransaction().rollback();
-//            return false;
-//        }
-//        return true;
-//
-//    }
-
 @Override
 public boolean decreaseProductQuantity(ProductWithInfo product, int quantity) {
     em.getTransaction().begin();

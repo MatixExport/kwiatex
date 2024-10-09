@@ -20,11 +20,14 @@
     <validation-mode>NONE</validation-mode>
 
     <properties>
-      <property name="jakarta.persistence.jdbc.url" value="jdbc:derby:memory:target/ShopDB;create=true"/>
-      <property name="jakarta.persistence.jdbc.driver" value="org.apache.derby.jdbc.EmbeddedDriver"/>
+      <property name="jakarta.persistence.jdbc.url" value="jdbc:postgresql:nbddb"/>
+      <property name="jakarta.persistence.jdbc.driver" value="org.postgresql.Driver"/>
       <property name="jakarta.persistence.jdbc.user" value="nbd"/>
-      <property name="jakarta.persistence.jdbc.password" value="nbd"/>
+      <property name="jakarta.persistence.jdbc.password" value="nbdpassword"/>
       <property name="jakarta.persistence.schema-generation.database.action" value="drop-and-create"/>
+      <property name = "hibernate.show_sql" value = "true" />
+      <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQL82Dialect"/>
+
     </properties>
   </persistence-unit>
 </persistence>
