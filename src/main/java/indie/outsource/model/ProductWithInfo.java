@@ -17,8 +17,8 @@ public class ProductWithInfo extends AbstractEntity{
     @GeneratedValue
     private int id;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "product_id")
+    @OneToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "product_id",referencedColumnName = "id")
     private Product product;
 
 }

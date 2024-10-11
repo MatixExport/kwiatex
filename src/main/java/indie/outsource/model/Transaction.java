@@ -27,7 +27,7 @@ public class Transaction extends AbstractEntity {
 
     @OneToMany(
             mappedBy = "transaction",
-            cascade = CascadeType.ALL,
+            cascade = CascadeType.MERGE,
             orphanRemoval = true
     )
     private final List<TransactionItem> items = new ArrayList<TransactionItem>();
@@ -49,5 +49,4 @@ public class Transaction extends AbstractEntity {
     public void addTransactionItem(TransactionItem item){
         items.add(item);
     }
-
 }

@@ -2,6 +2,7 @@ package indie.outsource.model.products;
 
 
 import indie.outsource.model.AbstractEntity;
+import indie.outsource.model.ProductWithInfo;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -22,6 +23,9 @@ public abstract class Product extends AbstractEntity {
     private int id;
     private String name;
     private float price;
+
+    @OneToOne(mappedBy = "product")
+    private ProductWithInfo productWithInfo;
 
     public abstract float calculateSellingPrice();
 

@@ -33,7 +33,6 @@ public boolean decreaseProductQuantity(ProductWithInfo product, int quantity) {
 
     @Override
     public boolean increaseProductQuantity(ProductWithInfo product, int quantity) {
-        em.getTransaction().begin();
         ProductWithInfo currentProduct = em.find(ProductWithInfo.class, product.getId(),
                 LockModeType.PESSIMISTIC_WRITE);
         currentProduct.setQuantity(currentProduct.getQuantity() + quantity);
