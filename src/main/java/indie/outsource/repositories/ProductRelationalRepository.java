@@ -3,8 +3,6 @@ package indie.outsource.repositories;
 import indie.outsource.model.ProductWithInfo;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.LockModeType;
-import jakarta.persistence.OptimisticLockException;
-import jakarta.persistence.PessimisticLockException;
 
 public class ProductRelationalRepository extends RelationalRepository<ProductWithInfo> implements ProductRepository {
     public ProductRelationalRepository(EntityManager em) {
@@ -12,38 +10,21 @@ public class ProductRelationalRepository extends RelationalRepository<ProductWit
     }
 
 @Override
-public boolean decreaseProductQuantity(ProductWithInfo product, int quantity) {
-    em.getTransaction().begin();
+public void decreaseProductQuantity(ProductWithInfo product, int quantity) {
     ProductWithInfo currentProduct = em.find(ProductWithInfo.class, product.getId(),
             LockModeType.PESSIMISTIC_WRITE);
     if(currentProduct.getQuantity() < quantity) {
-        return false;
+        return;
     }
     currentProduct.setQuantity(currentProduct.getQuantity() - quantity);
     em.merge(currentProduct);
-    try{
-        em.getTransaction().commit();
-    }
-    catch(PessimisticLockException e){
-        em.getTransaction().rollback();
-        return false;
-    }
-    return true;
 }
 
-    @Override
-    public boolean increaseProductQuantity(ProductWithInfo product, int quantity) {
-        ProductWithInfo currentProduct = em.find(ProductWithInfo.class, product.getId(),
-                LockModeType.PESSIMISTIC_WRITE);
-        currentProduct.setQuantity(currentProduct.getQuantity() + quantity);
-        try{
-            em.getTransaction().commit();
-        }
-        catch(PessimisticLockException e){
-            em.getTransaction().rollback();
-            return false;
-        }
-        return true;
+@Override
+public void increaseProductQuantity(ProductWithInfo product, int quantity) {
+    ProductWithInfo currentProduct = em.find(ProductWithInfo.class, product.getId(),
+            LockModeType.PESSIMISTIC_WRITE);
+    currentProduct.setQuantity(currentProduct.getQuantity() + quantity);
 
-    }
+}
 }

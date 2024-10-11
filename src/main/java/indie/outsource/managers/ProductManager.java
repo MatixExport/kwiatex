@@ -1,56 +1,62 @@
 package indie.outsource.managers;
 
-import indie.outsource.exceptions.DatabaseException;
-import indie.outsource.model.Client;
 import indie.outsource.model.ProductWithInfo;
 import indie.outsource.model.Transaction;
 import indie.outsource.model.TransactionItem;
-import indie.outsource.model.products.Product;
+import indie.outsource.repositories.ProductRelationalRepository;
 import indie.outsource.repositories.ProductRepository;
+import indie.outsource.repositories.TransactionRelationalRepository;
 import indie.outsource.repositories.TransactionRepository;
-import lombok.AllArgsConstructor;
+import jakarta.persistence.EntityManagerFactory;
 
 import java.util.List;
 
-@AllArgsConstructor
-public class ProductManager {
-    private ProductRepository productRepository;
-    private TransactionRepository transactionRepository;
-
-    public float getProductPrice(int productId){
-        return productRepository.getById(productId).getProduct().getPrice();
+public class ProductManager extends Manager {
+    public ProductManager(EntityManagerFactory entityManagerFactory) {
+        super(entityManagerFactory);
     }
 
-    public void decreaseProductAmount(int productId, int amount){
-        ProductWithInfo product = productRepository.getById(productId);
-        product.setQuantity(product.getQuantity() - amount);
-        productRepository.add(product);
+    public List<ProductWithInfo> getAllProducts() {
+        return null;
     }
 
-    public int getProductAmount(int productId){
-        ProductWithInfo product = productRepository.getById(productId);
-        return product.getQuantity();
+    public void addProduct(ProductWithInfo product) {
+        inSession((entityManager) -> {
+            ProductRepository productRepository = new ProductRelationalRepository(entityManager);
+            productRepository.add(product);
+        });
     }
 
-    public ProductWithInfo getProductById(int productId){
-        return productRepository.getById(productId);
+    public boolean finalizeTransaction(Transaction transaction) {
+        try {
+            inSession((entityManager) -> {
+                TransactionRepository transactionRepository = new TransactionRelationalRepository(entityManager);
+                ProductRelationalRepository productRelationalRepository = new ProductRelationalRepository(entityManager);
+
+                for (TransactionItem transactionItem : transaction.getItems()) {
+                    productRelationalRepository.decreaseProductQuantity(
+                            transactionItem.getProduct().getProductWithInfo(),
+                            transactionItem.getAmount());
+                }
+
+                transactionRepository.add(transaction);
+            });
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
     }
 
-    public void removeProduct(ProductWithInfo product){productRepository.remove(product);}
-
-    public void addProduct(ProductWithInfo product){
-        productRepository.add(product);
+    public boolean increaseProductQuantity(ProductWithInfo product, int quantity) {
+        try {
+            inSession((entityManager) -> {
+                ProductRepository productRepository = new ProductRelationalRepository(entityManager);
+                productRepository.increaseProductQuantity(product, quantity);
+            });
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
     }
-
-
-
-    public List<Transaction> getClientsTransactions(Client client) {
-        return transactionRepository.getByClient(client);
-    }
-
-    private Transaction registerTransaction(Transaction transaction) {
-        return transactionRepository.add(transaction);
-    }
-
 
 }

@@ -16,7 +16,9 @@ import java.util.concurrent.CompletableFuture;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class ProductRepositoryTest {
-    private EntityManagerFactory emf = Persistence.createEntityManagerFactory("default");
+    private final EntityManagerFactory emf = Persistence.createEntityManagerFactory("default");
+    private final EntityManagerFactory emf1 = Persistence.createEntityManagerFactory("default");
+    private final EntityManagerFactory emf2 = Persistence.createEntityManagerFactory("default");
 
     private Tree tree;
     private ProductWithInfo productWithInfo;
@@ -38,8 +40,8 @@ public class ProductRepositoryTest {
         productWithInfo.setProduct(tree);
 
         em = emf.createEntityManager();
-        em2 = emf.createEntityManager();
-        em3 = emf.createEntityManager();
+        em2 = emf1.createEntityManager();
+        em3 = emf2.createEntityManager();
     }
 
     @Test
@@ -59,7 +61,7 @@ public class ProductRepositoryTest {
         System.out.println("select 1");
         ProductWithInfo target = em.find(ProductWithInfo.class, id, LockModeType.PESSIMISTIC_WRITE);
         System.out.println("update 1");
-        target.setQuantity(6);
+        target.setQuantity(target.getQuantity() + 1);
 
 
         Thread thread = new Thread(() -> {
@@ -72,8 +74,7 @@ public class ProductRepositoryTest {
             System.out.println("commit 2");
             em2.getTransaction().commit();
             System.out.println("after 2");
-        }
-        );
+        });
 
         thread.start();
         System.out.println("commit 1");
@@ -84,7 +85,5 @@ public class ProductRepositoryTest {
 
         ProductWithInfo productWithInfof = em3.find(ProductWithInfo.class, id);
         assertEquals(7, productWithInfof.getQuantity());
-
-
     }
 }
