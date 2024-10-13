@@ -34,7 +34,9 @@ public abstract class RelationalRepository<T extends AbstractEntity> implements 
         if (t.getEntityId() == null) {
             em.persist(t);
         } else {
+
             t = em.merge(t);
+
         }
         return t;
 

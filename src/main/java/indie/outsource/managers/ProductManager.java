@@ -38,10 +38,10 @@ public class ProductManager extends Manager {
         try {
             inSession((entityManager) -> {
                 TransactionRepository transactionRepository = new TransactionRelationalRepository(entityManager);
-                ProductRelationalRepository productRelationalRepository = new ProductRelationalRepository(entityManager);
+                ProductRepository productRepository = new ProductRelationalRepository(entityManager);
 
                 for (TransactionItem transactionItem : transaction.getItems()) {
-                    if(! productRelationalRepository.decreaseProductQuantity(
+                    if(! productRepository.decreaseProductQuantity(
                             transactionItem.getProduct().getProductWithInfo(),
                             transactionItem.getAmount()))
                     {

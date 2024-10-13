@@ -21,4 +21,9 @@ public class ProductWithInfo extends AbstractEntity{
     @JoinColumn(name = "product_id",referencedColumnName = "id")
     private Product product;
 
+    public void setProduct(Product product) {
+        this.product = product;
+        product.setProductWithInfo(this);
+    }
+
 }

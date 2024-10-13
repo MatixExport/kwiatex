@@ -12,9 +12,8 @@ public class TransactionRelationalRepository extends RelationalRepository<Transa
     }
 
 
-    //This is instead solved by making association between transaction and client bidirectional
     @Override
     public List<Transaction> getByClient(Client client) {
-        return List.of();
+        return client.getTransactions();
     }
 }
