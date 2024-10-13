@@ -5,9 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.experimental.Accessors;
 
-import java.util.Collection;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -26,7 +25,7 @@ public class Client extends AbstractEntity{
     private String address;
 
     @OneToMany(mappedBy = "client",fetch = FetchType.LAZY)
-    private List<Transaction> transactions;
+    private List<Transaction> transactions = new ArrayList<>();
 
     public Client(String name, String surname, String address) {
         this.name = name;
@@ -37,7 +36,4 @@ public class Client extends AbstractEntity{
     public String getClientInfo(){
         return "Name: " + name + " Surname: " + surname;
     }
-
-
-
 }

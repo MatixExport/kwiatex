@@ -16,15 +16,22 @@ public class ProductManager extends Manager {
         super(entityManagerFactory);
     }
 
-    public List<ProductWithInfo> getAllProducts() {
-        return null;
+    public List<ProductWithInfo> findAllProducts() {
+        ProductRepository repository = new ProductRelationalRepository(getEntityManager());
+        return repository.findAll();
     }
 
-    public void addProduct(ProductWithInfo product) {
-        inSession((entityManager) -> {
-            ProductRepository productRepository = new ProductRelationalRepository(entityManager);
-            productRepository.add(product);
-        });
+    public boolean addProduct(ProductWithInfo product) {
+        try{
+            inSession((entityManager) -> {
+                ProductRepository productRepository = new ProductRelationalRepository(entityManager);
+                productRepository.add(product);
+            });
+        }
+        catch(Exception e){
+            return false;
+        }
+        return true;
     }
 
     public boolean finalizeTransaction(Transaction transaction) {
@@ -34,9 +41,12 @@ public class ProductManager extends Manager {
                 ProductRelationalRepository productRelationalRepository = new ProductRelationalRepository(entityManager);
 
                 for (TransactionItem transactionItem : transaction.getItems()) {
-                    productRelationalRepository.decreaseProductQuantity(
+                    if(! productRelationalRepository.decreaseProductQuantity(
                             transactionItem.getProduct().getProductWithInfo(),
-                            transactionItem.getAmount());
+                            transactionItem.getAmount()))
+                    {
+                        throw new RuntimeException();
+                    }
                 }
 
                 transactionRepository.add(transaction);

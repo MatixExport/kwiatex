@@ -9,22 +9,22 @@ public class ProductRelationalRepository extends RelationalRepository<ProductWit
         super(ProductWithInfo.class, em);
     }
 
-@Override
-public void decreaseProductQuantity(ProductWithInfo product, int quantity) {
-    ProductWithInfo currentProduct = em.find(ProductWithInfo.class, product.getId(),
-            LockModeType.PESSIMISTIC_WRITE);
-    if(currentProduct.getQuantity() < quantity) {
-        return;
+    @Override
+    public boolean decreaseProductQuantity(ProductWithInfo product, int quantity) {
+        ProductWithInfo currentProduct = em.find(ProductWithInfo.class, product.getId(), LockModeType.PESSIMISTIC_WRITE);
+        if(currentProduct.getQuantity() < quantity) {
+            return false;
+        }
+        currentProduct.setQuantity(currentProduct.getQuantity() - quantity);
+        em.merge(currentProduct);
+        return true;
     }
-    currentProduct.setQuantity(currentProduct.getQuantity() - quantity);
-    em.merge(currentProduct);
-}
 
-@Override
-public void increaseProductQuantity(ProductWithInfo product, int quantity) {
-    ProductWithInfo currentProduct = em.find(ProductWithInfo.class, product.getId(),
-            LockModeType.PESSIMISTIC_WRITE);
-    currentProduct.setQuantity(currentProduct.getQuantity() + quantity);
+    @Override
+    public void increaseProductQuantity(ProductWithInfo product, int quantity) {
+        ProductWithInfo currentProduct = em.find(ProductWithInfo.class, product.getId(),
+                LockModeType.PESSIMISTIC_WRITE);
+        currentProduct.setQuantity(currentProduct.getQuantity() + quantity);
 
-}
+    }
 }

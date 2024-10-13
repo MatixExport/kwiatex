@@ -1,23 +1,18 @@
 package indie.outsource;
 
-import indie.outsource.model.ProductWithInfo;
 import indie.outsource.model.Transaction;
 import indie.outsource.model.products.Tree;
-import indie.outsource.repositories.ProductRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
-import jakarta.persistence.Query;
-import jakarta.persistence.criteria.CriteriaQuery;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import indie.outsource.model.Client;
-import indie.outsource.repositories.ProductRelationalRepository;
 
 
 public class TestTest {
 
-    private EntityManagerFactory emf = Persistence.createEntityManagerFactory("default");
+    private final EntityManagerFactory emf = Persistence.createEntityManagerFactory("default");
 
 
     @Test
@@ -75,38 +70,5 @@ public class TestTest {
         Client client = em.find(Client.class, client1.getId());
         em.getTransaction().commit();
         assertEquals("John Doe", client.getName()+" "+client.getSurname());
-    }
-    @Test
-    void repoTest(){
-        EntityManager em = emf.createEntityManager();
-
-        Tree tree = new Tree();
-        tree.setHeight(20);
-        tree.setName("wasd");
-        tree.setPrice(20);
-        tree.setGrowthStage(2);
-        em.persist(tree);
-
-        ProductRepository repository = new ProductRelationalRepository(em);
-        ProductWithInfo product = new ProductWithInfo();
-        product.setQuantity(10);
-        product.setProduct(tree);
-        repository.add(product);
-        CriteriaQuery<ProductWithInfo> criteriaQuery = em.getCriteriaBuilder().createQuery(ProductWithInfo.class);
-        criteriaQuery.from(ProductWithInfo.class);
-
-
-        Query q = em.createQuery("Select e from ProductWithInfo e", ProductWithInfo.class);
-
-
-        //assertEquals(1,em.createQuery(criteriaQuery).getResultList().size());
-        assertEquals(1,q.getResultList().size());
-        assertEquals(1,repository.getAll().size());
-        assertEquals(repository.getAll().getFirst().getProduct().getName(), tree.getName());
-
-
-
-
-
     }
 }

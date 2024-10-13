@@ -1,17 +1,12 @@
 package indie.outsource;
 
+import indie.outsource.managers.ProductManager;
 import indie.outsource.model.ProductWithInfo;
+import indie.outsource.model.products.Product;
 import indie.outsource.model.products.Tree;
-import indie.outsource.repositories.ProductRelationalRepository;
-import indie.outsource.repositories.ProductRepository;
 import jakarta.persistence.*;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.util.Date;
-import java.util.concurrent.CompletableFuture;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -20,21 +15,19 @@ public class ProductRepositoryTest {
     private final EntityManagerFactory emf1 = Persistence.createEntityManagerFactory("default");
     private final EntityManagerFactory emf2 = Persistence.createEntityManagerFactory("default");
 
-    private Tree tree;
-    private ProductWithInfo productWithInfo;
     private EntityManager em;
     private EntityManager em2;
     private EntityManager em3;
 
     @BeforeEach
     void createModelObjects() {
-        tree = new Tree();
+        Tree tree = new Tree();
         tree.setHeight(20);
         tree.setName("wasd");
         tree.setPrice(20);
         tree.setGrowthStage(2);
 
-        productWithInfo = new ProductWithInfo();
+        ProductWithInfo productWithInfo = new ProductWithInfo();
         productWithInfo.setPrice(2);
         productWithInfo.setQuantity(5);
         productWithInfo.setProduct(tree);
@@ -46,12 +39,16 @@ public class ProductRepositoryTest {
 
     @Test
     public void lockTest() throws InterruptedException {
-        ProductRepository productRepository = new ProductRelationalRepository(em);
-        em.getTransaction().begin();
-        em.persist(tree);
-        em.getTransaction().commit();
+        ProductManager productManager = new ProductManager(emf);
+        Product tree = new Tree();
+        tree.setName("dab");
+        tree.setPrice(120);
 
-        productRepository.add(productWithInfo);
+        ProductWithInfo productWithInfo = new ProductWithInfo();
+        productWithInfo.setProduct(tree);
+        productWithInfo.setQuantity(10);
+        assertTrue(productManager.addProduct(productWithInfo));
+
         int id = productWithInfo.getId();
 
         System.out.println("----------------------------------------------");
@@ -84,6 +81,6 @@ public class ProductRepositoryTest {
         thread.join();
 
         ProductWithInfo productWithInfof = em3.find(ProductWithInfo.class, id);
-        assertEquals(7, productWithInfof.getQuantity());
+        assertEquals(12, productWithInfof.getQuantity());
     }
 }

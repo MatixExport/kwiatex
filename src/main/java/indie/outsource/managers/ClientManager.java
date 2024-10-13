@@ -4,7 +4,6 @@ import indie.outsource.model.Client;
 import indie.outsource.repositories.ClientRelationalRepository;
 import indie.outsource.repositories.ClientRepository;
 import jakarta.persistence.EntityManagerFactory;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -17,10 +16,9 @@ public class ClientManager extends Manager {
         super(entityManagerFactory);
     }
 
-    public List<Client> findAll() {
-        List<Client> list;
+    public List<Client> findAllClients() {
         ClientRepository clientRepository = new ClientRelationalRepository(getEntityManager());
-        return clientRepository.getAll();
+        return clientRepository.findAll();
     }
 
     public boolean register(Client client) {

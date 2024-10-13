@@ -16,7 +16,7 @@ public abstract class RelationalRepository<T extends AbstractEntity> implements 
 
 
     @Override
-    public List<T> getAll() {
+    public List<T> findAll() {
         CriteriaQuery<T> criteriaQuery = em.getCriteriaBuilder().createQuery(classType);
         criteriaQuery.from(classType);
         return  em.createQuery(criteriaQuery).getResultList();
