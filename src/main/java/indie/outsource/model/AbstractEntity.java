@@ -11,9 +11,9 @@ import java.util.UUID;
 @MappedSuperclass
 public abstract class AbstractEntity implements Serializable {
 
-    @NotNull
+    @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID entityId;
+    private UUID id;
 
     @Version
     private long version;

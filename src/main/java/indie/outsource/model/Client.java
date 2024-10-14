@@ -17,9 +17,6 @@ import java.util.List;
 @Access(AccessType.FIELD)
 public class Client extends AbstractEntity{
 
-    @Id
-    @GeneratedValue
-    private int id;
     private String name;
     private String surname;
     private String address;

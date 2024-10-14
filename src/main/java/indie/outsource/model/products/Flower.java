@@ -13,8 +13,8 @@ public class Flower extends Plant{
 
     private String color;
 
-    public Flower(int id, String name, float price, int growthStage, String color) {
-        super(id, name, price, growthStage);
+    public Flower( String name, float price, int growthStage, String color) {
+        super( name, price, growthStage);
         this.color = color;
     }
 

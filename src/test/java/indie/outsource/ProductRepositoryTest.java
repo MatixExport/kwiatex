@@ -7,6 +7,8 @@ import jakarta.persistence.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.UUID;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class ProductRepositoryTest {
@@ -33,7 +35,7 @@ public class ProductRepositoryTest {
         productWithInfo.setQuantity(10);
         assertTrue(productManager.addProduct(productWithInfo));
 
-        int id = productWithInfo.getId();
+        UUID id = productWithInfo.getId();
 
         System.out.println("----------------------------------------------");
 

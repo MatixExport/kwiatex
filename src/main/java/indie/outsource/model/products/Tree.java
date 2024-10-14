@@ -12,8 +12,8 @@ import lombok.Setter;
 public class Tree extends Plant{
     private int height;
 
-    public Tree(int id, String name, float price, int growthStage, int height) {
-        super(id, name, price, growthStage);
+    public Tree( String name, float price, int growthStage, int height) {
+        super( name, price, growthStage);
         this.height = height;
     }
 

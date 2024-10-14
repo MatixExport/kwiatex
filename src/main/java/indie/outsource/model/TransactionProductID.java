@@ -6,6 +6,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.util.UUID;
 
 @Embeddable
 @EqualsAndHashCode
@@ -14,6 +15,6 @@ import java.io.Serializable;
 public class TransactionProductID implements Serializable {
 
 
-    private int transactionId;
-    private int productId;
+    private UUID transactionId;
+    private UUID productId;
 }

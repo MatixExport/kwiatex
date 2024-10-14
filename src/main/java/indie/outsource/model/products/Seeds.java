@@ -16,8 +16,8 @@ public abstract class Seeds extends Product {
     private int weight;
     private boolean edible;
 
-    public Seeds(int id, String name, float price, int weight, boolean edible) {
-        super(id, name, price);
+    public Seeds(String name, float price, int weight, boolean edible) {
+        super( name, price);
         this.weight = weight;
         this.edible = edible;
     }

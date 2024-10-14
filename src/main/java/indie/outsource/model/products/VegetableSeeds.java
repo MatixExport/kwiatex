@@ -12,8 +12,8 @@ import lombok.Setter;
 public class VegetableSeeds extends Seeds{
 
 
-    public VegetableSeeds(int id, String name, float price, int weight, boolean edible) {
-        super(id, name, price, weight, edible);
+    public VegetableSeeds( String name, float price, int weight, boolean edible) {
+        super( name, price, weight, edible);
     }
 
     @Override

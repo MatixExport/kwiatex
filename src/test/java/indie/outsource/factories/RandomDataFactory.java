@@ -18,7 +18,7 @@ public class RandomDataFactory {
                 .ignore(field(Client::getId))
                 .ignore(field(Client::getTransactions))
                 .ignore(field(Client::getVersion))
-                .ignore(field(Client::getEntityId))
+//                .ignore(field(Client::getEntityId))
                 .create();
     }
     static public Tree getRandomProduct() {
@@ -26,7 +26,7 @@ public class RandomDataFactory {
                 .ignore(field(Tree::getId))
                 .ignore(field(Tree::getProductWithInfo))
                 .ignore(field(Tree::getVersion))
-                .ignore(field(Tree::getEntityId))
+//                .ignore(field(Tree::getEntityId))
                 .create();
     }
     static public ProductWithInfo getRandomProductWithInfo() {
@@ -34,7 +34,7 @@ public class RandomDataFactory {
                 .ignore(field(ProductWithInfo::getId))
                 .ignore(field(ProductWithInfo::getProduct))
                 .ignore(field(ProductWithInfo::getVersion))
-                .ignore(field(ProductWithInfo::getEntityId))
+//                .ignore(field(ProductWithInfo::getEntityId))
                 .create();
         productWithInfo.setProduct(getRandomProduct());
         return productWithInfo;
@@ -45,7 +45,7 @@ public class RandomDataFactory {
                 .ignore(field(Transaction::getClient))
                 .ignore(field(Transaction::getItems))
                 .ignore(field(Transaction::getVersion))
-                .ignore(field(Transaction::getEntityId))
+//                .ignore(field(Transaction::getEntityId))
                 .create();
         transaction.setClient( getRandomClient());
         return transaction;

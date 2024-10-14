@@ -6,6 +6,7 @@ import jakarta.persistence.criteria.CriteriaQuery;
 import lombok.AllArgsConstructor;
 
 import java.util.List;
+import java.util.UUID;
 
 
 @AllArgsConstructor
@@ -23,7 +24,7 @@ public abstract class RelationalRepository<T extends AbstractEntity> implements 
     }
 
     @Override
-    public T getById(int id) {
+    public T getById(UUID id) {
         return classType.cast(em.find(classType,id));
     }
 
@@ -31,12 +32,10 @@ public abstract class RelationalRepository<T extends AbstractEntity> implements 
 
     @Override
     public T add(T t) {
-        if (t.getEntityId() == null) {
+        if (t.getId() == null) {
             em.persist(t);
         } else {
-
             t = em.merge(t);
-
         }
         return t;
 

@@ -17,10 +17,6 @@ import java.util.List;
 @Table(name = "shop_transaction")
 public class Transaction extends AbstractEntity {
 
-    @Id
-    @GeneratedValue
-    private int id;
-
     @ManyToOne
     @JoinColumn(name = "client_id")
     private Client client;

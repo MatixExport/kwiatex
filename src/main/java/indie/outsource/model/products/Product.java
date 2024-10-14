@@ -18,9 +18,6 @@ import lombok.Setter;
 @Entity
 public abstract class Product extends AbstractEntity {
 
-    @Id
-    @GeneratedValue
-    private int id;
     private String name;
     private float price;
 
@@ -31,8 +28,7 @@ public abstract class Product extends AbstractEntity {
 
     public abstract String getProductInfo();
 
-    public Product(int id, String name, float price) {
-        this.id = id;
+    public Product(String name, float price) {
         this.name = name;
         this.price = price;
     }

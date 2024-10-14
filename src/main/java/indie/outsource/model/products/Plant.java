@@ -15,8 +15,8 @@ public abstract class Plant extends Product{
 
     private int growthStage;
 
-    public Plant(int id, String name, float price, int growthStage) {
-        super(id, name, price);
+    public Plant( String name, float price, int growthStage) {
+        super(name, price);
         this.growthStage = growthStage;
     }
 
