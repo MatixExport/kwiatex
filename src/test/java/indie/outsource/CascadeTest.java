@@ -1,5 +1,6 @@
 package indie.outsource;
 
+import indie.outsource.factories.RandomDataFactory;
 import indie.outsource.model.ProductWithInfo;
 import indie.outsource.model.products.Product;
 import indie.outsource.model.products.Tree;
@@ -29,17 +30,8 @@ public class CascadeTest {
 
     @Test
     public void productDetachesFromProductWithInfoOnRemoval(){
-        Product tree = new Tree();
-
-        tree.setName("dab");
-
-        tree.setPrice(120);
-
-        ProductWithInfo productWithInfo = new ProductWithInfo();
-        productWithInfo.setProduct(tree);
-        productWithInfo.setQuantity(10);
-
-
+        ProductWithInfo productWithInfo = RandomDataFactory.getRandomProductWithInfo();
+        Product tree = productWithInfo.getProduct();
 
         EntityManager em = Persistence.createEntityManagerFactory("default").createEntityManager();
         em.getTransaction().begin();
@@ -60,15 +52,8 @@ public class CascadeTest {
     }
     @Test
     public void productWithInfoDeleteOnProductRemoval(){
-        Product tree = new Tree();
-        tree.setName("dab");
-        tree.setPrice(120);
-
-        ProductWithInfo productWithInfo = new ProductWithInfo();
-        productWithInfo.setProduct(tree);
-        productWithInfo.setQuantity(10);
-
-
+        ProductWithInfo productWithInfo = RandomDataFactory.getRandomProductWithInfo();
+        Product tree = productWithInfo.getProduct();
 
         EntityManager em = Persistence.createEntityManagerFactory("default").createEntityManager();
         em.getTransaction().begin();
