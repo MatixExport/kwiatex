@@ -38,6 +38,7 @@ public class ProductManagerTest {
         em.createQuery("delete from Transaction ").executeUpdate();
         em.createQuery("delete from TransactionItem ").executeUpdate();
         em.getTransaction().commit();
+        emf.close();
     }
 
     @Test

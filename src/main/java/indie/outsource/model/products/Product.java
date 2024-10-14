@@ -24,7 +24,7 @@ public abstract class Product extends AbstractEntity {
     private String name;
     private float price;
 
-    @OneToOne(mappedBy = "product")
+    @OneToOne(mappedBy = "product", cascade = {CascadeType.MERGE, CascadeType.REMOVE})
     private ProductWithInfo productWithInfo;
 
     public abstract float calculateSellingPrice();
