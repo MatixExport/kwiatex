@@ -2,6 +2,8 @@ package indie.outsource;
 
 import indie.outsource.model.Transaction;
 import indie.outsource.model.products.Tree;
+import indie.outsource.repositories.TransactionRelationalRepository;
+import indie.outsource.repositories.TransactionRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
@@ -10,20 +12,14 @@ import static org.junit.jupiter.api.Assertions.*;
 import indie.outsource.model.Client;
 
 
-public class TestTest {
+public class TestTransactionRepository {
 
     private final EntityManagerFactory emf = Persistence.createEntityManagerFactory("default");
 
-
     @Test
-    void testAdd() {
-        assertEquals(5, 5);
-    }
-
-
-    @Test
-    void testManyMany(){
+    void testAddTransactionItems(){
         EntityManager em = emf.createEntityManager();
+        TransactionRepository repo = new TransactionRelationalRepository(em);
 
         em.getTransaction().begin();
         Client client1 = new Client("John","Doe","6th Street");
@@ -44,12 +40,12 @@ public class TestTest {
         Transaction transaction = new Transaction();
         transaction.setClient(client1);
         transaction.addProduct(tree,5,20);
-        em.persist(transaction);
+        repo.add(transaction);
         em.getTransaction().commit();
 
 
         em.getTransaction().begin();
-        Transaction transaction2 = em.find(Transaction.class, transaction.getId());
+        Transaction transaction2 = repo.getById(transaction.getId());
         assertEquals(transaction2.getClient().getName(), client1.getName());
         assertEquals(transaction2.getItems().size(),1);
         assertEquals(transaction2.getItems().getFirst().getPrice(),20);
