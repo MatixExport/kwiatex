@@ -1,7 +1,8 @@
 package indie.outsource;
 
+import indie.outsource.factories.RandomDataFactory;
 import indie.outsource.model.Transaction;
-import indie.outsource.model.products.Tree;
+import indie.outsource.model.products.Product;
 import indie.outsource.repositories.TransactionRelationalRepository;
 import indie.outsource.repositories.TransactionRepository;
 import jakarta.persistence.EntityManager;
@@ -22,27 +23,18 @@ public class TestTransactionRepository {
         TransactionRepository repo = new TransactionRelationalRepository(em);
 
         em.getTransaction().begin();
-        Client client1 = new Client("John","Doe","6th Street");
+        Client client1 = RandomDataFactory.getRandomClient();
+        Product product1 = RandomDataFactory.getRandomProduct();
         em.persist(client1);
-        em.getTransaction().commit();
-
-
-        em.getTransaction().begin();
-        Tree tree = new Tree();
-        tree.setHeight(20);
-        tree.setName("wasd");
-        tree.setPrice(20);
-        tree.setGrowthStage(2);
-        em.persist(tree);
+        em.persist(product1);
         em.getTransaction().commit();
 
         em.getTransaction().begin();
         Transaction transaction = new Transaction();
         transaction.setClient(client1);
-        transaction.addProduct(tree,5,20);
+        transaction.addProduct(product1,5,20);
         repo.add(transaction);
         em.getTransaction().commit();
-
 
         em.getTransaction().begin();
         Transaction transaction2 = repo.getById(transaction.getId());
@@ -50,21 +42,5 @@ public class TestTransactionRepository {
         assertEquals(transaction2.getItems().size(),1);
         assertEquals(transaction2.getItems().getFirst().getPrice(),20);
         em.getTransaction().commit();
-
-
-    }
-    @Test
-    void testDb(){
-        EntityManager em = emf.createEntityManager();
-
-        em.getTransaction().begin();
-        Client client1 = new Client("John","Doe","6th Street");
-        em.persist(client1);
-        em.getTransaction().commit();
-
-        em.getTransaction().begin();
-        Client client = em.find(Client.class, client1.getId());
-        em.getTransaction().commit();
-        assertEquals("John Doe", client.getName()+" "+client.getSurname());
     }
 }

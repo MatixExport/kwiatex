@@ -1,5 +1,6 @@
 package indie.outsource;
 
+import indie.outsource.factories.RandomDataFactory;
 import indie.outsource.managers.ClientManager;
 import indie.outsource.model.Client;
 import jakarta.persistence.EntityManagerFactory;
@@ -22,7 +23,7 @@ public class ClientManagerTest {
 
     @Test
     public void testCreateClient() {
-        Client client = new Client("Indie", "Outsource", "Politechnika Lodzka");
+        Client client = RandomDataFactory.getRandomClient();
 
         assertTrue(clientManager.register(client));
 

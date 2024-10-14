@@ -1,5 +1,6 @@
 package indie.outsource;
 
+import indie.outsource.factories.RandomDataFactory;
 import indie.outsource.model.Client;
 import indie.outsource.repositories.ClientRelationalRepository;
 import indie.outsource.repositories.ClientRepository;
@@ -41,9 +42,7 @@ public class ClientRepositoryTest {
 
     @Test
     public void testOptimisticLock() {
-        Client client = new Client();
-        client.setName("Andrzej");
-        client.setSurname("Wasder");
+        Client client = RandomDataFactory.getRandomClient();
 
         em.getTransaction().begin();
         repo.add(client);

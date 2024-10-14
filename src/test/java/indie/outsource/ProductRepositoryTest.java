@@ -1,9 +1,8 @@
 package indie.outsource;
 
+import indie.outsource.factories.RandomDataFactory;
 import indie.outsource.managers.ProductManager;
 import indie.outsource.model.ProductWithInfo;
-import indie.outsource.model.products.Product;
-import indie.outsource.model.products.Tree;
 import jakarta.persistence.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,17 +20,6 @@ public class ProductRepositoryTest {
 
     @BeforeEach
     void createModelObjects() {
-        Tree tree = new Tree();
-        tree.setHeight(20);
-        tree.setName("wasd");
-        tree.setPrice(20);
-        tree.setGrowthStage(2);
-
-        ProductWithInfo productWithInfo = new ProductWithInfo();
-        productWithInfo.setPrice(2);
-        productWithInfo.setQuantity(5);
-        productWithInfo.setProduct(tree);
-
         em = emf.createEntityManager();
         em2 = emf1.createEntityManager();
         em3 = emf2.createEntityManager();
@@ -40,12 +28,8 @@ public class ProductRepositoryTest {
     @Test
     public void lockTest() throws InterruptedException {
         ProductManager productManager = new ProductManager(emf);
-        Product tree = new Tree();
-        tree.setName("dab");
-        tree.setPrice(120);
 
-        ProductWithInfo productWithInfo = new ProductWithInfo();
-        productWithInfo.setProduct(tree);
+        ProductWithInfo productWithInfo = RandomDataFactory.getRandomProductWithInfo();
         productWithInfo.setQuantity(10);
         assertTrue(productManager.addProduct(productWithInfo));
 
@@ -59,7 +43,6 @@ public class ProductRepositoryTest {
         ProductWithInfo target = em.find(ProductWithInfo.class, id, LockModeType.PESSIMISTIC_WRITE);
         System.out.println("update 1");
         target.setQuantity(target.getQuantity() + 1);
-
 
         Thread thread = new Thread(() -> {
             System.out.println("trans 2");

@@ -1,12 +1,12 @@
 package indie.outsource;
 
+import indie.outsource.factories.RandomDataFactory;
 import indie.outsource.managers.ClientManager;
 import indie.outsource.managers.ProductManager;
 import indie.outsource.model.Client;
 import indie.outsource.model.ProductWithInfo;
 import indie.outsource.model.Transaction;
 import indie.outsource.model.products.Product;
-import indie.outsource.model.products.Tree;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
@@ -43,13 +43,7 @@ public class ProductManagerTest {
 
     @Test
     public void testCreateProduct() {
-        Product tree = new Tree();
-        tree.setName("dab");
-        tree.setPrice(120);
-
-        ProductWithInfo productWithInfo = new ProductWithInfo();
-        productWithInfo.setProduct(tree);
-        productWithInfo.setQuantity(10);
+        ProductWithInfo productWithInfo = RandomDataFactory.getRandomProductWithInfo();
 
         assertTrue(productManager.addProduct(productWithInfo));
 
@@ -65,20 +59,16 @@ public class ProductManagerTest {
         Transaction transaction = new Transaction();
         Transaction transaction2 = new Transaction();
 
-        Product tree = new Tree();
-        tree.setName("dab");
-        tree.setPrice(120);
-
-        ProductWithInfo productWithInfo = new ProductWithInfo();
-        productWithInfo.setProduct(tree);
+        ProductWithInfo productWithInfo = RandomDataFactory.getRandomProductWithInfo();
         productWithInfo.setQuantity(10);
+        Product tree = productWithInfo.getProduct();
+
         assertTrue(productManager.addProduct(productWithInfo));
-        tree.setProductWithInfo(productWithInfo);
 
         transaction.addProduct(tree, 6, 6* tree.calculateSellingPrice());
         transaction2.addProduct(tree, 6, 6* tree.calculateSellingPrice());
 
-        Client client = new Client("Indie", "Outsource", "Politechnika Lodzka");
+        Client client = RandomDataFactory.getRandomClient();
 
         assertTrue(clientManager.register(client));
         transaction.setClient(client);
