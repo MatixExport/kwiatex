@@ -23,7 +23,7 @@ public class Transaction extends AbstractEntity {
 
     @OneToMany(
             mappedBy = "transaction",
-            cascade = CascadeType.MERGE,
+            cascade = {CascadeType.MERGE,CascadeType.REMOVE},
             orphanRemoval = true
     )
     private final List<TransactionItem> items = new ArrayList<TransactionItem>();
