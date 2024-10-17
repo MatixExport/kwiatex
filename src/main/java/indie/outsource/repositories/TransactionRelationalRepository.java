@@ -10,10 +10,4 @@ public class TransactionRelationalRepository extends RelationalRepository<Transa
     public TransactionRelationalRepository(EntityManager em) {
         super(Transaction.class, em);
     }
-
-
-    @Override
-    public List<Transaction> getByClient(Client client) {
-        return client.getTransactions();
-    }
 }

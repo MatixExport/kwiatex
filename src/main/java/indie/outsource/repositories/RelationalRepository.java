@@ -46,8 +46,6 @@ public abstract class RelationalRepository<T extends AbstractEntity> implements 
     public void remove(T t) {
         if(em.contains(t)) {
             em.remove(t);
-        }else {
-            em.merge(t);
         }
     }
 }

@@ -3,6 +3,8 @@ package indie.outsource;
 import indie.outsource.factories.RandomDataFactory;
 import indie.outsource.managers.ProductManager;
 import indie.outsource.model.ProductWithInfo;
+import indie.outsource.repositories.ProductRelationalRepository;
+import indie.outsource.repositories.ProductRepository;
 import jakarta.persistence.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -67,5 +69,20 @@ public class ProductRepositoryTest {
 
         ProductWithInfo productWithInfof = em3.find(ProductWithInfo.class, id);
         assertEquals(12, productWithInfof.getQuantity());
+    }
+    @Test
+    public void testRemove(){
+        ProductRepository productRepository = new ProductRelationalRepository(em);
+        em.getTransaction().begin();
+        ProductWithInfo product = productRepository.add(RandomDataFactory.getRandomProductWithInfo());
+        assertEquals(productRepository.findAll().size(),1);
+        productRepository.remove(product);
+        assertEquals(productRepository.findAll().size(),0);
+        em.getTransaction().commit();
+
+        em.getTransaction().begin();
+        productRepository.remove(product);
+        em.getTransaction().commit();
+        assertEquals(productRepository.findAll().size(),0);
     }
 }

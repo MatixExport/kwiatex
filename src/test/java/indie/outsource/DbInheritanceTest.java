@@ -6,8 +6,6 @@ import indie.outsource.model.ProductWithInfo;
 import indie.outsource.model.products.Flower;
 import indie.outsource.model.products.GrassesSeeds;
 import indie.outsource.model.products.Tree;
-import indie.outsource.repositories.ClientRelationalRepository;
-import indie.outsource.repositories.ProductRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
