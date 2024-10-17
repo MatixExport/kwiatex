@@ -8,7 +8,6 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Inheritance(strategy = InheritanceType.JOINED)
 @Access(AccessType.FIELD)
 @NoArgsConstructor
 public abstract class Seeds extends Product {

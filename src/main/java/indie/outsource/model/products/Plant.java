@@ -9,7 +9,6 @@ import lombok.Setter;
 @Setter
 @Entity
 @NoArgsConstructor
-@Inheritance(strategy = InheritanceType.JOINED)
 @Access(AccessType.FIELD)
 public abstract class Plant extends Product{
 
