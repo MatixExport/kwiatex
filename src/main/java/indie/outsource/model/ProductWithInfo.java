@@ -14,7 +14,8 @@ public class ProductWithInfo extends AbstractEntity{
     private double price;
 
 
-    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.MERGE})
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.MERGE},fetch = FetchType.LAZY)
+    @MapsId
     @JoinColumn(name = "product_id",referencedColumnName = "id")
     private Product product;
 

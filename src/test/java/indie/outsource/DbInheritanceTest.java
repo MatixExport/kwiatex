@@ -56,6 +56,7 @@ class DbInheritanceTest {
             productWithInfo.setProduct(RandomDataFactory.getRandomProductOfClassType(Flower.class));
             Assertions.assertTrue(manager.addProduct(productWithInfo));
         }
+        emf.getCache().evictAll();
         long end = System.currentTimeMillis();
         System.out.println("DEBUG: INSERT took " + (end - start) + " MilliSeconds");
         start = System.currentTimeMillis();
