@@ -3,6 +3,7 @@ package indie.outsource.factories;
 import indie.outsource.model.Client;
 import indie.outsource.model.ProductWithInfo;
 import indie.outsource.model.Transaction;
+import indie.outsource.model.products.GrassesSeeds;
 import indie.outsource.model.products.Tree;
 import org.instancio.Instancio;
 
@@ -18,15 +19,16 @@ public class RandomDataFactory {
                 .ignore(field(Client::getId))
                 .ignore(field(Client::getTransactions))
                 .ignore(field(Client::getVersion))
-//                .ignore(field(Client::getEntityId))
                 .create();
     }
     static public Tree getRandomProduct() {
-        return Instancio.of(Tree.class)
+        return getRandomProductOfClassType(Tree.class);
+    }
+    static public <T> T getRandomProductOfClassType(Class<T> classType) {
+        return Instancio.of(classType)
                 .ignore(field(Tree::getId))
                 .ignore(field(Tree::getProductWithInfo))
                 .ignore(field(Tree::getVersion))
-//                .ignore(field(Tree::getEntityId))
                 .create();
     }
     static public ProductWithInfo getRandomProductWithInfo() {
@@ -34,7 +36,6 @@ public class RandomDataFactory {
                 .ignore(field(ProductWithInfo::getId))
                 .ignore(field(ProductWithInfo::getProduct))
                 .ignore(field(ProductWithInfo::getVersion))
-//                .ignore(field(ProductWithInfo::getEntityId))
                 .create();
         productWithInfo.setProduct(getRandomProduct());
         return productWithInfo;
@@ -45,7 +46,6 @@ public class RandomDataFactory {
                 .ignore(field(Transaction::getClient))
                 .ignore(field(Transaction::getItems))
                 .ignore(field(Transaction::getVersion))
-//                .ignore(field(Transaction::getEntityId))
                 .create();
         transaction.setClient( getRandomClient());
         return transaction;
