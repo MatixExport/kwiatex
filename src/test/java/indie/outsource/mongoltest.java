@@ -5,14 +5,13 @@ import com.mongodb.MongoClientSettings;
 import com.mongodb.MongoCredential;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
-import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import indie.outsource.factories.RandomDataFactory;
 import indie.outsource.model.Client;
+import indie.outsource.model.ProductWithInfo;
 import org.bson.UuidRepresentation;
 import org.bson.codecs.configuration.CodecRegistries;
 import org.bson.codecs.configuration.CodecRegistry;
-import org.bson.codecs.pojo.Convention;
 import org.bson.codecs.pojo.Conventions;
 import org.bson.codecs.pojo.PojoCodecProvider;
 import org.junit.jupiter.api.Test;
@@ -56,6 +55,8 @@ public class mongoltest {
             System.out.println("Database: " + dbName);
         }
 
+        mongoDatabase.getCollection("client", Client.class).insertOne(RandomDataFactory.getRandomClient());
+        mongoDatabase.getCollection("productWithInfo", ProductWithInfo.class).insertOne(RandomDataFactory.getRandomProductWithInfo());
     }
 
 

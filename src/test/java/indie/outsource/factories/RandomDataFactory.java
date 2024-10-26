@@ -1,9 +1,10 @@
 package indie.outsource.factories;
 
 import indie.outsource.model.Client;
+import indie.outsource.model.ProductInfo;
 import indie.outsource.model.ProductWithInfo;
 import indie.outsource.model.Transaction;
-import indie.outsource.model.products.GrassesSeeds;
+import indie.outsource.model.products.Product;
 import indie.outsource.model.products.Tree;
 import org.instancio.Instancio;
 
@@ -24,19 +25,19 @@ public class RandomDataFactory {
     }
     static public <T> T getRandomProductOfClassType(Class<T> classType) {
         return Instancio.of(classType)
-                .ignore(field(Tree::getId))
-                .ignore(field(Tree::getProductWithInfo))
-
+                .ignore(field(Product::getId))
+                .create();
+    }
+    static public ProductInfo getRandomInfo() {
+        return Instancio.of(ProductInfo.class)
+                .ignore(field(ProductInfo::getId))
                 .create();
     }
     static public ProductWithInfo getRandomProductWithInfo() {
-        ProductWithInfo productWithInfo = Instancio.of(ProductWithInfo.class)
-                .ignore(field(ProductWithInfo::getId))
-                .ignore(field(ProductWithInfo::getProduct))
-
-                .create();
-        productWithInfo.setProduct(getRandomProduct());
-        return productWithInfo;
+        return new ProductWithInfo(
+                getRandomProduct(),
+                getRandomInfo()
+        );
     }
     static public Transaction getRandomTransaction() {
         Transaction transaction =  Instancio.of(Transaction.class)

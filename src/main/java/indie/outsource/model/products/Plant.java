@@ -4,18 +4,25 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.bson.codecs.pojo.annotations.BsonCreator;
+import org.bson.codecs.pojo.annotations.BsonProperty;
+
+import java.util.UUID;
 
 @Getter
 @Setter
-@Entity
 @NoArgsConstructor
-@Access(AccessType.FIELD)
 public abstract class Plant extends Product{
-
+    @BsonProperty("growthStage")
     private int growthStage;
 
-    public Plant( String name, float price, int growthStage) {
-        super(name, price);
+    @BsonCreator
+    public Plant(
+            @BsonProperty("_id") UUID id,
+            @BsonProperty("name") String name,
+            @BsonProperty("price") float price,
+            @BsonProperty("growthStage") int growthStage) {
+        super(id,name, price);
         this.growthStage = growthStage;
     }
 

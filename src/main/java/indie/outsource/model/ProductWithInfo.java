@@ -1,27 +1,23 @@
 package indie.outsource.model;
 
 import indie.outsource.model.products.Product;
-import jakarta.persistence.*;
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
+import org.bson.codecs.pojo.annotations.BsonCreator;
+import org.bson.codecs.pojo.annotations.BsonProperty;
 
-@Entity
-@Getter
 @Setter
-@AllArgsConstructor
-@NoArgsConstructor
-public class ProductWithInfo extends AbstractEntity{
-    private int quantity;
-    private double price;
-
-
-    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.MERGE},fetch = FetchType.LAZY)
-    @MapsId
-    @JoinColumn(name = "product_id",referencedColumnName = "id")
+@Getter
+public class ProductWithInfo {
+    @BsonProperty("product")
     private Product product;
-
-    public void setProduct(Product product) {
+    @BsonProperty("productInfo")
+    private ProductInfo productInfo;
+    @BsonCreator
+    public ProductWithInfo(
+            @BsonProperty("product") Product product,
+            @BsonProperty("productInfo") ProductInfo productInfo) {
+        this.productInfo = productInfo;
         this.product = product;
-        product.setProductWithInfo(this);
     }
-
 }

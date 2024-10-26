@@ -1,8 +1,8 @@
 package indie.outsource.repositories;
 
-import indie.outsource.model.ProductWithInfo;
+import indie.outsource.model.ProductInfo;
 
-public interface ProductRepository extends Repository<ProductWithInfo> {
-    boolean decreaseProductQuantity(ProductWithInfo product, int quantity);
-    void increaseProductQuantity(ProductWithInfo product, int quantity);
+public interface ProductRepository extends Repository<ProductInfo> {
+    boolean decreaseProductQuantity(ProductInfo product, int quantity);
+    void increaseProductQuantity(ProductInfo product, int quantity);
 }

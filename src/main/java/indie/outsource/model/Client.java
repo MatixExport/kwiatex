@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.bson.codecs.pojo.annotations.BsonCreator;
+import org.bson.codecs.pojo.annotations.BsonIgnore;
 import org.bson.codecs.pojo.annotations.BsonProperty;
 
 import java.util.UUID;
@@ -36,7 +37,7 @@ public class Client extends AbstractEntity{
         this.address = address;
     }
 
-
+    @BsonIgnore
     public String getClientInfo(){
         return "Name: " + name + " Surname: " + surname;
     }

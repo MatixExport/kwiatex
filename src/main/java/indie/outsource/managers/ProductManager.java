@@ -1,6 +1,6 @@
 package indie.outsource.managers;
 
-import indie.outsource.model.ProductWithInfo;
+import indie.outsource.model.ProductInfo;
 import indie.outsource.model.Transaction;
 import indie.outsource.model.TransactionItem;
 import indie.outsource.repositories.ProductRelationalRepository;
@@ -16,12 +16,12 @@ public class ProductManager extends Manager {
         super(entityManagerFactory);
     }
 
-    public List<ProductWithInfo> findAllProducts() {
+    public List<ProductInfo> findAllProducts() {
         ProductRepository repository = new ProductRelationalRepository(getEntityManager());
         return repository.findAll();
     }
 
-    public boolean addProduct(ProductWithInfo product) {
+    public boolean addProduct(ProductInfo product) {
         try{
             inSession((entityManager) -> {
                 ProductRepository productRepository = new ProductRelationalRepository(entityManager);
@@ -57,7 +57,7 @@ public class ProductManager extends Manager {
         return true;
     }
 
-    public boolean increaseProductQuantity(ProductWithInfo product, int quantity) {
+    public boolean increaseProductQuantity(ProductInfo product, int quantity) {
         try {
             inSession((entityManager) -> {
                 ProductRepository productRepository = new ProductRelationalRepository(entityManager);

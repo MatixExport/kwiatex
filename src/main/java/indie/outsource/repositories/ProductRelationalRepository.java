@@ -1,17 +1,17 @@
 package indie.outsource.repositories;
 
-import indie.outsource.model.ProductWithInfo;
+import indie.outsource.model.ProductInfo;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.LockModeType;
 
-public class ProductRelationalRepository extends RelationalRepository<ProductWithInfo> implements ProductRepository {
+public class ProductRelationalRepository extends RelationalRepository<ProductInfo> implements ProductRepository {
     public ProductRelationalRepository(EntityManager em) {
-        super(ProductWithInfo.class, em);
+        super(ProductInfo.class, em);
     }
 
     @Override
-    public boolean decreaseProductQuantity(ProductWithInfo product, int quantity) {
-        ProductWithInfo currentProduct = em.find(ProductWithInfo.class, product.getId(), LockModeType.PESSIMISTIC_WRITE);
+    public boolean decreaseProductQuantity(ProductInfo product, int quantity) {
+        ProductInfo currentProduct = em.find(ProductInfo.class, product.getId(), LockModeType.PESSIMISTIC_WRITE);
         if(currentProduct.getQuantity() < quantity) {
             return false;
         }
@@ -21,8 +21,8 @@ public class ProductRelationalRepository extends RelationalRepository<ProductWit
     }
 
     @Override
-    public void increaseProductQuantity(ProductWithInfo product, int quantity) {
-        ProductWithInfo currentProduct = em.find(ProductWithInfo.class, product.getId(),
+    public void increaseProductQuantity(ProductInfo product, int quantity) {
+        ProductInfo currentProduct = em.find(ProductInfo.class, product.getId(),
                 LockModeType.PESSIMISTIC_WRITE);
         currentProduct.setQuantity(currentProduct.getQuantity() + quantity);
 
