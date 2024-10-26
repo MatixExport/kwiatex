@@ -64,11 +64,6 @@ services:
 
 
 
-
-
-
-
-
   mongoinit:
     build:
       context: .
@@ -86,16 +81,16 @@ services:
         condition: service_healthy
 
     command: >
-      mongosh --host mongodb1:27017 --username ADMIN --password ADMINPASSWORD --authenticationDatabase admin --eval
+      mongosh --host mongo1:27017 --username ADMIN --password ADMINPASSWORD --authenticationDatabase admin --eval
       '
       rs.initiate(
         {
           _id: "replica_set_single",
           version: 1,
           members: [
-            {_id:0, host : "mongodb1:27017" },
-            {_id:1, host : "mongodb2:27018" },
-            {_id:2, host : "mongodb3:27019" }
+            {_id:0, host : "mongo1:27017" },
+            {_id:1, host : "mongo2:27017" },
+            {_id:2, host : "mongo3:27017" }
           ]
         }
       );
