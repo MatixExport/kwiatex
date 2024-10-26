@@ -1,25 +1,20 @@
-package indie.outsource;
+package indie.outsource.repositories;
 
 import com.mongodb.ConnectionString;
 import com.mongodb.MongoClientSettings;
 import com.mongodb.MongoCredential;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
-import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
-import indie.outsource.factories.RandomDataFactory;
-import indie.outsource.model.Client;
 import org.bson.UuidRepresentation;
 import org.bson.codecs.configuration.CodecRegistries;
 import org.bson.codecs.configuration.CodecRegistry;
-import org.bson.codecs.pojo.Convention;
 import org.bson.codecs.pojo.Conventions;
 import org.bson.codecs.pojo.PojoCodecProvider;
-import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-public class mongoltest {
+public class MongoDbRepostiory {
     private ConnectionString connectionString = new ConnectionString(
             "mongodb://mongo1:27017,mongo2:27018,mongo3:27019/?replicaSet=replica_set_single"
     );
@@ -34,13 +29,12 @@ public class mongoltest {
     private MongoClient mongoClient;
     private MongoDatabase mongoDatabase;
 
-    @Test
-    public void initDbConnection(){
-        MongoClientSettings settings = MongoClientSettings.builder().
-                credential(mongoCredential).
-                applyConnectionString(connectionString).
-                uuidRepresentation(UuidRepresentation.STANDARD).
-                codecRegistry(
+    private void initDbConnection() {
+        MongoClientSettings settings = MongoClientSettings.builder()
+                .credential(mongoCredential)
+                .applyConnectionString(connectionString)
+                .uuidRepresentation(UuidRepresentation.STANDARD)
+                .codecRegistry(
                         CodecRegistries.fromRegistries(
 //                                CodecRegistries.fromProviders(new UniqueIdCodecProvider),
                                 MongoClientSettings.getDefaultCodecRegistry(),
@@ -49,14 +43,6 @@ public class mongoltest {
                 ).build();
 
         mongoClient = MongoClients.create(settings);
-        mongoDatabase = mongoClient.getDatabase("KWIATEX");
-
-
-        for (String dbName : mongoClient.listDatabaseNames()) {
-            System.out.println("Database: " + dbName);
-        }
-
+        mongoDatabase = mongoClient.getDatabase("indie");
     }
-
-
 }

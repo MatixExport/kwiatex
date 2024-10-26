@@ -17,8 +17,6 @@ public class RandomDataFactory {
     static public Client getRandomClient() {
         return Instancio.of(Client.class)
                 .ignore(field(Client::getId))
-                .ignore(field(Client::getTransactions))
-                .ignore(field(Client::getVersion))
                 .create();
     }
     static public Tree getRandomProduct() {
@@ -28,14 +26,14 @@ public class RandomDataFactory {
         return Instancio.of(classType)
                 .ignore(field(Tree::getId))
                 .ignore(field(Tree::getProductWithInfo))
-                .ignore(field(Tree::getVersion))
+
                 .create();
     }
     static public ProductWithInfo getRandomProductWithInfo() {
         ProductWithInfo productWithInfo = Instancio.of(ProductWithInfo.class)
                 .ignore(field(ProductWithInfo::getId))
                 .ignore(field(ProductWithInfo::getProduct))
-                .ignore(field(ProductWithInfo::getVersion))
+
                 .create();
         productWithInfo.setProduct(getRandomProduct());
         return productWithInfo;
@@ -45,7 +43,7 @@ public class RandomDataFactory {
                 .ignore(field(Transaction::getId))
                 .ignore(field(Transaction::getClient))
                 .ignore(field(Transaction::getItems))
-                .ignore(field(Transaction::getVersion))
+
                 .create();
         transaction.setClient( getRandomClient());
         return transaction;

@@ -2,21 +2,23 @@ package indie.outsource.model;
 
 import com.sun.istack.NotNull;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import org.bson.codecs.pojo.annotations.BsonProperty;
 
 import java.io.Serializable;
 import java.util.UUID;
 
 @Getter
-@MappedSuperclass
 public abstract class AbstractEntity implements Serializable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @BsonProperty("_id")
     private UUID id;
 
-    @Version
-    private long version;
+    public AbstractEntity(UUID id) {
+        this.id = id;
+    }
 
-
+    public AbstractEntity() {
+    }
 }
