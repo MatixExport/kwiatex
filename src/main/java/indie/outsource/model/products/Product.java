@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.bson.codecs.pojo.annotations.BsonCreator;
+import org.bson.codecs.pojo.annotations.BsonDiscriminator;
 import org.bson.codecs.pojo.annotations.BsonIgnore;
 import org.bson.codecs.pojo.annotations.BsonProperty;
 
@@ -19,6 +20,7 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @Access(AccessType.FIELD)
+//@BsonDiscriminator(key = "_clazz")
 public abstract class Product extends AbstractEntity implements Serializable {
 
     @BsonProperty("name")
@@ -26,14 +28,12 @@ public abstract class Product extends AbstractEntity implements Serializable {
     @BsonProperty("price")
     private float price;
 
-//    @OneToOne(mappedBy = "product", cascade = {CascadeType.MERGE, CascadeType.REMOVE})
-//    private ProductWithInfo productWithInfo;
     @BsonIgnore
     public abstract float calculateSellingPrice();
     @BsonIgnore
     public abstract String getProductInfo();
 
-//    @BsonCreator
+
     public Product(
             String name,
             float price) {

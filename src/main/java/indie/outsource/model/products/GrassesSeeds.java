@@ -4,16 +4,14 @@ import jakarta.persistence.Entity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.bson.codecs.pojo.annotations.BsonCreator;
-import org.bson.codecs.pojo.annotations.BsonId;
-import org.bson.codecs.pojo.annotations.BsonIgnore;
-import org.bson.codecs.pojo.annotations.BsonProperty;
+import org.bson.codecs.pojo.annotations.*;
 
 import java.util.UUID;
 
 @Getter
 @Setter
 @NoArgsConstructor
+//@BsonDiscriminator(key = "_clazz", value = "grassesSeeds")
 public class GrassesSeeds extends Seeds{
 
     @BsonCreator
