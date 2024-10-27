@@ -9,6 +9,7 @@ import com.mongodb.client.MongoDatabase;
 import indie.outsource.factories.RandomDataFactory;
 import indie.outsource.model.Client;
 import indie.outsource.model.ProductWithInfo;
+import indie.outsource.model.Transaction;
 import org.bson.UuidRepresentation;
 import org.bson.codecs.configuration.CodecRegistries;
 import org.bson.codecs.configuration.CodecRegistry;
@@ -57,6 +58,7 @@ public class mongoltest {
 
         mongoDatabase.getCollection("client", Client.class).insertOne(RandomDataFactory.getRandomClient());
         mongoDatabase.getCollection("productWithInfo", ProductWithInfo.class).insertOne(RandomDataFactory.getRandomProductWithInfo());
+        mongoDatabase.getCollection("transaction", Transaction.class).insertOne(RandomDataFactory.getRandomTransactionWithItems());
     }
 
 

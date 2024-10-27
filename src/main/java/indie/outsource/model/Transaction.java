@@ -5,34 +5,41 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.bson.codecs.pojo.annotations.BsonCreator;
+import org.bson.codecs.pojo.annotations.BsonIgnore;
+import org.bson.codecs.pojo.annotations.BsonProperty;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
-@Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @Access(AccessType.FIELD)
-@Table(name = "shop_transaction")
 public class Transaction extends AbstractEntity {
 
-    @ManyToOne
-    @JoinColumn(name = "client_id")
+    @BsonProperty("client")
     private Client client;
+    @BsonProperty("items")
+    private List<TransactionItem> items = new ArrayList<TransactionItem>();
 
-    @OneToMany(
-            mappedBy = "transaction",
-            cascade = {CascadeType.MERGE,CascadeType.REMOVE},
-            orphanRemoval = true
-    )
-    private final List<TransactionItem> items = new ArrayList<TransactionItem>();
-
-    public void addProduct(Product product, int quantity,double price) {
-        TransactionItem item = new TransactionItem(product,this,price,quantity);
+    public void addProduct(Product product, int quantity) {
+        TransactionItem item = new TransactionItem(product,quantity);
         items.add(item);
     }
 
+    @BsonCreator
+    public Transaction(
+           @BsonProperty("_id") UUID id,
+           @BsonProperty("client") Client client,
+           @BsonProperty("items") List<TransactionItem> items) {
+        super(id);
+        this.client = client;
+        this.items = items;
+    }
+
+    @BsonIgnore
     public String getTransactionInfo(){
         StringBuilder info = new StringBuilder();
         info.append(client.getClientInfo()).append(" bought: /n");

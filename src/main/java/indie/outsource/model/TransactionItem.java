@@ -5,39 +5,32 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.bson.codecs.pojo.annotations.BsonCreator;
+import org.bson.codecs.pojo.annotations.BsonIgnore;
+import org.bson.codecs.pojo.annotations.BsonProperty;
 
 import java.io.Serializable;
 
 @Setter
-@Entity
 @Getter
 @NoArgsConstructor
-public class TransactionItem implements Serializable {
+public class TransactionItem  implements Serializable {
 
-    @EmbeddedId
-    private TransactionProductID id;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @MapsId("productId")
+    @BsonProperty("product")
     private Product product;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @MapsId("transactionId")
-    private Transaction transaction;
-
-
-    private double price;
+    @BsonProperty("amount")
     private int amount;
 
-    public TransactionItem(Product product, Transaction transaction, double price, int amount) {
+    @BsonCreator
+    public TransactionItem(
+           @BsonProperty("product") Product product,
+           @BsonProperty("amount") int amount) {
         this.product = product;
-        this.transaction = transaction;
-        this.price = price;
         this.amount = amount;
-        this.id = new TransactionProductID(product.getId(), transaction.getId());
     }
 
+    @BsonIgnore
     public String getTransactionItemInfo(){
-        return amount + "x " + product.getProductInfo() + " for: " + price;
+        return amount + "x " + product.getProductInfo() + " for: " + product.getPrice();
     }
 }

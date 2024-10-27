@@ -52,7 +52,7 @@ public class RandomDataFactory {
     static public Transaction getRandomTransactionWithItems() {
         Transaction transaction = getRandomTransaction();
         for (int i = 0; i < randomInt(1,10); i++) {
-            transaction.addProduct(getRandomProduct(),randomInt(0,100),randomInt(0,100));
+            transaction.addProduct(getRandomProduct(),randomInt(0,100));
         }
         return transaction;
     }
