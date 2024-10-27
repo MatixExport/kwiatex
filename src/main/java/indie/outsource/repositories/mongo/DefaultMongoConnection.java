@@ -6,6 +6,8 @@ import com.mongodb.MongoCredential;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.CreateCollectionOptions;
+import indie.outsource.model.ProductWithInfo;
 import lombok.Getter;
 import org.bson.UuidRepresentation;
 import org.bson.codecs.configuration.CodecRegistries;
@@ -34,7 +36,7 @@ public class DefaultMongoConnection implements MongoConnection {
     private MongoClient mongoClient;
     private MongoDatabase mongoDatabase;
 
-    public void initDbConnection(){
+    private void initDbConnection(){
         MongoClientSettings settings = MongoClientSettings.builder().
                 credential(mongoCredential).
                 applyConnectionString(connectionString).
@@ -50,9 +52,16 @@ public class DefaultMongoConnection implements MongoConnection {
         mongoClient = MongoClients.create(settings);
         mongoDatabase = mongoClient.getDatabase("KWIATEX");
     }
+    private void initCollections(){
+        CreateCollectionOptions createCollectionOptions = new CreateCollectionOptions()
+                .validationOptions(MongoSchemaConfig.getValidationOptions());
+        mongoDatabase.createCollection(ProductWithInfo.class.getSimpleName(), createCollectionOptions);
+    }
+
 
     public DefaultMongoConnection() {
         initDbConnection();
+        initCollections();
     }
 
     @Override
