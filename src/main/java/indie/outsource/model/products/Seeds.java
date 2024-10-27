@@ -8,15 +8,13 @@ import org.bson.codecs.pojo.annotations.BsonCreator;
 import org.bson.codecs.pojo.annotations.BsonDiscriminator;
 import org.bson.codecs.pojo.annotations.BsonIgnore;
 import org.bson.codecs.pojo.annotations.BsonProperty;
-
-import java.util.UUID;
+import org.bson.types.ObjectId;
 
 @Getter
 @Setter
-@Access(AccessType.FIELD)
 @NoArgsConstructor
-//@BsonDiscriminator(key = "_clazz")
-public abstract class Seeds extends Product {
+@BsonDiscriminator(key = "_clazz",value = "seeds")
+public class Seeds extends Product {
 
     @BsonProperty("weight")
     private int weight;
@@ -25,12 +23,12 @@ public abstract class Seeds extends Product {
 
     @BsonCreator
     public Seeds(
-            @BsonProperty("_id") UUID id,
+//            @BsonProperty("_id") ObjectId id,
             @BsonProperty("name") String name,
             @BsonProperty("price") float price,
             @BsonProperty("weight") int weight,
             @BsonProperty("edible") boolean edible) {
-        super(id ,name, price);
+        super(name,price);
         this.weight = weight;
         this.edible = edible;
     }

@@ -5,9 +5,9 @@ import lombok.Getter;
 import lombok.Setter;
 import org.bson.codecs.pojo.annotations.BsonCreator;
 import org.bson.codecs.pojo.annotations.BsonProperty;
+import org.bson.types.ObjectId;
 
 import java.io.Serializable;
-import java.util.UUID;
 
 @Setter
 @Getter
@@ -27,7 +27,7 @@ public class ProductWithInfo extends AbstractEntity implements Serializable {
 
     @BsonCreator
     public ProductWithInfo(
-            @BsonProperty("_id") UUID id,
+            @BsonProperty("_id") ObjectId id,
             @BsonProperty("product") Product product,
             @BsonProperty("productInfo") ProductInfo productInfo) {
         super(id);

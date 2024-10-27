@@ -25,12 +25,11 @@ public class RandomDataFactory {
     }
     static public <T> T getRandomProductOfClassType(Class<T> classType) {
         return Instancio.of(classType)
-                .ignore(field(Product::getId))
+//                .ignore(field(Product::getId))
                 .create();
     }
     static public ProductInfo getRandomInfo() {
         return Instancio.of(ProductInfo.class)
-                .ignore(field(ProductInfo::getId))
                 .create();
     }
     static public ProductWithInfo getRandomProductWithInfo() {

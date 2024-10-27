@@ -1,15 +1,12 @@
 package indie.outsource.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.bson.codecs.pojo.annotations.BsonCreator;
 import org.bson.codecs.pojo.annotations.BsonIgnore;
 import org.bson.codecs.pojo.annotations.BsonProperty;
-
-import java.util.UUID;
+import org.bson.types.ObjectId;
 
 
 @Getter
@@ -26,7 +23,7 @@ public class Client extends AbstractEntity{
 
     @BsonCreator
     public Client(
-            @BsonProperty("_id") UUID _id,
+            @BsonProperty("_id") ObjectId _id,
             @BsonProperty("name") String name,
             @BsonProperty("surname") String surname,
             @BsonProperty("address") String address

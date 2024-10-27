@@ -6,6 +6,7 @@ import org.bson.codecs.Codec;
 import org.bson.codecs.DecoderContext;
 import org.bson.codecs.EncoderContext;
 import org.bson.codecs.configuration.CodecRegistry;
+import org.bson.types.ObjectId;
 
 import java.util.UUID;
 
@@ -19,7 +20,9 @@ public class UniqueIdCodec implements Codec<UUID> {
 
     @Override
     public UUID decode(BsonReader bsonReader, DecoderContext decoderContext) {
-        return uuidCodec.decode(bsonReader, decoderContext);
+        ObjectId objectId = bsonReader.readObjectId();
+        return UUID.nameUUIDFromBytes(objectId.toByteArray());
+//        return uuidCodec.decode(bsonReader, decoderContext);
     }
 
     @Override

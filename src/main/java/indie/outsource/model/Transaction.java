@@ -8,10 +8,10 @@ import lombok.Setter;
 import org.bson.codecs.pojo.annotations.BsonCreator;
 import org.bson.codecs.pojo.annotations.BsonIgnore;
 import org.bson.codecs.pojo.annotations.BsonProperty;
+import org.bson.types.ObjectId;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 @Getter
 @Setter
@@ -31,7 +31,7 @@ public class Transaction extends AbstractEntity {
 
     @BsonCreator
     public Transaction(
-           @BsonProperty("_id") UUID id,
+           @BsonProperty("_id") ObjectId id,
            @BsonProperty("client") Client client,
            @BsonProperty("items") List<TransactionItem> items) {
         super(id);

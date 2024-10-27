@@ -2,19 +2,29 @@ package indie.outsource.model;
 
 import indie.outsource.model.products.Product;
 import lombok.*;
+import org.bson.codecs.pojo.annotations.BsonCreator;
+import org.bson.codecs.pojo.annotations.BsonId;
 import org.bson.codecs.pojo.annotations.BsonProperty;
 
 
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
-public class ProductInfo extends AbstractEntity{
-    @BsonProperty
+public class ProductInfo{
+    @BsonProperty("quantity")
     private int quantity;
-    @BsonProperty
-    private double price;
+//    @BsonProperty("price")
+//    private double price;
 
+
+    @BsonCreator
+    public ProductInfo(
+            @BsonProperty("quantity") int quantity
+//            @BsonProperty("price") double price
+    ){
+        this.quantity = quantity;
+//        this.price = price;
+    }
 //    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.MERGE},fetch = FetchType.LAZY)
 //    @MapsId
 //    @JoinColumn(name = "product_id",referencedColumnName = "id")

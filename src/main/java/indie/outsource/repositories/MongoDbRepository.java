@@ -3,8 +3,10 @@ package indie.outsource.repositories;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import indie.outsource.model.AbstractEntity;
+import indie.outsource.model.ProductWithInfo;
 import lombok.AllArgsConstructor;
 import org.bson.Document;
+import org.bson.types.ObjectId;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,11 +27,12 @@ public abstract class MongoDbRepository<T extends AbstractEntity> implements Rep
 
     @Override
     public List<T> findAll() {
+        this.db.getCollection(ProductWithInfo.class.getSimpleName(), ProductWithInfo.class).find();
         return collection.find().into(new ArrayList<T>());
     }
 
     @Override
-    public T getById(UUID id) {
+    public T getById(ObjectId id) {
         return collection.find(new Document("_id", id)).first();
     }
 
