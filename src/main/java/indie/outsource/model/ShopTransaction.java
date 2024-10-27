@@ -17,7 +17,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @Access(AccessType.FIELD)
-public class Transaction extends AbstractEntity {
+public class ShopTransaction extends AbstractEntity {
 
     @BsonProperty("client")
     private Client client;
@@ -30,7 +30,7 @@ public class Transaction extends AbstractEntity {
     }
 
     @BsonCreator
-    public Transaction(
+    public ShopTransaction(
            @BsonProperty("_id") ObjectId id,
            @BsonProperty("client") Client client,
            @BsonProperty("items") List<TransactionItem> items) {

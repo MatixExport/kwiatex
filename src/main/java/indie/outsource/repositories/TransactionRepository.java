@@ -1,9 +1,6 @@
 package indie.outsource.repositories;
 
-import indie.outsource.model.Client;
-import indie.outsource.model.Transaction;
+import indie.outsource.model.ShopTransaction;
 
-import java.util.List;
-
-public interface TransactionRepository extends Repository<Transaction> {
+public interface TransactionRepository extends Repository<ShopTransaction> {
 }

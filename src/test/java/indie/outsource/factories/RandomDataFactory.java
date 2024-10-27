@@ -3,8 +3,7 @@ package indie.outsource.factories;
 import indie.outsource.model.Client;
 import indie.outsource.model.ProductInfo;
 import indie.outsource.model.ProductWithInfo;
-import indie.outsource.model.Transaction;
-import indie.outsource.model.products.Product;
+import indie.outsource.model.ShopTransaction;
 import indie.outsource.model.products.Tree;
 import org.instancio.Instancio;
 
@@ -38,22 +37,22 @@ public class RandomDataFactory {
                 getRandomInfo()
         );
     }
-    static public Transaction getRandomTransaction() {
-        Transaction transaction =  Instancio.of(Transaction.class)
-                .ignore(field(Transaction::getId))
-                .ignore(field(Transaction::getClient))
-                .ignore(field(Transaction::getItems))
+    static public ShopTransaction getRandomTransaction() {
+        ShopTransaction shopTransaction =  Instancio.of(ShopTransaction.class)
+//                .ignore(field(ShopTransaction::getId))
+                .ignore(field(ShopTransaction::getClient))
+                .ignore(field(ShopTransaction::getItems))
 
                 .create();
-        transaction.setClient( getRandomClient());
-        return transaction;
+        shopTransaction.setClient( getRandomClient());
+        return shopTransaction;
     }
-    static public Transaction getRandomTransactionWithItems() {
-        Transaction transaction = getRandomTransaction();
+    static public ShopTransaction getRandomTransactionWithItems() {
+        ShopTransaction shopTransaction = getRandomTransaction();
         for (int i = 0; i < randomInt(1,10); i++) {
-            transaction.addProduct(getRandomProduct(),randomInt(0,100));
+            shopTransaction.addProduct(getRandomProduct(),randomInt(0,100));
         }
-        return transaction;
+        return shopTransaction;
     }
 
 }

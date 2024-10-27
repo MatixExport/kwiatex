@@ -39,7 +39,7 @@ public abstract class MongoDbRepository<T extends AbstractEntity> implements Rep
     @Override
     public T add(T t) {
         collection.insertOne(t);
-        return t;
+        return null;
     }
 
     @Override

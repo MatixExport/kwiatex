@@ -1,7 +1,7 @@
 package indie.outsource.managers;
 
 import indie.outsource.model.ProductInfo;
-import indie.outsource.model.Transaction;
+import indie.outsource.model.ShopTransaction;
 import jakarta.persistence.EntityManagerFactory;
 
 import java.util.List;
@@ -31,7 +31,7 @@ public class ProductManager extends Manager {
         return false;
     }
 
-    public boolean finalizeTransaction(Transaction transaction) {
+    public boolean finalizeTransaction(ShopTransaction shopTransaction) {
 //        try {
 //            inSession((entityManager) -> {
 //                TransactionRepository transactionRepository = new TransactionRelationalRepository(entityManager);

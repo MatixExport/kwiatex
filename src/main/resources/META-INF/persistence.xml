@@ -5,7 +5,7 @@
              version="3.0">
   <persistence-unit name="default">
     <class>indie.outsource.model.Client</class>
-    <class>indie.outsource.model.Transaction</class>
+    <class>indie.outsource.model.ShopTransaction</class>
     <class>indie.outsource.model.TransactionItem</class>
     <class>indie.outsource.model.products.Tree</class>
     <class>indie.outsource.model.products.Plant</class>
