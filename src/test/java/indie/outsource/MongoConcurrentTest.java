@@ -32,6 +32,11 @@ public class MongoConcurrentTest {
     }
 
     @Test
+    public void testTest() {
+        Assertions.assertEquals(1,1);
+    }
+
+    @Test
     public void concurrentProductQuantityIncreaseTest(){
         Util.inSession(mongoClient1,(client1)->{
             ProductMongoDbRepository repository1 = new ProductMongoDbRepository(mongoDatabase1);

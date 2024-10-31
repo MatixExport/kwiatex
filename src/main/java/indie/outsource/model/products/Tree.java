@@ -12,7 +12,8 @@ import org.bson.types.ObjectId;
 @Getter
 @Setter
 @NoArgsConstructor
-@BsonDiscriminator(key = "_clazz",value = "tree")
+//@BsonDiscriminator(key = "_clazz",value = "tree")
+@BsonDiscriminator("Tree")
 public class Tree extends Plant{
     @BsonProperty("height")
     private int height;

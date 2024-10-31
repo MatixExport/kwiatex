@@ -9,7 +9,8 @@ import org.bson.types.ObjectId;
 @Getter
 @Setter
 @NoArgsConstructor
-@BsonDiscriminator(key = "_clazz", value = "grassesSeeds")
+//@BsonDiscriminator(key = "_clazz", value = "grassesSeeds")
+@BsonDiscriminator("GrassesSeeds")
 public class GrassesSeeds extends Seeds{
 
     @BsonCreator

@@ -15,19 +15,22 @@ import org.bson.types.ObjectId;
 
 import java.io.Serializable;
 
-@Getter
+
 @Setter
+@Getter
 @NoArgsConstructor
-@BsonDiscriminator(key = "_clazz",value = "product")
+//@BsonDiscriminator(key = "_clazz",value = "product")
+@BsonDiscriminator("Product")
 public class Product implements Serializable {
 
     @BsonProperty("name")
     private String name = "";
+
     @BsonProperty("price")
     private float price;
 
     @BsonIgnore
-    public  float calculateSellingPrice(){
+    public float calculateSellingPrice(){
         return 0;
     };
     @BsonIgnore
@@ -47,12 +50,8 @@ public class Product implements Serializable {
         this.price = price;
     }
 
-    public float getPrice(){
-        return price;
-    }
-    public void setPrice(float price){
-        this.price = price;
-    }
+
+
 
 
     @BsonIgnore

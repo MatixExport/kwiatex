@@ -8,6 +8,7 @@ import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.CreateCollectionOptions;
 import indie.outsource.model.ProductWithInfo;
+import indie.outsource.model.products.*;
 import lombok.Getter;
 import org.bson.UuidRepresentation;
 import org.bson.codecs.configuration.CodecRegistries;
@@ -30,6 +31,13 @@ public class DefaultMongoConnection implements MongoConnection {
             PojoCodecProvider.builder()
                     .automatic(true)
                     .conventions(List.of(Conventions.ANNOTATION_CONVENTION))
+                    .register(Product.class)
+                    .register(Flower.class)
+                    .register(Tree.class)
+                    .register(GrassesSeeds.class)
+                    .register(Plant.class)
+                    .register(VegetableSeeds.class)
+                    .register(Seeds.class)
                     .build()
     );
 
@@ -68,4 +76,6 @@ public class DefaultMongoConnection implements MongoConnection {
     public MongoDatabase getDatabase() {
         return mongoDatabase;
     }
+
+
 }

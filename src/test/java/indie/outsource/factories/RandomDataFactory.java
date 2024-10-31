@@ -16,7 +16,6 @@ public class RandomDataFactory {
     }
     static public Client getRandomClient() {
         return Instancio.of(Client.class)
-                .ignore(field(Client::getId))
                 .create();
     }
     static public Tree getRandomProduct() {
@@ -24,7 +23,6 @@ public class RandomDataFactory {
     }
     static public <T> T getRandomProductOfClassType(Class<T> classType) {
         return Instancio.of(classType)
-//                .ignore(field(Product::getId))
                 .create();
     }
     static public ProductInfo getRandomInfo() {
@@ -32,14 +30,16 @@ public class RandomDataFactory {
                 .create();
     }
     static public ProductWithInfo getRandomProductWithInfo() {
-        return new ProductWithInfo(
-                getRandomProduct(),
-                getRandomInfo()
-        );
+        ProductWithInfo productWithInfo = Instancio.of(ProductWithInfo.class)
+                .ignore(field(ProductWithInfo::getProduct))
+                .ignore(field(ProductWithInfo::getProductInfo))
+                .create();
+        productWithInfo.setProduct(getRandomProduct());
+        productWithInfo.setProductInfo(getRandomInfo());
+        return productWithInfo;
     }
     static public ShopTransaction getRandomTransaction() {
         ShopTransaction shopTransaction =  Instancio.of(ShopTransaction.class)
-//                .ignore(field(ShopTransaction::getId))
                 .ignore(field(ShopTransaction::getClient))
                 .ignore(field(ShopTransaction::getItems))
 
@@ -48,8 +48,11 @@ public class RandomDataFactory {
         return shopTransaction;
     }
     static public ShopTransaction getRandomTransactionWithItems() {
+       return getRandomTransactionWithItems(randomInt(1,10));
+    }
+    static public ShopTransaction getRandomTransactionWithItems(int quantity) {
         ShopTransaction shopTransaction = getRandomTransaction();
-        for (int i = 0; i < randomInt(1,10); i++) {
+        for (int i = 0; i < quantity; i++) {
             shopTransaction.addProduct(getRandomProduct(),randomInt(0,100));
         }
         return shopTransaction;

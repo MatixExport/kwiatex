@@ -11,7 +11,8 @@ import org.bson.types.ObjectId;
 @Getter
 @Setter
 @NoArgsConstructor
-@BsonDiscriminator(key = "_clazz",value = "plant")
+//@BsonDiscriminator(key = "_clazz",value = "plant")
+@BsonDiscriminator("Plant")
 public class Plant extends Product{
     @BsonProperty("growthStage")
     private int growthStage;

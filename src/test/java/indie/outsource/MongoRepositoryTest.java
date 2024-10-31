@@ -27,6 +27,8 @@ public class MongoRepositoryTest {
         mongoConnection.getMongoClient().getDatabase("KWIATEX").drop();
     }
 
+
+
     @Test
     public void testAddRemoveProduct(){
         Util.inSession(mongoClient,(mongoClient)->{

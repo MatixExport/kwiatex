@@ -12,7 +12,8 @@ import org.bson.types.ObjectId;
 @Getter
 @Setter
 @NoArgsConstructor
-@BsonDiscriminator(key = "_clazz", value = "vegetableSeeds")
+//@BsonDiscriminator(key = "_clazz", value = "vegetableSeeds")
+@BsonDiscriminator("VegetableSeeds")
 public class VegetableSeeds extends Seeds{
 
     @BsonCreator
