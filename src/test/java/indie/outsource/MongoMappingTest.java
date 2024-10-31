@@ -8,7 +8,6 @@ import indie.outsource.model.Client;
 import indie.outsource.model.ProductWithInfo;
 import indie.outsource.model.ShopTransaction;
 import indie.outsource.model.TransactionItem;
-import indie.outsource.model.products.Product;
 import indie.outsource.model.products.Tree;
 import indie.outsource.repositories.*;
 import indie.outsource.repositories.mongo.DefaultMongoConnection;
@@ -121,8 +120,7 @@ public class MongoMappingTest {
         Util.inSession(mongoClient,(mongoClient ->{
             MongoDatabase db = mongoClient.getDatabase("KWIATEX");
             Bson filter = new Document(Map.of(
-                    "_id",productWithInfo.getId(),
-                    "product._t","Tree"
+                    "_id",productWithInfo.getId()
             ));
             ProductWithInfo productWithInfo1 = db.getCollection(ProductWithInfo.class.getSimpleName(),ProductWithInfo.class)
                     .find(filter).first();
@@ -131,7 +129,7 @@ public class MongoMappingTest {
             Assertions.assertEquals(productWithInfo1.getProduct().getName(),productWithInfo.getProduct().getName());
             Assertions.assertEquals(productWithInfo1.getProduct().getPrice(),productWithInfo.getProduct().getPrice());
             System.out.println(productWithInfo1.getProduct().getProductInfo());
-//            Assertions.assertEquals(productWithInfo1.getProduct().getProductInfo(),productWithInfo.getProduct().getProductInfo());
+            Assertions.assertEquals(productWithInfo1.getProduct().getProductInfo(),productWithInfo.getProduct().getProductInfo());
 
         }));
     }
@@ -143,7 +141,7 @@ public class MongoMappingTest {
                     .find(new Document("_id", shopTransaction.getId())).first();
             Assertions.assertNotNull(shopTransaction1);
             Assertions.assertEquals(shopTransaction1.getItems().getFirst().getAmount(),shopTransaction.getItems().getFirst().getAmount());
-//            Assertions.assertEquals(shopTransaction1.getTransactionInfo(),shopTransaction.getTransactionInfo());
+            Assertions.assertEquals(shopTransaction1.getTransactionInfo(),shopTransaction.getTransactionInfo());
 
         }));
     }

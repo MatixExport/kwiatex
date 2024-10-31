@@ -16,7 +16,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class TransactionItem  implements Serializable {
 
-    @BsonProperty("product")
+    @BsonProperty(value = "product",useDiscriminator = true)
     private Product product;
     @BsonProperty("amount")
     private int amount;

@@ -13,9 +13,8 @@ import org.bson.types.ObjectId;
 @Getter
 @Setter
 @NoArgsConstructor
-//@BsonDiscriminator(key = "_clazz",value = "seeds")
-@BsonDiscriminator("Seeds")
-public class Seeds extends Product {
+@BsonDiscriminator(key = "_clazz")
+abstract public class Seeds extends Product {
 
     @BsonProperty("weight")
     private int weight;

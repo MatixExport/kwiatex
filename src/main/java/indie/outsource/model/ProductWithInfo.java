@@ -12,7 +12,7 @@ import java.io.Serializable;
 @Setter
 @Getter
 public class ProductWithInfo extends AbstractEntity implements Serializable {
-    @BsonProperty("product")
+    @BsonProperty(value = "product",useDiscriminator = true)
     private Product product;
     @BsonProperty("productInfo")
     private ProductInfo productInfo;

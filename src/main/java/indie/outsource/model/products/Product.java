@@ -7,10 +7,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.bson.codecs.pojo.annotations.BsonCreator;
-import org.bson.codecs.pojo.annotations.BsonDiscriminator;
-import org.bson.codecs.pojo.annotations.BsonIgnore;
-import org.bson.codecs.pojo.annotations.BsonProperty;
+import org.bson.codecs.pojo.annotations.*;
 import org.bson.types.ObjectId;
 
 import java.io.Serializable;
@@ -19,12 +16,11 @@ import java.io.Serializable;
 @Setter
 @Getter
 @NoArgsConstructor
-//@BsonDiscriminator(key = "_clazz",value = "product")
-@BsonDiscriminator("Product")
-public class Product implements Serializable {
+@BsonDiscriminator(key = "_clazz")
+public class Product extends AbstractEntity{
 
     @BsonProperty("name")
-    private String name = "";
+    private String name ;
 
     @BsonProperty("price")
     private float price;
@@ -33,11 +29,13 @@ public class Product implements Serializable {
     public float calculateSellingPrice(){
         return 0;
     };
-    @BsonIgnore
-    public  String getProductInfo(){
-        return "";
-    };
 
+    @BsonIgnore
+    public String getProductInfo(){
+        return "";
+    }
+
+    ;
 
 
     @BsonCreator
@@ -49,9 +47,6 @@ public class Product implements Serializable {
         this.name = name;
         this.price = price;
     }
-
-
-
 
 
     @BsonIgnore

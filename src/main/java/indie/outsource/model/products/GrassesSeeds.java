@@ -9,8 +9,8 @@ import org.bson.types.ObjectId;
 @Getter
 @Setter
 @NoArgsConstructor
-//@BsonDiscriminator(key = "_clazz", value = "grassesSeeds")
-@BsonDiscriminator("GrassesSeeds")
+@BsonDiscriminator(key = "_clazz", value = "grassesSeeds")
+//@BsonDiscriminator("GrassesSeeds")
 public class GrassesSeeds extends Seeds{
 
     @BsonCreator
@@ -20,7 +20,10 @@ public class GrassesSeeds extends Seeds{
            @BsonProperty("price") float price,
            @BsonProperty("weight") int weight,
            @BsonProperty("edible") boolean edible) {
-        super(name,price ,weight, edible);
+           setName(name);
+           setPrice(price);
+           setWeight(weight);
+           setEdible(edible);
     }
 
     @BsonIgnore

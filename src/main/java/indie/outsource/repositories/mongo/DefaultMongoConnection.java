@@ -30,7 +30,7 @@ public class DefaultMongoConnection implements MongoConnection {
     private CodecRegistry pojoCodecRegistry = CodecRegistries.fromProviders(
             PojoCodecProvider.builder()
                     .automatic(true)
-                    .conventions(List.of(Conventions.ANNOTATION_CONVENTION))
+                    .conventions(List.of(Conventions.ANNOTATION_CONVENTION,Conventions.CLASS_AND_PROPERTY_CONVENTION))
                     .register(Product.class)
                     .register(Flower.class)
                     .register(Tree.class)

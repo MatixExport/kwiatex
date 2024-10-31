@@ -12,8 +12,7 @@ import org.bson.types.ObjectId;
 @Getter
 @Setter
 @NoArgsConstructor
-//@BsonDiscriminator(key = "_clazz", value = "flower")
-@BsonDiscriminator("Glower")
+@BsonDiscriminator(key = "_clazz", value = "flower")
 public class Flower extends Plant{
     @BsonProperty("color")
     private String color;

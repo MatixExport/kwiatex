@@ -12,8 +12,7 @@ import org.bson.types.ObjectId;
 @Getter
 @Setter
 @NoArgsConstructor
-//@BsonDiscriminator(key = "_clazz",value = "tree")
-@BsonDiscriminator("Tree")
+@BsonDiscriminator(key = "_clazz",value = "tree")
 public class Tree extends Plant{
     @BsonProperty("height")
     private int height;
@@ -25,8 +24,10 @@ public class Tree extends Plant{
             @BsonProperty("price") float price,
             @BsonProperty("growthStage") int growthStage,
             @BsonProperty("height") int height) {
-        super(name,price ,growthStage);
+//        super(name,price ,growthStage);
+        super(name,price,growthStage);
         this.height = height;
+
     }
 
 
@@ -37,7 +38,7 @@ public class Tree extends Plant{
         return getPrice();
     }
 
-    @BsonIgnore
+//    @BsonIgnore
     @Override
     public String getProductInfo() {
         return "Sapling of " + getName() + " in " + getGrowthStage() + " growth stage.";
