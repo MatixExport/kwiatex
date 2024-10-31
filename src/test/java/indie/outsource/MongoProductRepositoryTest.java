@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class MongoRepositoryTest {
+public class MongoProductRepositoryTest {
     private DefaultMongoConnection mongoConnection;
     private MongoClient mongoClient;
 
@@ -37,6 +37,18 @@ public class MongoRepositoryTest {
             Assertions.assertEquals(1,repository.findAll().size());
             repository.remove(repository.findAll().getFirst());
             Assertions.assertEquals(0,repository.findAll().size());
+        });
+    }
+    @Test
+    public void testUpdateProduct(){
+        Util.inSession(mongoClient,(mongoClient)->{
+            ProductRepository repository = new ProductMongoDbRepository(mongoClient.getDatabase("KWIATEX"));
+            ProductWithInfo product = RandomDataFactory.getRandomProductWithInfo();
+            product.getProduct().setName("produkt");
+            repository.add(product);
+            product.getProduct().setName("produkt1");
+            repository.add(product);
+            Assertions.assertEquals(product.getProduct().getName(),repository.getById(product.getId()).getProduct().getName());
         });
     }
     @Test
