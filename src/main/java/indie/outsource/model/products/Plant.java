@@ -6,7 +6,6 @@ import lombok.Setter;
 import org.bson.codecs.pojo.annotations.BsonCreator;
 import org.bson.codecs.pojo.annotations.BsonDiscriminator;
 import org.bson.codecs.pojo.annotations.BsonProperty;
-import org.bson.types.ObjectId;
 
 @Getter
 @Setter
@@ -18,7 +17,6 @@ abstract public class Plant extends Product{
 
     @BsonCreator
     public Plant(
-//            @BsonProperty("_id") ObjectId id,
             @BsonProperty("name") String name,
             @BsonProperty("price") float price,
             @BsonProperty("growthStage") int growthStage) {

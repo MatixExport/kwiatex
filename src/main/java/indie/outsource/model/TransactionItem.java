@@ -1,7 +1,6 @@
 package indie.outsource.model;
 
 import indie.outsource.model.products.Product;
-import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

@@ -8,6 +8,8 @@ import org.bson.codecs.pojo.annotations.BsonIgnore;
 import org.bson.codecs.pojo.annotations.BsonProperty;
 import org.bson.types.ObjectId;
 
+import java.util.UUID;
+
 
 @Getter
 @Setter
@@ -23,7 +25,7 @@ public class Client extends AbstractEntity{
 
     @BsonCreator
     public Client(
-            @BsonProperty("_id") ObjectId _id,
+            @BsonProperty("_id") UUID _id,
             @BsonProperty("name") String name,
             @BsonProperty("surname") String surname,
             @BsonProperty("address") String address

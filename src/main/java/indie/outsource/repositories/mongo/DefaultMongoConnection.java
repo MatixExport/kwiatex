@@ -20,14 +20,14 @@ import java.util.List;
 
 @Getter
 public class DefaultMongoConnection implements MongoConnection {
-    private ConnectionString connectionString = new ConnectionString(
+    private final ConnectionString connectionString = new ConnectionString(
             "mongodb://mongo1:27017,mongo2:27018,mongo3:27019/?replicaSet=replica_set_single"
     );
-    private MongoCredential mongoCredential = MongoCredential.createCredential(
+    private final MongoCredential mongoCredential = MongoCredential.createCredential(
             "ADMIN", "admin", "ADMINPASSWORD".toCharArray()
     );
 
-    private CodecRegistry pojoCodecRegistry = CodecRegistries.fromProviders(
+    private final CodecRegistry pojoCodecRegistry = CodecRegistries.fromProviders(
             PojoCodecProvider.builder()
                     .automatic(true)
                     .conventions(List.of(Conventions.ANNOTATION_CONVENTION,Conventions.CLASS_AND_PROPERTY_CONVENTION))
@@ -51,7 +51,6 @@ public class DefaultMongoConnection implements MongoConnection {
                 uuidRepresentation(UuidRepresentation.STANDARD).
                 codecRegistry(
                         CodecRegistries.fromRegistries(
-//                                CodecRegistries.fromProviders(new UniqueIdCodecProvider()),
                                 MongoClientSettings.getDefaultCodecRegistry(),
                                 pojoCodecRegistry
                         )

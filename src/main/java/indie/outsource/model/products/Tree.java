@@ -19,18 +19,14 @@ public class Tree extends Plant{
 
     @BsonCreator
     public Tree(
-//            @BsonProperty("_id") ObjectId id,
             @BsonProperty("name") String name,
             @BsonProperty("price") float price,
             @BsonProperty("growthStage") int growthStage,
             @BsonProperty("height") int height) {
-//        super(name,price ,growthStage);
         super(name,price,growthStage);
         this.height = height;
 
     }
-
-
 
     @BsonIgnore
     @Override
@@ -38,7 +34,7 @@ public class Tree extends Plant{
         return getPrice();
     }
 
-//    @BsonIgnore
+    @BsonIgnore
     @Override
     public String getProductInfo() {
         return "Sapling of " + getName() + " in " + getGrowthStage() + " growth stage.";

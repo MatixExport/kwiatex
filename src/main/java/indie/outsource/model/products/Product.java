@@ -3,14 +3,10 @@ package indie.outsource.model.products;
 
 import indie.outsource.model.AbstractEntity;
 import indie.outsource.model.ProductInfo;
-import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.bson.codecs.pojo.annotations.*;
-import org.bson.types.ObjectId;
-
-import java.io.Serializable;
 
 
 @Setter

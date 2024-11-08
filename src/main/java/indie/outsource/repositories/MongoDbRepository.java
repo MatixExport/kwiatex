@@ -3,16 +3,15 @@ package indie.outsource.repositories;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.ReplaceOptions;
-import com.mongodb.client.model.UpdateOptions;
 import indie.outsource.model.AbstractEntity;
 import indie.outsource.model.ProductWithInfo;
 import lombok.AllArgsConstructor;
 import org.bson.Document;
 import org.bson.conversions.Bson;
-import org.bson.types.ObjectId;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @AllArgsConstructor
 public abstract class MongoDbRepository<T extends AbstractEntity> implements Repository<T> {
@@ -34,7 +33,7 @@ public abstract class MongoDbRepository<T extends AbstractEntity> implements Rep
     }
 
     @Override
-    public T getById(ObjectId id) {
+    public T getById(UUID id) {
         return collection.find(new Document("_id", id)).first();
     }
 
