@@ -2,7 +2,6 @@ package indie.outsource.model.products;
 
 
 import indie.outsource.model.AbstractEntity;
-import indie.outsource.model.ProductInfo;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

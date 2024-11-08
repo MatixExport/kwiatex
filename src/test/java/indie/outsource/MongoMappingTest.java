@@ -40,7 +40,7 @@ public class MongoMappingTest {
     }
 
     public void populateDb() {
-        Util.inSession(mongoClient,mongoClient1 -> {
+        Util.inSession(mongoClient,(_) -> {
             MongoDatabase db = mongoClient.getDatabase("KWIATEX");
             ClientRepository clientRepository = new ClientMongoDbRepository(db);
             ProductRepository productRepository = new ProductMongoDbRepository(db);
@@ -78,7 +78,7 @@ public class MongoMappingTest {
             Assertions.assertNotNull(productWithInfoDocument);
             Document infoDocument = productWithInfoDocument.get("productInfo", Document.class);
             Assertions.assertNotNull(infoDocument);
-            Document productDocument = (Document) productWithInfoDocument.get("product", Document.class);
+            Document productDocument = productWithInfoDocument.get("product", Document.class);
             Assertions.assertNotNull(productDocument);
             Tree actualProduct = (Tree) productWithInfo.getProduct();
             Assertions.assertEquals(productDocument.getString("name"),actualProduct.getName());
