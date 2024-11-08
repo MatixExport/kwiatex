@@ -24,29 +24,19 @@ public class Product extends AbstractEntity{
     @BsonIgnore
     public float calculateSellingPrice(){
         return 0;
-    };
+    }
 
     @BsonIgnore
     public String getProductInfo(){
         return "";
     }
 
-    ;
-
 
     @BsonCreator
     public Product(
-//            @BsonProperty("_id") ObjectId id,
             @BsonProperty("name") String name,
             @BsonProperty("price") float price) {
-//        super(id);
         this.name = name;
         this.price = price;
-    }
-
-
-    @BsonIgnore
-    public ProductInfo getProductWithInfo() {
-        return null;
     }
 }

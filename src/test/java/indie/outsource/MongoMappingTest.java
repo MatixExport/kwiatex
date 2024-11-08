@@ -2,7 +2,6 @@ package indie.outsource;
 
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoDatabase;
-import com.mongodb.client.model.Filters;
 import indie.outsource.factories.RandomDataFactory;
 import indie.outsource.model.Client;
 import indie.outsource.model.ProductWithInfo;
@@ -23,7 +22,6 @@ import java.util.List;
 import java.util.Map;
 
 public class MongoMappingTest {
-    private MongoConnection mongoConnection;
     private MongoClient mongoClient;
     private Client client;
     private ProductWithInfo productWithInfo;
@@ -31,7 +29,7 @@ public class MongoMappingTest {
 
     @BeforeEach
     public void setUpClass() {
-        mongoConnection = new DefaultMongoConnection();
+        MongoConnection mongoConnection = new DefaultMongoConnection();
         mongoClient = mongoConnection.getMongoClient();
         populateDb();
     }
@@ -138,11 +136,10 @@ public class MongoMappingTest {
         Util.inSession(mongoClient,(mongoClient ->{
             MongoDatabase db = mongoClient.getDatabase("KWIATEX");
             ShopTransaction shopTransaction1 = db.getCollection(ShopTransaction.class.getSimpleName(),ShopTransaction.class)
-                    .find(new Document("_id", shopTransaction.getId())).first();
+                .find(new Document("_id", shopTransaction.getId())).first();
             Assertions.assertNotNull(shopTransaction1);
             Assertions.assertEquals(shopTransaction1.getItems().getFirst().getAmount(),shopTransaction.getItems().getFirst().getAmount());
             Assertions.assertEquals(shopTransaction1.getTransactionInfo(),shopTransaction.getTransactionInfo());
-
         }));
     }
 }

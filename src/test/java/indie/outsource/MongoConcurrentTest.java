@@ -12,14 +12,14 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class MongoConcurrentTest {
-    private DefaultMongoConnection mongoConnection1, mongoConnection2;
+    private DefaultMongoConnection mongoConnection1;
     private MongoClient mongoClient1,mongoClient2;
     private MongoDatabase mongoDatabase1, mongoDatabase2;
 
     @BeforeEach
     public void setUpClass() {
         mongoConnection1 = new DefaultMongoConnection();
-        mongoConnection2 = new DefaultMongoConnection();
+        DefaultMongoConnection mongoConnection2 = new DefaultMongoConnection();
         mongoClient1 = mongoConnection1.getMongoClient();
         mongoClient2 = mongoConnection2.getMongoClient();
         mongoDatabase1 = mongoConnection1.getDatabase();
@@ -31,20 +31,16 @@ public class MongoConcurrentTest {
         mongoConnection1.getMongoClient().getDatabase("KWIATEX").drop();
     }
 
-    @Test
-    public void testTest() {
-        Assertions.assertEquals(1,1);
-    }
 
     @Test
     public void concurrentProductQuantityIncreaseTest(){
-        Util.inSession(mongoClient1,(client1)->{
+        Util.inSession(mongoClient1,(_)->{
             ProductMongoDbRepository repository1 = new ProductMongoDbRepository(mongoDatabase1);
             ProductWithInfo product = RandomDataFactory.getRandomProductWithInfo();
             product.getProductInfo().setQuantity(0);
             repository1.add(product);
 
-            Util.inSession(mongoClient2,(client2)->{
+            Util.inSession(mongoClient2,(_)->{
                 ProductMongoDbRepository repository2 = new ProductMongoDbRepository(mongoDatabase2);
                 repository2.increaseProductQuantity(repository2.findAll().getFirst(),4);
             });
@@ -53,7 +49,6 @@ public class MongoConcurrentTest {
 
         ProductMongoDbRepository repository = new ProductMongoDbRepository(mongoDatabase1);
         Assertions.assertEquals(11,repository.findAll().getFirst().getProductInfo().getQuantity());
-
     }
 
 }
