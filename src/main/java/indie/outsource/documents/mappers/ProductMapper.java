@@ -11,40 +11,14 @@ public class ProductMapper {
     }
     public static ProductDoc fromDomainModel(Product domainProduct){
         if(domainProduct.getClass().equals(Tree.class)){
-            Tree product = (Tree) domainProduct;
-            return new TreeDoc(
-                    product.getName(),
-                    product.getPrice(),
-                    product.getGrowthStage(),
-                    product.getHeight()
-            );
+            return new TreeDoc((Tree) domainProduct);
         }
         if (domainProduct.getClass().equals(Flower.class)) {
-            Flower product = (Flower) domainProduct;
-            return new FlowerDoc(
-                    product.getName(),
-                    product.getPrice(),
-                    product.getGrowthStage(),
-                    product.getColor()
-            );
-
+            return new FlowerDoc((Flower) domainProduct);
         }
         if (domainProduct.getClass().equals(GrassesSeeds.class)) {
-            GrassesSeeds product = (GrassesSeeds) domainProduct;
-            return new GrassesSeedsDoc(
-                    product.getName(),
-                    product.getPrice(),
-                    product.getWeight(),
-                    product.isEdible()
-            );
-
+            return new GrassesSeedsDoc((GrassesSeeds) domainProduct);
         }
-        VegetableSeeds product = (VegetableSeeds) domainProduct;
-        return new VegetableSeedsDoc(
-                product.getName(),
-                product.getPrice(),
-                product.getWeight(),
-                product.isEdible()
-        );
+        return new VegetableSeedsDoc((VegetableSeeds) domainProduct);
     }
 }

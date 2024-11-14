@@ -28,6 +28,13 @@ public class FlowerDoc extends PlantDoc {
         this.color = color;
     }
 
+    public FlowerDoc(Flower flower){
+        this.setName(flower.getName());
+        this.setPrice(flower.getPrice());
+        this.setGrowthStage(flower.getGrowthStage());
+        this.setColor(flower.getColor());
+    }
+
     public Product toDomainModel(){
         return new Flower(
                 this.getName(),

@@ -2,6 +2,7 @@ package indie.outsource.documents.products;
 
 import indie.outsource.model.products.GrassesSeeds;
 import indie.outsource.model.products.Product;
+import indie.outsource.model.products.VegetableSeeds;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -24,6 +25,14 @@ public class VegetableSeedsDoc extends SeedsDoc {
             @BsonProperty("edible") boolean edible) {
             super(name, price, weight, edible);
     }
+
+    public VegetableSeedsDoc(VegetableSeeds vegetableSeeds) {
+        this.setName(vegetableSeeds.getName());
+        this.setPrice(vegetableSeeds.getPrice());
+        this.setWeight(vegetableSeeds.getWeight());
+        this.setEdible(vegetableSeeds.isEdible());
+    }
+
     public Product toDomainModel(){
         return new GrassesSeeds(
                 this.getName(),

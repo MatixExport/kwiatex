@@ -38,4 +38,11 @@ public class TreeDoc extends PlantDoc {
         );
     }
 
+    public TreeDoc(Tree tree){
+        this.setName(tree.getName());
+        this.setPrice(tree.getPrice());
+        this.setGrowthStage(tree.getGrowthStage());
+        this.setHeight(tree.getHeight());
+    }
+
 }

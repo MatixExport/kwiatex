@@ -27,6 +27,14 @@ public class GrassesSeedsDoc extends SeedsDoc {
            setEdible(edible);
     }
 
+    public GrassesSeedsDoc(GrassesSeeds grassesSeeds) {
+        this.setName(grassesSeeds.getName());
+        this.setPrice(grassesSeeds.getPrice());
+        this.setWeight(grassesSeeds.getWeight());
+        this.setEdible(grassesSeeds.isEdible());
+    }
+
+
     public Product toDomainModel(){
         return new GrassesSeeds(
                 this.getName(),
