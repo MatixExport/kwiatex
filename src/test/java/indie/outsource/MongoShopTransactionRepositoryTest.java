@@ -13,12 +13,10 @@ import org.junit.jupiter.api.Test;
 
 public class MongoShopTransactionRepositoryTest {
     private DefaultMongoConnection mongoConnection;
-    private MongoClient mongoClient;
 
     @BeforeEach
     public void setUpClass() {
         mongoConnection = new DefaultMongoConnection();
-        mongoClient = mongoConnection.getMongoClient();
     }
 
     @AfterEach

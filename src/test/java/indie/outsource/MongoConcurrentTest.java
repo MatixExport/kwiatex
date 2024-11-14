@@ -14,15 +14,12 @@ import org.junit.jupiter.api.Test;
 
 public class MongoConcurrentTest {
     private DefaultMongoConnection mongoConnection1;
-    private MongoClient mongoClient1,mongoClient2;
     private MongoDatabase mongoDatabase1, mongoDatabase2;
 
     @BeforeEach
     public void setUpClass() {
         mongoConnection1 = new DefaultMongoConnection();
         DefaultMongoConnection mongoConnection2 = new DefaultMongoConnection();
-        mongoClient1 = mongoConnection1.getMongoClient();
-        mongoClient2 = mongoConnection2.getMongoClient();
         mongoDatabase1 = mongoConnection1.getDatabase();
         mongoDatabase2 = mongoConnection2.getDatabase();
     }
