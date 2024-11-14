@@ -11,27 +11,22 @@ import org.bson.codecs.pojo.annotations.BsonProperty;
 @Getter
 @Setter
 @NoArgsConstructor
-@BsonDiscriminator(key = "_clazz", value = "flower")
 public class Flower extends Plant{
-    @BsonProperty("color")
     private String color;
 
-    @BsonCreator
     public Flower(
-           @BsonProperty("name") String name,
-           @BsonProperty("price") float price,
-           @BsonProperty("growthStage") int growthStage,
-           @BsonProperty("color") String color) {
+          String name,
+           float price,
+           int growthStage,
+           String color) {
         super(name, price, growthStage);
         this.color = color;
     }
-    @BsonIgnore
     @Override
     public float calculateSellingPrice() {
         return getPrice();
     }
 
-    @BsonIgnore
     @Override
     public String getProductInfo() {
         return String.format("%s %s within %d growth stage.",getColor(), getName(), getGrowthStage());

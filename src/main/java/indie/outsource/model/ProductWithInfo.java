@@ -12,9 +12,7 @@ import java.util.UUID;
 @Setter
 @Getter
 public class ProductWithInfo extends AbstractEntity implements Serializable {
-    @BsonProperty(value = "product",useDiscriminator = true)
     private Product product;
-    @BsonProperty("productInfo")
     private ProductInfo productInfo;
 
 
@@ -25,11 +23,10 @@ public class ProductWithInfo extends AbstractEntity implements Serializable {
         this.product = product;
     }
 
-    @BsonCreator
     public ProductWithInfo(
-            @BsonProperty("_id") UUID id,
-            @BsonProperty("product") Product product,
-            @BsonProperty("productInfo") ProductInfo productInfo) {
+          UUID id,
+          Product product,
+          ProductInfo productInfo) {
         super(id);
         this.productInfo = productInfo;
         this.product = product;

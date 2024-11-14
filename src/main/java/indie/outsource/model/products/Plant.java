@@ -10,16 +10,13 @@ import org.bson.codecs.pojo.annotations.BsonProperty;
 @Getter
 @Setter
 @NoArgsConstructor
-@BsonDiscriminator(key = "_clazz")
-abstract public class Plant extends Product{
-    @BsonProperty("growthStage")
+public abstract class Plant extends Product{
     private int growthStage;
 
-    @BsonCreator
     public Plant(
-            @BsonProperty("name") String name,
-            @BsonProperty("price") float price,
-            @BsonProperty("growthStage") int growthStage) {
+          String name,
+          float price,
+          int growthStage) {
         super(name, price);
         this.growthStage = growthStage;
     }

@@ -11,30 +11,24 @@ import org.bson.codecs.pojo.annotations.*;
 @Setter
 @Getter
 @NoArgsConstructor
-@BsonDiscriminator(key = "_clazz")
-public class Product extends AbstractEntity{
+public abstract class Product extends AbstractEntity{
 
-    @BsonProperty("name")
     private String name ;
 
-    @BsonProperty("price")
     private float price;
 
-    @BsonIgnore
     public float calculateSellingPrice(){
         return 0;
     }
 
-    @BsonIgnore
     public String getProductInfo(){
         return "";
     }
 
 
-    @BsonCreator
     public Product(
-            @BsonProperty("name") String name,
-            @BsonProperty("price") float price) {
+       String name,
+       float price) {
         this.name = name;
         this.price = price;
     }

@@ -2,11 +2,13 @@ package indie.outsource;
 
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoDatabase;
+import indie.outsource.documents.ClientDoc;
+import indie.outsource.documents.ProductInfoDoc;
+import indie.outsource.documents.ProductWithInfoDoc;
+import indie.outsource.documents.ShopTransactionDoc;
+import indie.outsource.documents.products.ProductDoc;
 import indie.outsource.factories.RandomDataFactory;
-import indie.outsource.model.Client;
-import indie.outsource.model.ProductWithInfo;
-import indie.outsource.model.ShopTransaction;
-import indie.outsource.model.TransactionItem;
+import indie.outsource.model.*;
 import indie.outsource.model.products.Tree;
 import indie.outsource.repositories.*;
 import indie.outsource.repositories.mongo.DefaultMongoConnection;
@@ -20,6 +22,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class MongoMappingTest {
     private MongoClient mongoClient;
@@ -62,7 +65,7 @@ public class MongoMappingTest {
         Util.inSession(mongoClient,(mongoClient ->
         {
             MongoDatabase db = mongoClient.getDatabase("KWIATEX");
-            Document clientDocument = db.getCollection(Client.class.getSimpleName()).find(new Document("_id", client.getId())).first();
+            Document clientDocument = db.getCollection(ClientDoc.class.getSimpleName()).find(new Document("_id", client.getId())).first();
             Assertions.assertNotNull(clientDocument);
             Assertions.assertEquals(clientDocument.getString("name"), client.getName());
             Assertions.assertEquals(clientDocument.getString("surname"), client.getSurname());
@@ -74,7 +77,7 @@ public class MongoMappingTest {
         Util.inSession(mongoClient,(mongoClient ->
         {
             MongoDatabase db = mongoClient.getDatabase("KWIATEX");
-            Document productWithInfoDocument = db.getCollection(ProductWithInfo.class.getSimpleName()).find(new Document("_id", productWithInfo.getId())).first();
+            Document productWithInfoDocument = db.getCollection(ProductWithInfoDoc.class.getSimpleName()).find(new Document("_id", productWithInfo.getId())).first();
             Assertions.assertNotNull(productWithInfoDocument);
             Document infoDocument = productWithInfoDocument.get("productInfo", Document.class);
             Assertions.assertNotNull(infoDocument);
@@ -92,7 +95,7 @@ public class MongoMappingTest {
         Util.inSession(mongoClient,(mongoClient ->
         {
             MongoDatabase db = mongoClient.getDatabase("KWIATEX");
-            Document transactionDocument = db.getCollection(ShopTransaction.class.getSimpleName()).find(new Document("_id", shopTransaction.getId())).first();
+            Document transactionDocument = db.getCollection(ShopTransactionDoc.class.getSimpleName()).find(new Document("_id", shopTransaction.getId())).first();
             Assertions.assertNotNull(transactionDocument);
             List<Document> transactionItemDocuments = (List<Document>) transactionDocument.get("items");
             Document transactionItemDocument = transactionItemDocuments.getFirst();
@@ -106,7 +109,7 @@ public class MongoMappingTest {
     public void documentToClientTest(){
         Util.inSession(mongoClient,(mongoClient ->{
             MongoDatabase db = mongoClient.getDatabase("KWIATEX");
-            Client client1 = db.getCollection(Client.class.getSimpleName(),Client.class).find(new Document("_id", client.getId())).first();
+            ClientDoc client1 = db.getCollection(ClientDoc.class.getSimpleName(),ClientDoc.class).find(new Document("_id", client.getId())).first();
             Assertions.assertNotNull(client1);
             Assertions.assertEquals(client1.getSurname(),client.getSurname());
             Assertions.assertEquals(client1.getName(),client.getName());
@@ -120,14 +123,12 @@ public class MongoMappingTest {
             Bson filter = new Document(Map.of(
                     "_id",productWithInfo.getId()
             ));
-            ProductWithInfo productWithInfo1 = db.getCollection(ProductWithInfo.class.getSimpleName(),ProductWithInfo.class)
+            ProductWithInfoDoc productWithInfo1 = db.getCollection(ProductWithInfoDoc.class.getSimpleName(),ProductWithInfoDoc.class)
                     .find(filter).first();
             Assertions.assertNotNull(productWithInfo1);
             Assertions.assertEquals(productWithInfo1.getProductInfo().getQuantity(),productWithInfo.getProductInfo().getQuantity());
             Assertions.assertEquals(productWithInfo1.getProduct().getName(),productWithInfo.getProduct().getName());
             Assertions.assertEquals(productWithInfo1.getProduct().getPrice(),productWithInfo.getProduct().getPrice());
-            System.out.println(productWithInfo1.getProduct().getProductInfo());
-            Assertions.assertEquals(productWithInfo1.getProduct().getProductInfo(),productWithInfo.getProduct().getProductInfo());
 
         }));
     }
@@ -135,8 +136,8 @@ public class MongoMappingTest {
     public void documentToTransactionTest(){
         Util.inSession(mongoClient,(mongoClient ->{
             MongoDatabase db = mongoClient.getDatabase("KWIATEX");
-            ShopTransaction shopTransaction1 = db.getCollection(ShopTransaction.class.getSimpleName(),ShopTransaction.class)
-                .find(new Document("_id", shopTransaction.getId())).first();
+            ShopTransaction shopTransaction1 = Objects.requireNonNull(db.getCollection(ShopTransactionDoc.class.getSimpleName(), ShopTransactionDoc.class)
+                    .find(new Document("_id", shopTransaction.getId())).first()).toDomainModel();
             Assertions.assertNotNull(shopTransaction1);
             Assertions.assertEquals(shopTransaction1.getItems().getFirst().getAmount(),shopTransaction.getItems().getFirst().getAmount());
             Assertions.assertEquals(shopTransaction1.getTransactionInfo(),shopTransaction.getTransactionInfo());

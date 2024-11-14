@@ -6,6 +6,7 @@ services:
       context: .
       dockerfile: customMongoDB
     container_name: mongo1
+
     hostname: mongo1
     networks:
       - mongonet
@@ -98,3 +99,5 @@ services:
 
 networks:
   mongonet: {}
+
+

@@ -9,12 +9,10 @@ import org.bson.codecs.pojo.annotations.BsonProperty;
 @Setter
 @NoArgsConstructor
 public class ProductInfo{
-    @BsonProperty("quantity")
     private int quantity;
 
-    @BsonCreator
     public ProductInfo(
-            @BsonProperty("quantity") int quantity
+            int quantity
     ){
         this.quantity = quantity;
     }

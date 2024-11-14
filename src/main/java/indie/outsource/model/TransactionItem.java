@@ -15,15 +15,13 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class TransactionItem  implements Serializable {
 
-    @BsonProperty(value = "product",useDiscriminator = true)
     private Product product;
-    @BsonProperty("amount")
     private int amount;
 
     @BsonCreator
     public TransactionItem(
-           @BsonProperty("product") Product product,
-           @BsonProperty("amount") int amount) {
+           Product product,
+           int amount) {
         this.product = product;
         this.amount = amount;
     }

@@ -19,9 +19,7 @@ import java.util.UUID;
 @Access(AccessType.FIELD)
 public class ShopTransaction extends AbstractEntity {
 
-    @BsonProperty("client")
     private Client client;
-    @BsonProperty("items")
     private List<TransactionItem> items = new ArrayList<TransactionItem>();
 
     public void addProduct(Product product, int quantity) {
@@ -29,17 +27,17 @@ public class ShopTransaction extends AbstractEntity {
         items.add(item);
     }
 
-    @BsonCreator
+
     public ShopTransaction(
-           @BsonProperty("_id") UUID id,
-           @BsonProperty("client") Client client,
-           @BsonProperty("items") List<TransactionItem> items) {
+           UUID id,
+           Client client,
+           List<TransactionItem> items) {
         super(id);
         this.client = client;
         this.items = items;
     }
 
-    @BsonIgnore
+
     public String getTransactionInfo(){
         StringBuilder info = new StringBuilder();
         info.append(client.getClientInfo()).append(" bought: /n");

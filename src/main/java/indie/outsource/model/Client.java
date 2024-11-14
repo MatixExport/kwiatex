@@ -16,19 +16,16 @@ import java.util.UUID;
 @Access(AccessType.FIELD)
 public class Client extends AbstractEntity{
 
-    @BsonProperty("name")
     private String name;
-    @BsonProperty("surname")
     private String surname;
-    @BsonProperty("address")
     private String address;
 
-    @BsonCreator
+
     public Client(
-            @BsonProperty("_id") UUID _id,
-            @BsonProperty("name") String name,
-            @BsonProperty("surname") String surname,
-            @BsonProperty("address") String address
+          UUID _id,
+          String name,
+          String surname,
+          String address
     ){
         super(_id);
         this.name = name;

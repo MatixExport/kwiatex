@@ -11,19 +11,16 @@ import org.bson.codecs.pojo.annotations.BsonProperty;
 @Getter
 @Setter
 @NoArgsConstructor
-@BsonDiscriminator(key = "_clazz", value = "vegetableSeeds")
 public class VegetableSeeds extends Seeds{
 
-    @BsonCreator
     public VegetableSeeds(
-            @BsonProperty("name") String name,
-            @BsonProperty("price") float price,
-            @BsonProperty("weight") int weight,
-            @BsonProperty("edible") boolean edible) {
+          String name,
+          float price,
+          int weight,
+          boolean edible) {
             super(name, price, weight, edible);
     }
 
-    @BsonIgnore
     @Override
     public float calculateSellingPrice() {
         return getPrice();

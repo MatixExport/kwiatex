@@ -7,6 +7,8 @@ import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.CreateCollectionOptions;
+import indie.outsource.documents.ProductWithInfoDoc;
+import indie.outsource.documents.products.*;
 import indie.outsource.model.ProductWithInfo;
 import indie.outsource.model.products.*;
 import lombok.Getter;
@@ -31,13 +33,13 @@ public class DefaultMongoConnection implements MongoConnection {
         PojoCodecProvider.builder()
             .automatic(true)
             .conventions(List.of(Conventions.ANNOTATION_CONVENTION,Conventions.CLASS_AND_PROPERTY_CONVENTION))
-            .register(Product.class)
-            .register(Flower.class)
-            .register(Tree.class)
-            .register(GrassesSeeds.class)
-            .register(Plant.class)
-            .register(VegetableSeeds.class)
-            .register(Seeds.class)
+            .register(ProductDoc.class)
+            .register(FlowerDoc.class)
+            .register(TreeDoc.class)
+            .register(GrassesSeedsDoc.class)
+            .register(PlantDoc.class)
+            .register(VegetableSeedsDoc.class)
+            .register(SeedsDoc.class)
             .build()
     );
 
@@ -62,7 +64,7 @@ public class DefaultMongoConnection implements MongoConnection {
     private void initCollections(){
         CreateCollectionOptions createCollectionOptions = new CreateCollectionOptions()
             .validationOptions(MongoSchemaConfig.getValidationOptions());
-        mongoDatabase.createCollection(ProductWithInfo.class.getSimpleName(), createCollectionOptions);
+        mongoDatabase.createCollection(ProductWithInfoDoc.class.getSimpleName(), createCollectionOptions);
     }
 
 

@@ -8,15 +8,13 @@ import org.bson.codecs.pojo.annotations.*;
 @Getter
 @Setter
 @NoArgsConstructor
-@BsonDiscriminator(key = "_clazz", value = "grassesSeeds")
 public class GrassesSeeds extends Seeds{
 
     @BsonCreator
-    public GrassesSeeds(
-           @BsonProperty("name") String name,
-           @BsonProperty("price") float price,
-           @BsonProperty("weight") int weight,
-           @BsonProperty("edible") boolean edible) {
+    public GrassesSeeds(String name,
+           float price,
+           int weight,
+            boolean edible) {
            setName(name);
            setPrice(price);
            setWeight(weight);

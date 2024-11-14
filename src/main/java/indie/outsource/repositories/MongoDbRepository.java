@@ -14,39 +14,35 @@ import java.util.List;
 import java.util.UUID;
 
 @AllArgsConstructor
-public abstract class MongoDbRepository<T extends AbstractEntity> implements Repository<T> {
+public abstract class MongoDbRepository<T extends AbstractEntity> {
 
     Class<T> classType;
     MongoDatabase db;
     MongoCollection<T> collection;
 
-    public MongoDbRepository(Class<T> classType, MongoDatabase db) {
+    protected MongoDbRepository(Class<T> classType, MongoDatabase db) {
         this.classType = classType;
         this.db = db;
         this.collection = db.getCollection(classType.getSimpleName(), classType);
     }
 
-    @Override
-    public List<T> findAll() {
-        this.db.getCollection(ProductWithInfo.class.getSimpleName(), ProductWithInfo.class).find();
+    protected List<T> mongoFindAll() {
+        this.db.getCollection(classType.getSimpleName(), classType).find();
         return collection.find().into(new ArrayList<T>());
     }
 
-    @Override
-    public T getById(UUID id) {
+    protected T mongoGetById(UUID id) {
         return collection.find(new Document("_id", id)).first();
     }
 
-    @Override
-    public T add(T t) {
+    protected T mongoAdd(T t) {
         ReplaceOptions options = new ReplaceOptions().upsert(true);
         Bson filter = new Document("_id", t.getId());
         collection.replaceOne(filter, t, options);
         return null;
     }
 
-    @Override
-    public void remove(T t) {
+    protected void mongoRemove(T t) {
         collection.deleteOne(new Document("_id",t.getId()));
     }
 }

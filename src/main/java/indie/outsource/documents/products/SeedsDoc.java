@@ -1,4 +1,4 @@
-package indie.outsource.model.products;
+package indie.outsource.documents.products;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,22 +11,22 @@ import org.bson.codecs.pojo.annotations.BsonProperty;
 @Getter
 @Setter
 @NoArgsConstructor
-public abstract class Seeds extends Product {
+@BsonDiscriminator(key = "_clazz")
+abstract public class SeedsDoc extends ProductDoc {
 
+    @BsonProperty("weight")
     private int weight;
+    @BsonProperty("edible")
     private boolean edible;
 
-    public Seeds(
-            String name,
-            float price,
-            int weight,
-            boolean edible) {
+    @BsonCreator
+    public SeedsDoc(
+            @BsonProperty("name") String name,
+            @BsonProperty("price") float price,
+            @BsonProperty("weight") int weight,
+            @BsonProperty("edible") boolean edible) {
         super(name,price);
         this.weight = weight;
         this.edible = edible;
-    }
-    @Override
-    public String getProductInfo() {
-        return getWeight()+ " bag of " + getName() + " seeds";
     }
 }
