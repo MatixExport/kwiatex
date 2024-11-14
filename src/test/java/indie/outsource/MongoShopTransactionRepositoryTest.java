@@ -28,15 +28,15 @@ public class MongoShopTransactionRepositoryTest {
 
     @Test
     public void testAddTransaction() {
-            TransactionRepository repository = new TransactionMongoDbRepository(mongoConnection.getMongoDatabase());
-            ShopTransaction shopTransaction = RandomDataFactory.getRandomTransactionWithItems();
-            repository.add(shopTransaction);
-            ShopTransaction addedShopTransaction = repository.getById(shopTransaction.getId());
-            Assertions.assertEquals(shopTransaction.getItems().size(), addedShopTransaction.getItems().size());
-            Assertions.assertEquals(
-                    shopTransaction.getItems().getFirst().getProduct().getName(),
-                    addedShopTransaction.getItems().getFirst().getProduct().getName());
-            Assertions.assertEquals(shopTransaction.getClient().getClientInfo(), addedShopTransaction.getClient().getClientInfo());
+        TransactionRepository repository = new TransactionMongoDbRepository(mongoConnection.getMongoDatabase());
+        ShopTransaction shopTransaction = RandomDataFactory.getRandomTransactionWithItems();
+        repository.add(shopTransaction);
+        ShopTransaction addedShopTransaction = repository.getById(shopTransaction.getId());
+        Assertions.assertEquals(shopTransaction.getItems().size(), addedShopTransaction.getItems().size());
+        Assertions.assertEquals(
+                shopTransaction.getItems().getFirst().getProduct().getName(),
+                addedShopTransaction.getItems().getFirst().getProduct().getName());
+        Assertions.assertEquals(shopTransaction.getClient().getClientInfo(), addedShopTransaction.getClient().getClientInfo());
 
     }
 }

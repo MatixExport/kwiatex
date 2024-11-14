@@ -31,46 +31,46 @@ public class MongoProductRepositoryTest {
 
     @Test
     public void testAddRemoveProduct(){
-            ProductRepository repository = new ProductMongoDbRepository(mongoClient.getDatabase("KWIATEX"));
-            repository.add(RandomDataFactory.getRandomProductWithInfo());
-            Assertions.assertEquals(1,repository.findAll().size());
-            repository.remove(repository.findAll().getFirst());
-            Assertions.assertEquals(0,repository.findAll().size());
+        ProductRepository repository = new ProductMongoDbRepository(mongoClient.getDatabase("KWIATEX"));
+        repository.add(RandomDataFactory.getRandomProductWithInfo());
+        Assertions.assertEquals(1,repository.findAll().size());
+        repository.remove(repository.findAll().getFirst());
+        Assertions.assertEquals(0,repository.findAll().size());
     }
     @Test
     public void testUpdateProduct(){
-            ProductRepository repository = new ProductMongoDbRepository(mongoClient.getDatabase("KWIATEX"));
-            ProductWithInfo product = RandomDataFactory.getRandomProductWithInfo();
-            product.getProduct().setName("produkt");
-            repository.add(product);
-            product.getProduct().setName("produkt1");
-            repository.add(product);
-            Assertions.assertEquals(product.getProduct().getName(),repository.getById(product.getId()).getProduct().getName());
+        ProductRepository repository = new ProductMongoDbRepository(mongoClient.getDatabase("KWIATEX"));
+        ProductWithInfo product = RandomDataFactory.getRandomProductWithInfo();
+        product.getProduct().setName("produkt");
+        repository.add(product);
+        product.getProduct().setName("produkt1");
+        repository.add(product);
+        Assertions.assertEquals(product.getProduct().getName(),repository.getById(product.getId()).getProduct().getName());
     }
     @Test
     public void testValidDecreaseProductQuantity(){
-            ProductRepository repository = new ProductMongoDbRepository(mongoClient.getDatabase("KWIATEX"));
-            ProductWithInfo product = RandomDataFactory.getRandomProductWithInfo();
-            product.getProductInfo().setQuantity(5);
-            repository.add(product);
-            product = repository.findAll().getFirst();
-            repository.increaseProductQuantity(product,5);
-            Assertions.assertEquals(10,repository.getById(product.getId()).getProductInfo().getQuantity());
-            repository.decreaseProductQuantity(product,5);
-            Assertions.assertEquals(5,repository.getById(product.getId()).getProductInfo().getQuantity());
+        ProductRepository repository = new ProductMongoDbRepository(mongoClient.getDatabase("KWIATEX"));
+        ProductWithInfo product = RandomDataFactory.getRandomProductWithInfo();
+        product.getProductInfo().setQuantity(5);
+        repository.add(product);
+        product = repository.findAll().getFirst();
+        repository.increaseProductQuantity(product,5);
+        Assertions.assertEquals(10,repository.getById(product.getId()).getProductInfo().getQuantity());
+        repository.decreaseProductQuantity(product,5);
+        Assertions.assertEquals(5,repository.getById(product.getId()).getProductInfo().getQuantity());
     }
     @Test
     public void testInValidDecreaseProductQuantity(){
-            ProductRepository repository = new ProductMongoDbRepository(mongoClient.getDatabase("KWIATEX"));
-            ProductWithInfo product = RandomDataFactory.getRandomProductWithInfo();
-            product.getProductInfo().setQuantity(5);
-            repository.add(product);
-            product = repository.findAll().getFirst();
-            Assertions.assertEquals(5,repository.getById(product.getId()).getProductInfo().getQuantity());
-            ProductWithInfo finalProduct = product;
-            Assertions.assertThrows(
-                    MongoWriteException.class,
-                    ()->{repository.decreaseProductQuantity(finalProduct,6);}
-            );
+        ProductRepository repository = new ProductMongoDbRepository(mongoClient.getDatabase("KWIATEX"));
+        ProductWithInfo product = RandomDataFactory.getRandomProductWithInfo();
+        product.getProductInfo().setQuantity(5);
+        repository.add(product);
+        product = repository.findAll().getFirst();
+        Assertions.assertEquals(5,repository.getById(product.getId()).getProductInfo().getQuantity());
+        ProductWithInfo finalProduct = product;
+        Assertions.assertThrows(
+                MongoWriteException.class,
+                ()->{repository.decreaseProductQuantity(finalProduct,6);}
+        );
     }
 }
