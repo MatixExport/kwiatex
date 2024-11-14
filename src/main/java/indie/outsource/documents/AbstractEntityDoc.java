@@ -1,4 +1,4 @@
-package indie.outsource.model;
+package indie.outsource.documents;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -10,14 +10,16 @@ import java.util.UUID;
 
 @Setter
 @Getter
-public abstract class AbstractEntity implements Serializable {
+public abstract class AbstractEntityDoc implements Serializable {
+    @BsonId
+    @BsonProperty("_id")
     private UUID id;
 
 
-    public AbstractEntity(UUID id) {
+    public AbstractEntityDoc(UUID id) {
         this.id = id;
     }
 
-    public AbstractEntity() {
+    public AbstractEntityDoc() {
     }
 }

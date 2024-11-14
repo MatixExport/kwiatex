@@ -42,7 +42,6 @@ public class RandomDataFactory {
         ShopTransaction shopTransaction =  Instancio.of(ShopTransaction.class)
                 .ignore(field(ShopTransaction::getClient))
                 .ignore(field(ShopTransaction::getItems))
-
                 .create();
         shopTransaction.setClient( getRandomClient());
         return shopTransaction;

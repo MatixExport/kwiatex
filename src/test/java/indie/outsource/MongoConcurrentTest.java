@@ -34,7 +34,6 @@ public class MongoConcurrentTest {
 
     @Test
     public void concurrentProductQuantityIncreaseTest(){
-        Util.inSession(mongoClient1,(_)->{
             ProductMongoDbRepository repository1 = new ProductMongoDbRepository(mongoDatabase1);
             ProductWithInfo product = RandomDataFactory.getRandomProductWithInfo();
             product.getProductInfo().setQuantity(0);
@@ -45,7 +44,6 @@ public class MongoConcurrentTest {
                 repository2.increaseProductQuantity(repository2.findAll().getFirst(),4);
             });
             repository1.increaseProductQuantity(repository1.findAll().getFirst(),7);
-        });
 
         ProductMongoDbRepository repository = new ProductMongoDbRepository(mongoDatabase1);
         Assertions.assertEquals(11,repository.findAll().getFirst().getProductInfo().getQuantity());

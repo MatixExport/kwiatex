@@ -14,7 +14,7 @@ import java.util.UUID;
 
 @Setter
 @Getter
-public class ProductWithInfoDoc extends AbstractEntity implements Serializable {
+public class ProductWithInfoDoc extends AbstractEntityDoc implements Serializable {
     @BsonProperty(value = "product",useDiscriminator = true)
     private ProductDoc product;
     @BsonProperty("productInfo")

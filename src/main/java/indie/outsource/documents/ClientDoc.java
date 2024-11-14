@@ -18,7 +18,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @Access(AccessType.FIELD)
-public class ClientDoc extends AbstractEntity {
+public class ClientDoc extends AbstractEntityDoc {
 
     @BsonProperty("name")
     private String name;

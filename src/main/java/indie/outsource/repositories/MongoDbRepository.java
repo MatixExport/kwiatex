@@ -3,6 +3,7 @@ package indie.outsource.repositories;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.ReplaceOptions;
+import indie.outsource.documents.AbstractEntityDoc;
 import indie.outsource.model.AbstractEntity;
 import indie.outsource.model.ProductWithInfo;
 import lombok.AllArgsConstructor;
@@ -14,7 +15,7 @@ import java.util.List;
 import java.util.UUID;
 
 @AllArgsConstructor
-public abstract class MongoDbRepository<T extends AbstractEntity> {
+public abstract class MongoDbRepository<T extends AbstractEntityDoc> {
 
     Class<T> classType;
     MongoDatabase db;

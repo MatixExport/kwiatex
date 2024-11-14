@@ -22,7 +22,7 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @Access(AccessType.FIELD)
-public class ShopTransactionDoc extends AbstractEntity {
+public class ShopTransactionDoc extends AbstractEntityDoc {
 
     @BsonProperty("client")
     private ClientDoc clientDoc;
