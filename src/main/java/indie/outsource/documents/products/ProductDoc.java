@@ -1,6 +1,8 @@
 package indie.outsource.documents.products;
 
 
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import indie.outsource.model.AbstractEntity;
 import indie.outsource.model.products.Product;
 import lombok.Getter;
@@ -16,6 +18,15 @@ import org.bson.codecs.pojo.annotations.BsonProperty;
 @Getter
 @NoArgsConstructor
 @BsonDiscriminator(key = "_clazz")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_clazz")
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = PlantDoc.class, name = "PlantDoc"),
+        @JsonSubTypes.Type(value = SeedsDoc.class, name = "SeedsDoc"),
+        @JsonSubTypes.Type(value = TreeDoc.class, name = "TreeDoc"),
+        @JsonSubTypes.Type(value = FlowerDoc.class, name = "FlowerDoc"),
+        @JsonSubTypes.Type(value = GrassesSeedsDoc.class, name = "GrassesSeedsDoc"),
+        @JsonSubTypes.Type(value = VegetableSeedsDoc.class, name = "VegetableSeedsDoc")
+})
 public class ProductDoc extends AbstractEntity {
 
     @BsonProperty("name")

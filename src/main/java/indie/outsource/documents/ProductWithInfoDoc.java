@@ -1,10 +1,9 @@
 package indie.outsource.documents;
 
 import indie.outsource.documents.products.ProductDoc;
-import indie.outsource.model.AbstractEntity;
-import indie.outsource.model.Client;
 import indie.outsource.model.ProductWithInfo;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.bson.codecs.pojo.annotations.BsonCreator;
 import org.bson.codecs.pojo.annotations.BsonProperty;
@@ -14,6 +13,7 @@ import java.util.UUID;
 
 @Setter
 @Getter
+@NoArgsConstructor
 public class ProductWithInfoDoc extends AbstractEntityDoc implements Serializable {
     @BsonProperty(value = "product",useDiscriminator = true)
     private ProductDoc product;
