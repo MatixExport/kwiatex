@@ -2,6 +2,7 @@ package indie.outsource.repositories.redis;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import indie.outsource.documents.ProductWithInfoDoc;
+import indie.outsource.repositories.ProductRepository;
 import redis.clients.jedis.JedisPooled;
 import redis.clients.jedis.search.*;
 
