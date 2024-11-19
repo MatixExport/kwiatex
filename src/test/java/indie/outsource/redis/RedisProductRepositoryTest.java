@@ -3,11 +3,22 @@ package indie.outsource.redis;
 import indie.outsource.documents.mappers.ProductWithInfoMapper;
 import indie.outsource.factories.RandomDataFactory;
 import indie.outsource.model.ProductWithInfo;
+import indie.outsource.repositories.ProductRepository;
+import indie.outsource.repositories.redis.CachedMongoDBProductRepository;
 import indie.outsource.repositories.redis.ProductRedisRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class RedisProductRepositoryTest {
+
+    @AfterEach
+    public void tearDown() {
+        ProductRepository repository = new CachedMongoDBProductRepository();
+        for (ProductWithInfo product : repository.findAll()) {
+            repository.remove(product);
+        }
+    }
 
     @Test
     public void testAddRemoveProduct(){

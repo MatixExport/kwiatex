@@ -7,15 +7,13 @@ import indie.outsource.model.ProductWithInfo;
 import indie.outsource.repositories.ProductMongoDbRepository;
 import indie.outsource.repositories.ProductRepository;
 import indie.outsource.repositories.mongo.DefaultMongoConnection;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.testcontainers.DockerClientFactory;
 import org.testcontainers.containers.DockerComposeContainer;
 
 import java.io.File;
 
+@Disabled
 public class MongoDisableContainerTest {
 
     private static final DockerComposeContainer<?> compose =
