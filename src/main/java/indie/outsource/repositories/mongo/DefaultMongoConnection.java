@@ -22,7 +22,7 @@ import java.util.List;
 
 @Getter
 public class DefaultMongoConnection implements MongoConnection {
-    private String connString = "mongodb://mongo1:27017,mongo2:27018,mongo3:27019/?replicaSet=replica_set_single";
+    private String connString = "mongodb://localhost:27017,localhost:27018,localhost:27019/?replicaSet=replica_set_single";
 //    private final ConnectionString connectionString = new ConnectionString(
 //        connString
 //    );
