@@ -54,7 +54,7 @@ public class ProductRedisRepository {
     }
 
     public List<ProductWithInfoDoc> findAll() {
-        SearchResult searchResult = pool.ftSearch("indexUUID", new Query());
+        SearchResult searchResult = pool.ftSearch("indexUUID", new Query().limit(0, 10000));
         try {
             return searchResult.getDocuments().stream().map(e -> parse((String) e.get("$"))).toList();
         }
