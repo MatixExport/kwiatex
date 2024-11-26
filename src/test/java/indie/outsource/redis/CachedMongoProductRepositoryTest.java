@@ -22,9 +22,14 @@ public class CachedMongoProductRepositoryTest {
     @AfterEach
     public void tearDown() {
         mongoConnection.getMongoClient().getDatabase("KWIATEX").drop();
-        ProductRedisRepository repository = new ProductRedisRepository();
-        for (ProductWithInfoDoc product : repository.findAll()) {
-            repository.remove(product);
+        try{
+            ProductRedisRepository repository = new ProductRedisRepository();
+            for (ProductWithInfoDoc product : repository.findAll()) {
+                repository.remove(product);
+            }
+        }
+        catch (Exception e){
+//            e.printStackTrace();
         }
 
     }

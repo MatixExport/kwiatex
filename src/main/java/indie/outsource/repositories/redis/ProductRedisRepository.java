@@ -17,16 +17,14 @@ public class ProductRedisRepository {
     ObjectMapper objectMapper = new ObjectMapper();
 
     public ProductRedisRepository() {
-        Schema schema = new Schema().addNumericField("$.quantity");
-        IndexDefinition rule = new IndexDefinition(IndexDefinition.Type.JSON);
         try{
+            Schema schema = new Schema().addNumericField("$.quantity");
+            IndexDefinition rule = new IndexDefinition(IndexDefinition.Type.JSON);
             pool.ftDropIndex("indexUUID");
-        }
-        catch(Exception e){
-            e.printStackTrace();
-        }
-        finally {
             pool.ftCreate("indexUUID", IndexOptions.defaultOptions().setDefinition(rule),schema);
+        }
+        catch (Exception e){
+            throw new RuntimeException(e);
         }
     }
 
