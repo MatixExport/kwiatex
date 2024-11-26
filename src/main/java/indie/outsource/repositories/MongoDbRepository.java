@@ -32,6 +32,10 @@ public abstract class MongoDbRepository<T extends AbstractEntityDoc> {
         return collection.find().into(new ArrayList<T>());
     }
 
+    protected long mongoCount(){
+        return this.db.getCollection(classType.getSimpleName(), classType).countDocuments();
+    }
+
     protected T mongoGetById(UUID id) {
         return collection.find(new Document("_id", id)).first();
     }

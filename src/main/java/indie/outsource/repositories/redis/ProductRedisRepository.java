@@ -1,8 +1,10 @@
 package indie.outsource.repositories.redis;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import indie.outsource.documents.ProductWithInfoDoc;
 import indie.outsource.repositories.ProductRepository;
+import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPooled;
 import redis.clients.jedis.search.*;
 
@@ -29,13 +31,14 @@ public class ProductRedisRepository {
     }
 
     public void add(ProductWithInfoDoc product) {
+        String json;
         try{
-            String json = objectMapper.writeValueAsString(product);
-            pool.jsonSet(product.getId().toString(),json);
+            json = objectMapper.writeValueAsString(product);
         }
         catch (Exception e) {
-            e.printStackTrace();
+            throw new JsonException(e);
         }
+        pool.jsonSet(product.getId().toString(),json);
     }
 
     public ProductWithInfoDoc findById(UUID id) {
@@ -44,9 +47,8 @@ public class ProductRedisRepository {
             return parse(objectMapper.writer().writeValueAsString(result));
         }
         catch (Exception e) {
-            e.printStackTrace();
+            throw new JsonException(e);
         }
-        return null;
     }
 
     public void remove(ProductWithInfoDoc product) {
@@ -55,13 +57,7 @@ public class ProductRedisRepository {
 
     public List<ProductWithInfoDoc> findAll() {
         SearchResult searchResult = pool.ftSearch("indexUUID", new Query().limit(0, 10000));
-        try {
-            return searchResult.getDocuments().stream().map(e -> parse((String) e.get("$"))).toList();
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
+        return searchResult.getDocuments().stream().map(e -> parse((String) e.get("$"))).toList();
     }
 
     private ProductWithInfoDoc parse(String json) {
@@ -69,9 +65,8 @@ public class ProductRedisRepository {
             return objectMapper.readValue(json, ProductWithInfoDoc.class);
         }
         catch (Exception e) {
-            e.printStackTrace();
+            throw new JsonException(e);
         }
-        return null;
     }
 
 

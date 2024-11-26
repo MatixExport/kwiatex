@@ -15,7 +15,7 @@ import java.util.UUID;
 public class CachedMongoDBProductRepository implements ProductRepository {
 
     private final MongoDatabase db = new DefaultMongoConnection().getDatabase();
-    private final ProductRepository mongoRepository = new ProductMongoDbRepository(db);
+    private final ProductMongoDbRepository mongoRepository = new ProductMongoDbRepository(db);
     private final ProductRedisRepository redisRepository = new ProductRedisRepository();
 
     @Override
@@ -35,7 +35,7 @@ public class CachedMongoDBProductRepository implements ProductRepository {
     @Override
     public List<ProductWithInfo> findAll() {
         List<ProductWithInfoDoc> redisProducts = redisRepository.findAll();
-        if(redisProducts == null){
+        if(redisProducts.isEmpty()) {
             return mongoRepository.findAll();
         }
         return redisProducts.stream().map(ProductWithInfoDoc::toDomainModel).toList();

@@ -23,9 +23,7 @@ import java.util.List;
 @Getter
 public class DefaultMongoConnection implements MongoConnection {
     private String connString = "mongodb://mongo1:27017,mongo2:27018,mongo3:27019/?replicaSet=replica_set_single";
-//    private final ConnectionString connectionString = new ConnectionString(
-//        connString
-//    );
+
     private final MongoCredential mongoCredential = MongoCredential.createCredential(
         "ADMIN", "admin", "ADMINPASSWORD".toCharArray()
     );

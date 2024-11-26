@@ -49,6 +49,10 @@ public class ProductMongoDbRepository extends MongoDbRepository<ProductWithInfoD
                 .toList();
     }
 
+    public Long getCount(){
+        return mongoCount();
+    }
+
     @Override
     public ProductWithInfo getById(UUID id) {
         return mongoGetById(id).toDomainModel();

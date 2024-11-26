@@ -1,10 +1,7 @@
 package indie.outsource.repositories.redis;
 
 import lombok.Getter;
-import redis.clients.jedis.DefaultJedisClientConfig;
-import redis.clients.jedis.HostAndPort;
-import redis.clients.jedis.JedisClientConfig;
-import redis.clients.jedis.JedisPooled;
+import redis.clients.jedis.*;
 
 import java.io.FileInputStream;
 import java.io.IOException;

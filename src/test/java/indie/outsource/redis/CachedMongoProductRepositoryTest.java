@@ -2,12 +2,14 @@ package indie.outsource.redis;
 
 import com.mongodb.MongoWriteException;
 import com.mongodb.client.MongoClient;
+import indie.outsource.documents.ProductWithInfoDoc;
 import indie.outsource.factories.RandomDataFactory;
 import indie.outsource.model.ProductWithInfo;
 import indie.outsource.repositories.ProductMongoDbRepository;
 import indie.outsource.repositories.ProductRepository;
 import indie.outsource.repositories.mongo.DefaultMongoConnection;
 import indie.outsource.repositories.redis.CachedMongoDBProductRepository;
+import indie.outsource.repositories.redis.ProductRedisRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,13 +18,15 @@ import org.junit.jupiter.api.Test;
 public class CachedMongoProductRepositoryTest {
     private final DefaultMongoConnection mongoConnection = new DefaultMongoConnection();
 
+    @BeforeEach
     @AfterEach
     public void tearDown() {
         mongoConnection.getMongoClient().getDatabase("KWIATEX").drop();
-        ProductRepository repository = new CachedMongoDBProductRepository();
-        for (ProductWithInfo product : repository.findAll()) {
+        ProductRedisRepository repository = new ProductRedisRepository();
+        for (ProductWithInfoDoc product : repository.findAll()) {
             repository.remove(product);
         }
+
     }
 
     @Test
