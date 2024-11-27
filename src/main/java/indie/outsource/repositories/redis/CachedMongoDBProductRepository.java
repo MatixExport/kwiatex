@@ -77,12 +77,16 @@ public class CachedMongoDBProductRepository implements ProductRepository {
 
     @Override
     public ProductWithInfo add(ProductWithInfo productWithInfo) {
-        mongoRepository.add(productWithInfo);
-        ProductWithInfo product = mongoRepository.getById(productWithInfo.getId());
-        if(redisRepository != null){
-            redisRepository.add(ProductWithInfoMapper.fromDomainModel(product));
+        try{
+            mongoRepository.add(productWithInfo);
         }
-        return product;
+        catch (Exception e){
+            return null;
+        }
+        if(redisRepository != null){
+            redisRepository.add(ProductWithInfoMapper.fromDomainModel(productWithInfo));
+        }
+        return productWithInfo;
     }
 
     @Override
