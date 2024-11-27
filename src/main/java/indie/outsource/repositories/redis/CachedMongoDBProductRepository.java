@@ -52,6 +52,11 @@ public class CachedMongoDBProductRepository implements ProductRepository {
             if(!redisProducts.isEmpty()) {
                 return redisProducts.stream().map(ProductWithInfoDoc::toDomainModel).toList();
             }
+            List<ProductWithInfo> products = mongoRepository.findAll();
+            for(ProductWithInfo product : products){
+                redisRepository.add(ProductWithInfoMapper.fromDomainModel(product));
+            }
+            return products;
         }
         return mongoRepository.findAll();
     }

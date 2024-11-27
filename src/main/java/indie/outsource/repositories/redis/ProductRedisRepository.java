@@ -6,6 +6,7 @@ import indie.outsource.documents.ProductWithInfoDoc;
 import indie.outsource.repositories.ProductRepository;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPooled;
+import redis.clients.jedis.exceptions.JedisConnectionException;
 import redis.clients.jedis.search.*;
 
 import java.util.List;
@@ -17,14 +18,16 @@ public class ProductRedisRepository {
     ObjectMapper objectMapper = new ObjectMapper();
 
     public ProductRedisRepository() {
+        Schema schema = new Schema().addNumericField("$.quantity");
+        IndexDefinition rule = new IndexDefinition(IndexDefinition.Type.JSON).setPrefixes("product:");
         try{
-            Schema schema = new Schema().addNumericField("$.quantity");
-            IndexDefinition rule = new IndexDefinition(IndexDefinition.Type.JSON);
-            pool.ftDropIndex("indexUUID");
-            pool.ftCreate("indexUUID", IndexOptions.defaultOptions().setDefinition(rule),schema);
+            pool.ftDropIndex("indexQuantity");
         }
-        catch (Exception e){
-            throw new RuntimeException(e);
+        catch (JedisConnectionException e){
+            System.out.println(e.getMessage());
+        }
+        finally {
+            pool.ftCreate("indexQuantity", IndexOptions.defaultOptions().setDefinition(rule),schema);
         }
     }
 
@@ -36,11 +39,11 @@ public class ProductRedisRepository {
         catch (Exception e) {
             throw new JsonException(e);
         }
-        pool.jsonSet(product.getId().toString(),json);
+        pool.jsonSet("product:"+product.getId().toString(),json);
     }
 
     public ProductWithInfoDoc findById(UUID id) {
-        Object result = pool.jsonGet(id.toString());
+        Object result = pool.jsonGet("product:"+id.toString());
         try{
             return parse(objectMapper.writer().writeValueAsString(result));
         }
@@ -50,11 +53,11 @@ public class ProductRedisRepository {
     }
 
     public void remove(ProductWithInfoDoc product) {
-        pool.del(product.getId().toString());
+        pool.jsonDel("product:"+product.getId().toString());
     }
 
     public List<ProductWithInfoDoc> findAll() {
-        SearchResult searchResult = pool.ftSearch("indexUUID", new Query().limit(0, 10000));
+        SearchResult searchResult = pool.ftSearch("indexQuantity", new Query().limit(0, 10000));
         return searchResult.getDocuments().stream().map(e -> parse((String) e.get("$"))).toList();
     }
 
