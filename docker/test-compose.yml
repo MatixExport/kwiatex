@@ -1,6 +1,17 @@
 version: '3.8'
 
 services:
+  redis-stack:
+    hostname: redis
+    image: redis/redis-stack:latest
+    volumes:
+      - redis-stack-data:/bitnami/redis/data
+    ports:
+      - "8001:8001"
+      - "6379:6379"
+    networks:
+      - redisnet
+
   mongo1:
     build:
       context: .
@@ -98,5 +109,8 @@ services:
 
 networks:
   mongonet: {}
+  redisnet: {}
 
-
+volumes:
+  redis-stack-data:
+    driver: local

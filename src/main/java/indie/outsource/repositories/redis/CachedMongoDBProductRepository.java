@@ -1,5 +1,6 @@
 package indie.outsource.repositories.redis;
 
+import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoDatabase;
 import indie.outsource.documents.ProductWithInfoDoc;
 import indie.outsource.documents.mappers.ProductWithInfoMapper;
@@ -14,11 +15,22 @@ import java.util.UUID;
 
 public class CachedMongoDBProductRepository implements ProductRepository {
 
-    private final MongoDatabase db = new DefaultMongoConnection().getDatabase();
-    private final ProductMongoDbRepository mongoRepository = new ProductMongoDbRepository(db);
+    private ProductMongoDbRepository mongoRepository;
     private ProductRedisRepository redisRepository;
 
     public CachedMongoDBProductRepository(){
+        mongoRepository = new ProductMongoDbRepository(new DefaultMongoConnection().getDatabase());
+        try{
+            redisRepository = new ProductRedisRepository();
+        }
+        catch (Exception e){
+            redisRepository = null;
+        }
+    }
+
+    public CachedMongoDBProductRepository(String mongoConnectionString){
+        MongoClient mongoClient = new DefaultMongoConnection(mongoConnectionString).getMongoClient();
+        mongoRepository = new ProductMongoDbRepository(mongoClient.getDatabase("KWIATEX"));
         try{
             redisRepository = new ProductRedisRepository();
         }
