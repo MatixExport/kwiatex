@@ -1,10 +1,8 @@
 package indie.outsource.repositories.redis;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import indie.outsource.documents.ProductWithInfoDoc;
-import indie.outsource.repositories.ProductRepository;
-import redis.clients.jedis.Jedis;
+import indie.outsource.repositories.ProductMongoDbRepository;
 import redis.clients.jedis.JedisPooled;
 import redis.clients.jedis.exceptions.JedisConnectionException;
 import redis.clients.jedis.search.*;
@@ -13,11 +11,22 @@ import java.util.List;
 import java.util.UUID;
 
 public class ProductRedisRepository {
-    private final DefaultRedisConnection redisConnection = new DefaultRedisConnection();
-    private JedisPooled pool = redisConnection.getPool();
+    private final JedisPooled pool;
     ObjectMapper objectMapper = new ObjectMapper();
 
     public ProductRedisRepository() {
+        DefaultRedisConnection redisConnection = new DefaultRedisConnection("src/main/resources/redis.properties");
+        pool = redisConnection.getPool();
+        createSchemaIndex();
+    }
+
+    public ProductRedisRepository(String connectionPropertiesFile){
+        DefaultRedisConnection redisConnection = new DefaultRedisConnection(connectionPropertiesFile);
+        pool = redisConnection.getPool();
+        createSchemaIndex();
+    }
+
+    private void createSchemaIndex(){
         Schema schema = new Schema().addNumericField("$.quantity");
         IndexDefinition rule = new IndexDefinition(IndexDefinition.Type.JSON).setPrefixes("product:");
         try{

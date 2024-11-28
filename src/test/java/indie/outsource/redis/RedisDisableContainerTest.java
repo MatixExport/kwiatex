@@ -11,7 +11,7 @@ import org.testcontainers.containers.DockerComposeContainer;
 
 import java.io.File;
 
-@Disabled
+//@Disabled
 public class RedisDisableContainerTest {
 
     private static final DockerComposeContainer<?> compose =
@@ -30,7 +30,9 @@ public class RedisDisableContainerTest {
     public void setUp() {
         compose.start();
         dockerClient = DockerClientFactory.instance().client();
-        cachedRepository = new CachedMongoDBProductRepository("mongodb://mongo1:2017,mongo2:2018,mongo3:2019/?replicaSet=replica_set_single");
+        cachedRepository = new CachedMongoDBProductRepository(
+                "mongodb://mongo1:2017,mongo2:2018,mongo3:2019/?replicaSet=replica_set_single",
+                "src/main/resources/redisTest.properties");
         ProductWithInfo product = RandomDataFactory.getRandomProductWithInfo();
         product.getProductInfo().setQuantity(5);
         cachedRepository.add(product);

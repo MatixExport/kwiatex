@@ -28,11 +28,11 @@ public class CachedMongoDBProductRepository implements ProductRepository {
         }
     }
 
-    public CachedMongoDBProductRepository(String mongoConnectionString){
+    public CachedMongoDBProductRepository(String mongoConnectionString, String redisConnectionPropertiesFile){
         MongoClient mongoClient = new DefaultMongoConnection(mongoConnectionString).getMongoClient();
         mongoRepository = new ProductMongoDbRepository(mongoClient.getDatabase("KWIATEX"));
         try{
-            redisRepository = new ProductRedisRepository();
+            redisRepository = new ProductRedisRepository(redisConnectionPropertiesFile);
         }
         catch (Exception e){
             redisRepository = null;

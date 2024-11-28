@@ -11,11 +11,11 @@ import java.util.Properties;
 public class DefaultRedisConnection {
     private JedisPooled pool;
 
-    public DefaultRedisConnection(){
+    public DefaultRedisConnection(String propertyFile){
         Properties properties = new Properties();
         String host;
         int port;
-        try (FileInputStream input = new FileInputStream("src/main/resources/redis.properties")) {
+        try (FileInputStream input = new FileInputStream(propertyFile)) {
             properties.load(input);
             host = properties.getProperty("redis.host");
             port = Integer.parseInt(properties.getProperty("redis.port"));
