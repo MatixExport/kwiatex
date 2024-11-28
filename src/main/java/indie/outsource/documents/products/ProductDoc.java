@@ -3,14 +3,13 @@ package indie.outsource.documents.products;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import indie.outsource.model.AbstractEntity;
+import indie.outsource.documents.AbstractEntityDoc;
 import indie.outsource.model.products.Product;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.bson.codecs.pojo.annotations.BsonCreator;
 import org.bson.codecs.pojo.annotations.BsonDiscriminator;
-import org.bson.codecs.pojo.annotations.BsonIgnore;
 import org.bson.codecs.pojo.annotations.BsonProperty;
 
 
@@ -27,7 +26,7 @@ import org.bson.codecs.pojo.annotations.BsonProperty;
         @JsonSubTypes.Type(value = GrassesSeedsDoc.class, name = "GrassesSeedsDoc"),
         @JsonSubTypes.Type(value = VegetableSeedsDoc.class, name = "VegetableSeedsDoc")
 })
-public class ProductDoc extends AbstractEntity {
+public class ProductDoc extends AbstractEntityDoc {
 
     @BsonProperty("name")
     private String name ;

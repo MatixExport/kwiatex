@@ -40,6 +40,7 @@ public class ProductRedisRepository {
             throw new JsonException(e);
         }
         pool.jsonSet("product:"+product.getId().toString(),json);
+        pool.expire("product:"+product.getId().toString(),84000);
     }
 
     public ProductWithInfoDoc findById(UUID id) {
