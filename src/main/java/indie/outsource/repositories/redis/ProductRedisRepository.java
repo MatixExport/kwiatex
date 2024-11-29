@@ -32,7 +32,7 @@ public class ProductRedisRepository {
         try{
             pool.ftDropIndex("indexQuantity");
         }
-        catch (JedisConnectionException e){
+        catch (Exception e){
             System.out.println(e.getMessage());
         }
         finally {
