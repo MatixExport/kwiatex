@@ -22,7 +22,7 @@ public class Transaction {
 
     public String getTransactionInfo(){
         StringBuilder info = new StringBuilder();
-        info.append(client.getClientInfo()).append(" bought: /n");
+//        info.append(client.getClientInfo()).append(" bought: /n");
         for(TransactionItem item : items){
             info.append(item.getTransactionItemInfo()).append("\n");
         }
