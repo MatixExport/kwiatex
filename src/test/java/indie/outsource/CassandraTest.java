@@ -4,16 +4,12 @@ import com.datastax.oss.driver.api.core.CqlIdentifier;
 import com.datastax.oss.driver.api.core.CqlSession;
 
 import com.datastax.oss.driver.api.core.cql.SimpleStatement;
-import com.datastax.oss.driver.api.core.type.DataType;
 import com.datastax.oss.driver.api.core.type.DataTypes;
-import com.datastax.oss.driver.api.mapper.annotations.DaoFactory;
 import com.datastax.oss.driver.api.querybuilder.SchemaBuilder;
 import com.datastax.oss.driver.api.querybuilder.schema.CreateKeyspace;
 import com.datastax.oss.driver.internal.core.metadata.DefaultEndPoint;
-import indie.outsource.model.Client;
-import indie.outsource.repositories.ClientDao;
-import indie.outsource.repositories.ClientMapper;
-import indie.outsource.repositories.ClientMapperBuilder;
+import indie.outsource.repositories.cassandra.clients.*;
+
 import org.junit.Test;
 
 
@@ -55,42 +51,84 @@ public class CassandraTest {
                 .build();
     }
 
-    @Test
-    public void clientTable(){
-        CqlSession session = getSession();
-        SimpleStatement createClients = SchemaBuilder.createTable(CqlIdentifier.fromCql("clients"))
-                .ifNotExists()
-                .withPartitionKey(CqlIdentifier.fromCql("id"), DataTypes.INT)
-//                .withClusteringColumn()
-                .withClusteringColumn(CqlIdentifier.fromCql("name"), DataTypes.TEXT)
-                .withClusteringColumn(CqlIdentifier.fromCql("surname"), DataTypes.TEXT)
-                .withColumn(CqlIdentifier.fromCql("address"), DataTypes.TEXT)
-//                .withClusteringOrder()
-                .build();
-        session.execute(createClients);
-    }
 
     @Test
-    public void clientByNameTable(){
+    public void initClientTables(){
         CqlSession session = getSession();
-        SimpleStatement createClients = SchemaBuilder.createTable(CqlIdentifier.fromCql("clients_by_name"))
+        SimpleStatement createClients = SchemaBuilder.createTable(CqlIdentifier.fromCql(ClientConsts.BY_NAME_TABLE_NAME))
                 .ifNotExists()
-                .withPartitionKey(CqlIdentifier.fromCql("name"), DataTypes.TEXT)
-                .withColumn(CqlIdentifier.fromCql("surname"), DataTypes.TEXT)
-                .withColumn(CqlIdentifier.fromCql("address"), DataTypes.TEXT)
-                .withColumn(CqlIdentifier.fromCql("id"), DataTypes.INT)
+                .withPartitionKey(ClientConsts.NAME, DataTypes.TEXT)
+                .withColumn(ClientConsts.SURNAME, DataTypes.TEXT)
+                .withColumn(ClientConsts.ADDRESS, DataTypes.TEXT)
+                .withClusteringColumn(ClientConsts.ID, DataTypes.INT)
                 .build();
         session.execute(createClients);
+
+        SimpleStatement createClients2 = SchemaBuilder.createTable(CqlIdentifier.fromCql(ClientConsts.BY_ID_TABLE_NAME))
+                .ifNotExists()
+                .withPartitionKey(ClientConsts.ID, DataTypes.INT)
+                .withColumn(ClientConsts.SURNAME, DataTypes.TEXT)
+                .withColumn(ClientConsts.NAME, DataTypes.TEXT)
+                .withColumn(ClientConsts.ADDRESS, DataTypes.TEXT)
+                .build();
+        session.execute(createClients2);
     }
 
     @Test
     public void addClient(){
         CqlSession session = getSession();
         ClientMapper clientMapper = new ClientMapperBuilder(session).build();
-        ClientDao clientDao = clientMapper.getClientDao();
 
-        Client client = new Client( "siema", "tak", 1,"asd");
+        ClientByNameDao clientDao = clientMapper.getClientByNameDao();
+        ClientByIdDao clientByIdDao = clientMapper.getClientByIdDao();
+
+        ClientByName client = new ClientByName( "siema",  1,"tak","asd");
+        ClientById client2 = new ClientById(1,"siema","tak","asd");
+
         clientDao.create(client);
-//        System.out.println(clientDao.findByName("siema").isResponse);
+        clientByIdDao.create(client2);
+;
+    }
+
+    @Test
+    public void selectClient(){
+        CqlSession session = getSession();
+        ClientMapper clientMapper = new ClientMapperBuilder(session).build();
+        ClientByNameDao clientByNameDao = clientMapper.getClientByNameDao();
+        ClientByIdDao clientByIdDao = clientMapper.getClientByIdDao();
+
+        System.out.println(clientByNameDao.findByName("siema").getId());
+        System.out.println(clientByIdDao.findById(1).getId());
+    }
+
+    @Test
+    public void deleteClient(){
+        CqlSession session = getSession();
+        ClientMapper clientMapper = new ClientMapperBuilder(session).build();
+        ClientByNameDao clientByNameDao = clientMapper.getClientByNameDao();
+        ClientByIdDao clientByIdDao = clientMapper.getClientByIdDao();
+
+        ClientById clientById = clientByIdDao.findById(1);
+        clientByIdDao.delete(clientById);
+
+        ClientByName clientByName = clientByNameDao.findByName("siema");
+        clientByNameDao.delete(clientByName);
+    }
+
+    @Test
+    public void updateClient(){
+        CqlSession session = getSession();
+        ClientMapper clientMapper = new ClientMapperBuilder(session).build();
+        ClientByNameDao clientByNameDao = clientMapper.getClientByNameDao();
+        ClientByIdDao clientByIdDao = clientMapper.getClientByIdDao();
+
+        ClientById clientById = clientByIdDao.findById(1);
+        clientById.setAddress("new address");
+        clientByIdDao.update(clientById);
+
+        ClientByName clientByName = clientByNameDao.findByName("siema");
+        clientByName.setAddress("new address");
+        clientByNameDao.update(clientByName);
+
     }
 }
