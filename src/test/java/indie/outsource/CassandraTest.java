@@ -87,7 +87,7 @@ public class CassandraTest {
 
         clientDao.create(client);
         clientByIdDao.create(client2);
-;
+
     }
 
     @Test
