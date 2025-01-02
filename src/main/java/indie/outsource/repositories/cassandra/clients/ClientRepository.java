@@ -1,8 +1,12 @@
 package indie.outsource.repositories.cassandra.clients;
 
-import com.datastax.oss.driver.api.core.cql.*;
+import com.datastax.oss.driver.api.core.cql.BatchStatement;
+import com.datastax.oss.driver.api.core.cql.BoundStatement;
+import com.datastax.oss.driver.api.core.cql.DefaultBatchType;
 import indie.outsource.model.Client;
 import indie.outsource.repositories.cassandra.BaseRepository;
+
+import java.util.List;
 
 public class ClientRepository extends BaseRepository {
 
@@ -39,8 +43,8 @@ public class ClientRepository extends BaseRepository {
         return clientDao.findById(id);
     }
 
-    public Client findByName(String name) {
-        return clientDao.findByName(name);
+    public List<Client> findByName(String name) {
+        return clientDao.findByName(name).toList();
     }
 
     public void save(Client client) {
@@ -58,12 +62,10 @@ public class ClientRepository extends BaseRepository {
                 BatchStatement.newInstance(
                         DefaultBatchType.LOGGED,
                         deleteFromClientsById
-                                .setInt(ClientConsts.ID, client.getId())
-                                ,
+                                .setInt(ClientConsts.ID, client.getId()),
                         deleteFromClientsByName
                                 .setString(ClientConsts.NAME, client.getName())
                                 .setInt(ClientConsts.ID, client.getId())
-
                 );
         getSession().execute(batch);
     }

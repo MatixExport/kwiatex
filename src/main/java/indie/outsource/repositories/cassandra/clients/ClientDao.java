@@ -6,6 +6,8 @@ import com.datastax.oss.driver.api.mapper.annotations.Query;
 import com.datastax.oss.driver.api.mapper.annotations.SetEntity;
 import indie.outsource.model.Client;
 
+import java.util.stream.Stream;
+
 @Dao
 public interface ClientDao {
 
@@ -16,6 +18,6 @@ public interface ClientDao {
     Client findById(int id);
 
     @Query("SELECT * FROM " + ClientConsts.BY_NAME_TABLE_NAME + " WHERE name = :name")
-    Client findByName(String name);
+    Stream<Client> findByName(String name);
 
 }
