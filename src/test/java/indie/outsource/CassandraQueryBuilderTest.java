@@ -2,13 +2,9 @@ package indie.outsource;
 
 import com.datastax.oss.driver.api.core.CqlIdentifier;
 import com.datastax.oss.driver.api.core.CqlSession;
-import com.datastax.oss.driver.api.core.cql.BatchStatement;
-import com.datastax.oss.driver.api.core.cql.DefaultBatchType;
-import com.datastax.oss.driver.api.core.cql.PreparedStatement;
-import com.datastax.oss.driver.api.core.cql.SimpleStatement;
+import com.datastax.oss.driver.api.core.cql.*;
 import com.datastax.oss.driver.api.querybuilder.QueryBuilder;
 import com.datastax.oss.driver.api.querybuilder.insert.Insert;
-import com.datastax.oss.driver.api.querybuilder.insert.InsertInto;
 import com.datastax.oss.driver.api.querybuilder.schema.CreateKeyspace;
 import com.datastax.oss.driver.internal.core.metadata.DefaultEndPoint;
 import indie.outsource.model.products.Product;
@@ -89,5 +85,26 @@ public class CassandraQueryBuilderTest {
         session.execute(batch);
 
     }
+    @Test
+    public void insertPreparedWithObjectMapping(){
+        CqlSession session = getSession();
+
+        SimpleStatement insertInto = QueryBuilder.insertInto(ClientConsts.BY_ID_TABLE_NAME)
+                .value("id", QueryBuilder.bindMarker("id"))
+                .value("name", QueryBuilder.bindMarker("name"))
+                .value("surname", QueryBuilder.bindMarker("surname"))
+                .value("address", QueryBuilder.bindMarker("address"))
+                .build();
+
+        PreparedStatement preparedInsert = session.prepare(insertInto);
+        BoundStatement boundStatement = preparedInsert.boundStatementBuilder().build();
+        ClientMapper clientMapper = new ClientMapperBuilder(session).build();
+        ClientByIdDao clientByIdDao = clientMapper.getClientByIdDao();
+
+        // everything before this can be prepared before running insert method
+        boundStatement = clientByIdDao.bind(new ClientById(1,"Nowy kolega","tak","asd"), boundStatement);
+        session.execute(boundStatement);
+    }
+
 
 }

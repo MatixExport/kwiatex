@@ -1,5 +1,6 @@
 package indie.outsource.repositories.cassandra.clients;
 
+import com.datastax.oss.driver.api.core.cql.BoundStatement;
 import com.datastax.oss.driver.api.mapper.annotations.*;
 
 @Dao
@@ -13,4 +14,7 @@ public interface ClientByIdDao {
     void delete(ClientById client);
     @Update
     void update(ClientById client);
+
+    @SetEntity
+    BoundStatement bind(ClientById client, BoundStatement boundStatement);
 }
