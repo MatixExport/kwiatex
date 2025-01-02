@@ -7,8 +7,5 @@ import com.datastax.oss.driver.api.mapper.annotations.Mapper;
 public interface ClientMapper {
 
     @DaoFactory
-    ClientByNameDao getClientByNameDao();
-
-    @DaoFactory
-    ClientByIdDao getClientByIdDao();
+    ClientDao getClientDao();
 }
