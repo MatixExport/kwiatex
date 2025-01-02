@@ -47,8 +47,8 @@ public class ClientRepository extends BaseRepository {
         BatchStatement batch =
                 BatchStatement.newInstance(
                         DefaultBatchType.LOGGED,
-                        clientDao.bind(client, insertIntoClientsById).setLong("timestamp", System.currentTimeMillis()),
-                        clientDao.bind(client, insertIntoClientsByName).setLong("timestamp", System.currentTimeMillis())
+                        clientDao.bind(client, insertIntoClientsById),
+                        clientDao.bind(client, insertIntoClientsByName)
                 );
         getSession().execute(batch);
     }
@@ -59,11 +59,11 @@ public class ClientRepository extends BaseRepository {
                         DefaultBatchType.LOGGED,
                         deleteFromClientsById
                                 .setInt(ClientConsts.ID, client.getId())
-                                .setLong("timestamp", System.currentTimeMillis()),
+                                ,
                         deleteFromClientsByName
                                 .setString(ClientConsts.NAME, client.getName())
                                 .setInt(ClientConsts.ID, client.getId())
-                                .setLong("timestamp", System.currentTimeMillis())
+
                 );
         getSession().execute(batch);
     }
@@ -73,12 +73,11 @@ public class ClientRepository extends BaseRepository {
         BatchStatement batch =
                 BatchStatement.newInstance(
                         DefaultBatchType.LOGGED,
-                        clientDao.bind(client, updateClientsById.setLong("timestamp", System.currentTimeMillis())),
+                        clientDao.bind(client, updateClientsById),
                         deleteFromClientsByName
                                 .setString(ClientConsts.NAME, name)
-                                .setInt(ClientConsts.ID, client.getId())
-                                .setLong("timestamp", System.currentTimeMillis()),
-                        clientDao.bind(client, insertIntoClientsByName).setLong("timestamp", System.currentTimeMillis())
+                                .setInt(ClientConsts.ID, client.getId()),
+                        clientDao.bind(client, insertIntoClientsByName)
                 );
         getSession().execute(batch);
     }
