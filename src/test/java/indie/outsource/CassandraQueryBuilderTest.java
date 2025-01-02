@@ -7,6 +7,7 @@ import com.datastax.oss.driver.api.querybuilder.QueryBuilder;
 import com.datastax.oss.driver.api.querybuilder.insert.Insert;
 import com.datastax.oss.driver.api.querybuilder.schema.CreateKeyspace;
 import com.datastax.oss.driver.internal.core.metadata.DefaultEndPoint;
+import indie.outsource.model.Client;
 import indie.outsource.model.products.Product;
 import indie.outsource.model.products.Tree;
 import indie.outsource.repositories.cassandra.clients.*;
@@ -90,11 +91,11 @@ public class CassandraQueryBuilderTest {
         CqlSession session = getSession();
 
         SimpleStatement insertInto = QueryBuilder.insertInto(ClientConsts.BY_ID_TABLE_NAME)
-                .value("id", QueryBuilder.bindMarker("id"))
-                .value("name", QueryBuilder.bindMarker("name"))
-                .value("surname", QueryBuilder.bindMarker("surname"))
-                .value("address", QueryBuilder.bindMarker("address"))
-                .build();
+            .value("id", QueryBuilder.bindMarker("id"))
+            .value("name", QueryBuilder.bindMarker("name"))
+            .value("surname", QueryBuilder.bindMarker("surname"))
+            .value("address", QueryBuilder.bindMarker("address"))
+            .build();
 
         PreparedStatement preparedInsert = session.prepare(insertInto);
         BoundStatement boundStatement = preparedInsert.boundStatementBuilder().build();
@@ -102,8 +103,16 @@ public class CassandraQueryBuilderTest {
         ClientByIdDao clientByIdDao = clientMapper.getClientByIdDao();
 
         // everything before this can be prepared before running insert method
-        boundStatement = clientByIdDao.bind(new ClientById(1,"Nowy kolega","tak","asd"), boundStatement);
-        session.execute(boundStatement);
+        BatchStatement batch =
+            BatchStatement.newInstance(
+                DefaultBatchType.LOGGED,
+                clientByIdDao.bind(new Client("Nowy kolega 3","tak",1234578,"asd"), boundStatement),
+                clientByIdDao.bind(new Client("Nowy kolega 3","tak",123457,"asd"), boundStatement)
+            );
+        session.execute(batch);
+
+
+        System.out.println(clientByIdDao.findClientById(1234578).getName());
     }
 
 
