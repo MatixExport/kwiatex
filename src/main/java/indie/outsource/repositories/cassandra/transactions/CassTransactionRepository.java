@@ -11,6 +11,7 @@ import indie.outsource.repositories.cassandra.clients.ClientDao;
 import indie.outsource.repositories.cassandra.clients.ClientMapper;
 import indie.outsource.repositories.cassandra.clients.ClientMapperBuilder;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CassTransactionRepository extends BaseRepository {
@@ -77,17 +78,18 @@ public class CassTransactionRepository extends BaseRepository {
     }
 
     public List<Transaction> getTransactionByClientId(int clientId) {
-        return transactionDao.findByClientId(clientId)
+        List<CassTransaction> cassTransactions = transactionDao.findByClientId(clientId)
                 .map(transaction ->{
                             return new CassTransaction(
                                     transaction.getTransaction_id(),
                                     clientDao.findById(transaction.getClient_id()),
-                                    transactionDao)
-                                    .toDomainModel();
+                                    transactionDao);
+
                 }
 
                 ).toList();
 
+        return new ArrayList<>(cassTransactions);
     }
 
 }
