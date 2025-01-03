@@ -20,15 +20,6 @@ public class Transaction {
     private Client client;
     private final List<TransactionItem> items = new ArrayList<TransactionItem>();
 
-    public String getTransactionInfo(){
-        StringBuilder info = new StringBuilder();
-//        info.append(client.getClientInfo()).append(" bought: /n");
-        for(TransactionItem item : items){
-            info.append(item.getTransactionItemInfo()).append("\n");
-        }
-        return info.toString();
-    }
-
     public void addTransactionItem(TransactionItem item){
         items.add(item);
     }

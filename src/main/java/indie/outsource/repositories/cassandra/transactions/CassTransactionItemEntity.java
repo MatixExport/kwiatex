@@ -1,8 +1,6 @@
-package indie.outsource.model;
+package indie.outsource.repositories.cassandra.transactions;
 
-import com.datastax.oss.driver.api.mapper.annotations.Dao;
 import com.datastax.oss.driver.api.mapper.annotations.Entity;
-import indie.outsource.model.products.Product;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,9 +11,11 @@ import lombok.Setter;
 @Setter
 @Getter
 @Entity
-public class TransactionItem {
-    private int id;
+public class CassTransactionItemEntity {
+
+    private int item_id;
     private int amount;
-    private Product product;
+    private int product_id;
     private double price;
+
 }
