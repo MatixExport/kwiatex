@@ -17,7 +17,6 @@ public class CassTransactionRepository extends BaseRepository {
 
     private final TransactionDao transactionDao;
     private final ClientDao clientDao;
-    private final ProductRepository productRepository;
 
     BoundStatement insertIntoTransactionsByClient;
     BoundStatement insertIntoTransactionsById;
@@ -33,8 +32,6 @@ public class CassTransactionRepository extends BaseRepository {
 
         ClientMapper clientMapper = new ClientMapperBuilder(getSession()).build();
         clientDao = clientMapper.getClientDao();
-
-        productRepository = new CassProductRepository();
 
         insertIntoTransactionsByClient = TransactionStatementFactory.prepareInsertTransaction(TransactionConsts.BY_CLIENT_TABLE_NAME, getSession());
         insertIntoTransactionsById = TransactionStatementFactory.prepareInsertTransaction(TransactionConsts.BY_ID_TABLE_NAME, getSession());
@@ -52,13 +49,10 @@ public class CassTransactionRepository extends BaseRepository {
         BatchStatement batch = BatchStatement.newInstance(BatchType.LOGGED);
 
         for(TransactionItem item : transaction.getItems()) {
+            CassTransactionProduct product =  new CassTransactionProduct(item);
+            product.setTransactionId(transaction.getId());
             batch = batch.add(
-                    insertIntoItemsByTransaction
-                            .setInt(TransactionConsts.TRANSACTION_ID, transaction.getId())
-                            .setInt(TransactionConsts.ITEM_ID, item.getId())
-                            .setInt(TransactionConsts.AMOUNT, item.getAmount())
-                            .setDouble(TransactionConsts.PRICE, item.getPrice())
-                            .setInt(TransactionConsts.PRODUCT_ID, item.getProduct().getId())
+                    transactionDao.bind(product,insertIntoItemsByTransaction)
             );
         }
         batch = batch.add(
@@ -79,7 +73,7 @@ public class CassTransactionRepository extends BaseRepository {
         if(transaction == null) {
             return null;
         }
-        return new CassTransaction(transaction.getTransaction_id(), clientDao.findById(transaction.getTransaction_id()), transactionDao, productRepository);
+        return new CassTransaction(transaction.getTransaction_id(), clientDao.findById(transaction.getTransaction_id()), transactionDao);
     }
 
 }

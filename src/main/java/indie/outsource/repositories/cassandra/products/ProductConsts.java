@@ -8,7 +8,7 @@ public final class ProductConsts {
 
     public static final CqlIdentifier NAME = CqlIdentifier.fromCql("name");
     public static final CqlIdentifier QUANTITY = CqlIdentifier.fromCql("quantity");
-    public static final CqlIdentifier ID = CqlIdentifier.fromCql("id");
+    public static final CqlIdentifier ID = CqlIdentifier.fromCql("product_id");
     public static final CqlIdentifier PRICE = CqlIdentifier.fromCql("price");
     public static final CqlIdentifier GROWTH_STAGE = CqlIdentifier.fromCql("growthStage");
     public static final CqlIdentifier COLOR = CqlIdentifier.fromCql("color");

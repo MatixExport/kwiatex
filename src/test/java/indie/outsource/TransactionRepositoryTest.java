@@ -27,7 +27,7 @@ public class TransactionRepositoryTest {
     }
 
     @Test
-    public void test() {
+    public void insertTest() {
         Client client = new Client("Imie", "Nazwisko", 10, "al politechniki");
         clientRepository.save(client);
 
@@ -42,6 +42,9 @@ public class TransactionRepositoryTest {
         Transaction transaction1 = transactionRepository.getTransactionById(transaction.getId());
 
         assertEquals(1, transaction1.getItems().size());
+        TransactionItem transactionItem = transaction1.getItems().getFirst();
+
+        assertEquals(tree.getProductInfo(), transactionItem.getProduct().getProductInfo());
 
     }
 }

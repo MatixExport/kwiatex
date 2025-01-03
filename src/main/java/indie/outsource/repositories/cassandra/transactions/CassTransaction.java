@@ -11,23 +11,17 @@ import java.util.List;
 public class CassTransaction extends Transaction {
 
     private final TransactionDao transactionDao;
-    private final ProductRepository productRepository;
 
-    public CassTransaction(int id, Client client, TransactionDao transactionDao, ProductRepository productRepository) {
+    public CassTransaction(int id, Client client, TransactionDao transactionDao) {
         super(id, client);
         this.transactionDao = transactionDao;
-        this.productRepository = productRepository;
     }
 
     public List<TransactionItem> getItems() {
         List<TransactionItem> items = new ArrayList<TransactionItem>();
-        List<CassTransactionItemEntity> cassItems = transactionDao.findItemsByTransactionId(this.getId()).toList();
-        for (CassTransactionItemEntity cassItem : cassItems) {
-            TransactionItem transactionItem = new TransactionItem();
-            transactionItem.setId(cassItem.getItem_id());
-            transactionItem.setAmount(cassItem.getAmount());
-            transactionItem.setPrice(cassItem.getPrice());
-            transactionItem.setProduct(productRepository.getById(cassItem.getProduct_id()).getProduct());
+        List<CassTransactionProduct> cassItems = transactionDao.findItemsByTransactionId(this.getId()).toList();
+        for (CassTransactionProduct cassItem : cassItems) {
+            TransactionItem transactionItem = cassItem.toTransactionItem();
             items.add(transactionItem);
         }
         return items;

@@ -2,6 +2,8 @@ package indie.outsource.repositories.cassandra.products;
 
 import com.datastax.oss.driver.api.mapper.annotations.CqlName;
 import com.datastax.oss.driver.api.mapper.annotations.Entity;
+import com.datastax.oss.driver.api.mapper.annotations.NamingStrategy;
+import com.datastax.oss.driver.api.mapper.entity.naming.NamingConvention;
 import indie.outsource.model.ProductWithInfo;
 import indie.outsource.model.products.*;
 import lombok.AllArgsConstructor;
@@ -15,11 +17,12 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-//@NamingStrategy(convention = NamingConvention.CASE_INSENSITIVE)
+@NamingStrategy(convention = NamingConvention.SNAKE_CASE_INSENSITIVE)
 public class CassProduct {
 
     private Integer quantity;
-    private Integer id;
+    @CqlName("product_id")
+    private Integer productId;
     private String name;
     private Float price;
     @CqlName("growthStage")
@@ -34,7 +37,7 @@ public class CassProduct {
     public CassProduct(ProductWithInfo productWithInfo) {
         this.quantity = productWithInfo.getQuantity();
         Product product = productWithInfo.getProduct();
-        this.id = product.getId();
+        this.productId = product.getId();
         this.name = product.getName();
         this.price = product.getPrice();
 
@@ -75,28 +78,28 @@ public class CassProduct {
             case "Flower":
                 productWithInfo.setProduct(
                         new Flower(
-                            id,name,price,growthStage,color
+                            productId,name,price,growthStage,color
                         )
                 );
                 break;
             case "GrassesSeeds":
                 productWithInfo.setProduct(
                         new GrassesSeeds(
-                                id,name,price,weight,edible
+                                productId,name,price,weight,edible
                         )
                 );
                 break;
             case "Tree":
                 productWithInfo.setProduct(
                         new Tree(
-                                id,name,price,growthStage,height
+                                productId,name,price,growthStage,height
                         )
                 );
                 break;
             case "VegetableSeeds":
                 productWithInfo.setProduct(
                         new VegetableSeeds(
-                                id,name,price,weight,edible
+                                productId,name,price,weight,edible
                         )
                 );
                 break;

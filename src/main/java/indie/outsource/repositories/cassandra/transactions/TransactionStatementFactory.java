@@ -8,6 +8,7 @@ import com.datastax.oss.driver.api.core.cql.SimpleStatement;
 import com.datastax.oss.driver.api.core.type.DataTypes;
 import com.datastax.oss.driver.api.querybuilder.QueryBuilder;
 import com.datastax.oss.driver.api.querybuilder.SchemaBuilder;
+import indie.outsource.repositories.cassandra.products.ProductConsts;
 
 public final class TransactionStatementFactory {
 
@@ -32,7 +33,15 @@ public final class TransactionStatementFactory {
                     .withClusteringColumn(TransactionConsts.ITEM_ID, DataTypes.INT)
                     .withColumn(TransactionConsts.PRODUCT_ID, DataTypes.INT)
                     .withColumn(TransactionConsts.AMOUNT, DataTypes.INT)
-                    .withColumn(TransactionConsts.PRICE, DataTypes.DOUBLE)
+                    .withColumn(ProductConsts.NAME, DataTypes.TEXT)
+                    .withColumn(ProductConsts.COLOR, DataTypes.TEXT)
+                    .withColumn(ProductConsts.GROWTH_STAGE, DataTypes.INT)
+                    .withColumn(ProductConsts.PRICE, DataTypes.FLOAT)
+                    .withColumn(ProductConsts.DISCRIMINATOR, DataTypes.TEXT)
+                    .withColumn(ProductConsts.IS_EDIBLE, DataTypes.BOOLEAN)
+                    .withColumn(ProductConsts.WEIGHT, DataTypes.INT)
+                    .withColumn(ProductConsts.HEIGHT, DataTypes.INT)
+                    .withColumn(ProductConsts.QUANTITY, DataTypes.INT)
                     .build();
 
 
@@ -52,7 +61,16 @@ public final class TransactionStatementFactory {
                 .value(TransactionConsts.TRANSACTION_ID, QueryBuilder.bindMarker(TransactionConsts.TRANSACTION_ID))
                 .value(TransactionConsts.PRODUCT_ID, QueryBuilder.bindMarker(TransactionConsts.PRODUCT_ID))
                 .value(TransactionConsts.AMOUNT, QueryBuilder.bindMarker(TransactionConsts.AMOUNT))
-                .value(TransactionConsts.PRICE, QueryBuilder.bindMarker(TransactionConsts.PRICE))
+                .value(ProductConsts.ID, QueryBuilder.bindMarker(ProductConsts.ID))
+                .value(ProductConsts.NAME, QueryBuilder.bindMarker(ProductConsts.NAME))
+                .value(ProductConsts.PRICE, QueryBuilder.bindMarker(ProductConsts.PRICE))
+                .value(ProductConsts.QUANTITY, QueryBuilder.bindMarker(ProductConsts.QUANTITY))
+                .value(ProductConsts.COLOR, QueryBuilder.bindMarker(ProductConsts.COLOR))
+                .value(ProductConsts.IS_EDIBLE, QueryBuilder.bindMarker(ProductConsts.IS_EDIBLE))
+                .value(ProductConsts.DISCRIMINATOR, QueryBuilder.bindMarker(ProductConsts.DISCRIMINATOR))
+                .value(ProductConsts.WEIGHT, QueryBuilder.bindMarker(ProductConsts.WEIGHT))
+                .value(ProductConsts.HEIGHT, QueryBuilder.bindMarker(ProductConsts.HEIGHT))
+                .value(ProductConsts.GROWTH_STAGE, QueryBuilder.bindMarker(ProductConsts.GROWTH_STAGE))
                 .build();
 
         PreparedStatement preparedInsert = session.prepare(simpleInsert);

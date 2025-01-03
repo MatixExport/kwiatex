@@ -15,8 +15,8 @@ public interface ProductDao {
 
 //    @QueryProvider(providerClass = ProductGetProvider.class,
 //            entityHelpers = {CassProduct.class})
-    @Query("SELECT * FROM " + ProductConsts.BY_ID_TABLE_NAME + " WHERE id = :id")
-    CassProduct findProductById(Integer id);
+    @Query("SELECT * FROM " + ProductConsts.BY_ID_TABLE_NAME + " WHERE product_id = :product_id")
+    CassProduct findProductById(Integer product_id);
 
     @SetEntity
     BoundStatement bind(CassProduct product, BoundStatement boundStatement);

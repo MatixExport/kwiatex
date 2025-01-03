@@ -15,7 +15,7 @@ public interface TransactionDao {
     BoundStatement bind(CassTransactionEntity transaction, BoundStatement boundStatement);
 
     @SetEntity
-    BoundStatement bind(TransactionItem transactionItem, BoundStatement boundStatement);
+    BoundStatement bind(CassTransactionProduct transactionItem, BoundStatement boundStatement);
 
     @Query("SELECT * FROM " + TransactionConsts.BY_ID_TABLE_NAME + " WHERE transaction_id = :id")
     CassTransactionEntity findById(int id);
@@ -24,5 +24,5 @@ public interface TransactionDao {
     Stream<CassTransaction> findByClientId(int id);
 
     @Query("SELECT * FROM " + TransactionConsts.ITEMS_BY_TRANSACTION_TABLE_NAME + " WHERE transaction_id = :transactionId")
-    Stream<CassTransactionItemEntity> findItemsByTransactionId(int transactionId);
+    Stream<CassTransactionProduct> findItemsByTransactionId(int transactionId);
 }
