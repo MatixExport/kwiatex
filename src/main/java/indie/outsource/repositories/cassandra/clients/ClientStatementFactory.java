@@ -35,6 +35,7 @@ public final class ClientStatementFactory {
                 .value(ClientConsts.NAME, QueryBuilder.bindMarker(ClientConsts.NAME))
                 .value(ClientConsts.SURNAME, QueryBuilder.bindMarker(ClientConsts.SURNAME))
                 .value(ClientConsts.ADDRESS, QueryBuilder.bindMarker(ClientConsts.ADDRESS))
+                .usingTimestamp(QueryBuilder.bindMarker("timestamp"))
                 .build();
 
         PreparedStatement preparedInsert = session.prepare(simpleInsert);
@@ -43,6 +44,7 @@ public final class ClientStatementFactory {
 
     public static BoundStatement prepareUpdateClientsById(CqlSession session) {
         SimpleStatement simpleUpdate = QueryBuilder.update(ClientConsts.BY_ID_TABLE_NAME)
+                .usingTimestamp(QueryBuilder.bindMarker("timestamp"))
                 .setColumn(ClientConsts.NAME, QueryBuilder.bindMarker(ClientConsts.NAME))
                 .setColumn(ClientConsts.SURNAME, QueryBuilder.bindMarker(ClientConsts.SURNAME))
                 .setColumn(ClientConsts.ADDRESS, QueryBuilder.bindMarker(ClientConsts.ADDRESS))
@@ -55,6 +57,7 @@ public final class ClientStatementFactory {
 
     public static BoundStatement prepareDeleteFromClientsById(CqlSession session) {
         SimpleStatement simpleDelete = QueryBuilder.deleteFrom(ClientConsts.BY_ID_TABLE_NAME)
+                .usingTimestamp(QueryBuilder.bindMarker("timestamp"))
                 .whereColumn(ClientConsts.ID).isEqualTo(QueryBuilder.bindMarker(ClientConsts.ID))
                 .build();
 
@@ -64,6 +67,7 @@ public final class ClientStatementFactory {
 
     public static BoundStatement prepareDeleteFromClientsByName(CqlSession session) {
         SimpleStatement simpleDelete = QueryBuilder.deleteFrom(ClientConsts.BY_NAME_TABLE_NAME)
+                .usingTimestamp(QueryBuilder.bindMarker("timestamp"))
                 .whereColumn(ClientConsts.NAME).isEqualTo(QueryBuilder.bindMarker(ClientConsts.NAME))
                 .whereColumn(ClientConsts.ID).isEqualTo(QueryBuilder.bindMarker(ClientConsts.ID))
                 .build();
