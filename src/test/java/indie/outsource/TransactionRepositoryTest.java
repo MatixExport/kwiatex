@@ -11,6 +11,8 @@ import indie.outsource.repositories.cassandra.transactions.CassTransactionReposi
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.List;
+
 import static org.junit.Assert.assertEquals;
 
 public class TransactionRepositoryTest {
@@ -46,5 +48,33 @@ public class TransactionRepositoryTest {
 
         assertEquals(tree.getProductInfo(), transactionItem.getProduct().getProductInfo());
 
+    }
+    @Test
+    public void findByClientIdTest() {
+        Client client = new Client("Imie", "Nazwisko", 10, "al politechniki");
+        clientRepository.save(client);
+
+        Client client1 = new Client("Imie", "Nazwisko", 15, "al politechniki");
+        clientRepository.save(client);
+
+        Tree tree = new Tree(5,"Dąb",15,2,2);
+        productRepository.save(new ProductWithInfo(5,tree));
+
+        Transaction transaction = new Transaction(1, client);
+        transaction.addTransactionItem(new TransactionItem(11, 1, tree, 15));
+
+        Transaction transaction2 = new Transaction(1, client1);
+        transaction2.addTransactionItem(new TransactionItem(12, 1, tree, 30));
+
+        transactionRepository.save(transaction);
+        transactionRepository.save(transaction2);
+
+        List<Transaction> transactions = transactionRepository.getTransactionByClientId(client.getId());
+        assertEquals(1, transactions.size());
+        assertEquals(
+                transaction.getItems().getFirst().getPrice(),
+                transactions.getFirst().getItems().getFirst().getPrice(),
+                0.0001
+        );
     }
 }

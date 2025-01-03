@@ -6,12 +6,12 @@ import com.datastax.oss.driver.api.core.cql.BatchType;
 import com.datastax.oss.driver.api.core.cql.BoundStatement;
 import indie.outsource.model.Transaction;
 import indie.outsource.model.TransactionItem;
-import indie.outsource.repositories.ProductRepository;
 import indie.outsource.repositories.cassandra.BaseRepository;
 import indie.outsource.repositories.cassandra.clients.ClientDao;
 import indie.outsource.repositories.cassandra.clients.ClientMapper;
 import indie.outsource.repositories.cassandra.clients.ClientMapperBuilder;
-import indie.outsource.repositories.cassandra.products.CassProductRepository;
+
+import java.util.List;
 
 public class CassTransactionRepository extends BaseRepository {
 
@@ -74,6 +74,20 @@ public class CassTransactionRepository extends BaseRepository {
             return null;
         }
         return new CassTransaction(transaction.getTransaction_id(), clientDao.findById(transaction.getTransaction_id()), transactionDao);
+    }
+
+    public List<Transaction> getTransactionByClientId(int clientId) {
+        return transactionDao.findByClientId(clientId)
+                .map(transaction ->{
+                            return new CassTransaction(
+                                    transaction.getTransaction_id(),
+                                    clientDao.findById(transaction.getClient_id()),
+                                    transactionDao)
+                                    .toDomainModel();
+                }
+
+                ).toList();
+
     }
 
 }
