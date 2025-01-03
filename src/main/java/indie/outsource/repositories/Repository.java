@@ -7,5 +7,5 @@ public interface Repository<T> {
 
     T getById(int id);
 
-    T add(T t);
+    T save(T t);
 }

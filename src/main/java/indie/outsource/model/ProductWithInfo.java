@@ -10,5 +10,4 @@ import lombok.*;
 public class ProductWithInfo {
     private int quantity;
     private Product product;
-
 }

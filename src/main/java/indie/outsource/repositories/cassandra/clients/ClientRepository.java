@@ -21,7 +21,7 @@ public class ClientRepository extends BaseRepository {
     public ClientRepository() {
         super();
 
-        CreateClientTables();
+        createClientTables();
 
         ClientMapper clientMapper = new ClientMapperBuilder(getSession()).build();
         clientDao = clientMapper.getClientDao();
@@ -33,7 +33,7 @@ public class ClientRepository extends BaseRepository {
         updateClientsById = ClientStatementFactory.prepareUpdateClientsById(getSession());
     }
 
-    private void CreateClientTables() {
+    private void createClientTables() {
         getSession().execute(ClientStatementFactory.createClientsByNameTable);
         getSession().execute(ClientStatementFactory.createClientsByIdTable);
     }
