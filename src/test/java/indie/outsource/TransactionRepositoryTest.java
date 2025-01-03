@@ -11,6 +11,8 @@ import indie.outsource.repositories.cassandra.transactions.CassTransactionReposi
 import org.junit.Before;
 import org.junit.Test;
 
+import static org.junit.Assert.assertEquals;
+
 public class TransactionRepositoryTest {
 
     ClientRepository clientRepository;
@@ -39,7 +41,7 @@ public class TransactionRepositoryTest {
 
         Transaction transaction1 = transactionRepository.getTransactionById(transaction.getId());
 
-        System.out.println(transaction1.getItems().size());
+        assertEquals(1, transaction1.getItems().size());
 
     }
 }

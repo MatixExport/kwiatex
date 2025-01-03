@@ -1,6 +1,8 @@
 package indie.outsource.repositories.cassandra.transactions;
 
 
+import com.datastax.oss.driver.api.core.cql.BatchStatement;
+import com.datastax.oss.driver.api.core.cql.BatchType;
 import com.datastax.oss.driver.api.core.cql.BoundStatement;
 import indie.outsource.model.Transaction;
 import indie.outsource.model.TransactionItem;
@@ -17,7 +19,7 @@ public class CassTransactionRepository extends BaseRepository {
     private final ClientDao clientDao;
     private final ProductRepository productRepository;
 
-    BoundStatement insertIntoTransactionsByName;
+    BoundStatement insertIntoTransactionsByClient;
     BoundStatement insertIntoTransactionsById;
     BoundStatement insertIntoItemsByTransaction;
 
@@ -34,7 +36,7 @@ public class CassTransactionRepository extends BaseRepository {
 
         productRepository = new CassProductRepository();
 
-        insertIntoTransactionsByName = TransactionStatementFactory.prepareInsertTransaction(TransactionConsts.BY_CLIENT_TABLE_NAME, getSession());
+        insertIntoTransactionsByClient = TransactionStatementFactory.prepareInsertTransaction(TransactionConsts.BY_CLIENT_TABLE_NAME, getSession());
         insertIntoTransactionsById = TransactionStatementFactory.prepareInsertTransaction(TransactionConsts.BY_ID_TABLE_NAME, getSession());
         insertIntoItemsByTransaction = TransactionStatementFactory.prepareInsertItem(TransactionConsts.ITEMS_BY_TRANSACTION_TABLE_NAME, getSession());
     }
@@ -47,10 +49,10 @@ public class CassTransactionRepository extends BaseRepository {
 
 
     public void save(Transaction transaction) {
-//        BatchStatement batch = BatchStatement.newInstance(BatchType.LOGGED);
+        BatchStatement batch = BatchStatement.newInstance(BatchType.LOGGED);
 
         for(TransactionItem item : transaction.getItems()) {
-            getSession().execute(
+            batch = batch.add(
                     insertIntoItemsByTransaction
                             .setInt(TransactionConsts.TRANSACTION_ID, transaction.getId())
                             .setInt(TransactionConsts.ITEM_ID, item.getId())
@@ -59,16 +61,17 @@ public class CassTransactionRepository extends BaseRepository {
                             .setInt(TransactionConsts.PRODUCT_ID, item.getProduct().getId())
             );
         }
-//        batch.add(transactionDao.bind(new CassTransactionEntity(transaction.getId(), transaction.getClient().getId()), insertIntoTransactionsByName));
-//        batch.add(transactionDao.bind(new CassTransactionEntity(transaction.getId(), transaction.getClient().getId()), insertIntoTransactionsById));
-
-        getSession().execute(
+        batch = batch.add(
+                insertIntoTransactionsByClient
+                        .setInt(TransactionConsts.TRANSACTION_ID, transaction.getId())
+                        .setInt(TransactionConsts.CLIENT_ID, transaction.getClient().getId())
+        );
+        batch = batch.add(
                 insertIntoTransactionsById
                         .setInt(TransactionConsts.TRANSACTION_ID, transaction.getId())
                         .setInt(TransactionConsts.CLIENT_ID, transaction.getClient().getId())
         );
-
-//        getSession().execute(batch);
+        getSession().execute(batch);
     }
 
     public Transaction getTransactionById(int id) {
