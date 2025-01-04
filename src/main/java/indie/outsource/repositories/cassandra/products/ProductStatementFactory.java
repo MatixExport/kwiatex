@@ -27,6 +27,10 @@ public final class ProductStatementFactory {
                     .withColumn(ProductConsts.QUANTITY, DataTypes.INT)
                     .build();
 
+    public static SimpleStatement dropProductByIdTable = SimpleStatement.newInstance("drop table if exists products_by_id;");
+
+    public static SimpleStatement truncateProductByIdTable = SimpleStatement.newInstance("truncate table products_by_id;");
+
 
     public static BoundStatement prepareInsert(CqlSession session) {
         SimpleStatement simpleInsert = QueryBuilder.insertInto(ProductConsts.BY_ID_TABLE_NAME)

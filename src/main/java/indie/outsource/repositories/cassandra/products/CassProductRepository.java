@@ -1,6 +1,8 @@
 package indie.outsource.repositories.cassandra.products;
 
+import com.datastax.oss.driver.api.core.CqlSession;
 import com.datastax.oss.driver.api.core.cql.BoundStatement;
+import com.datastax.oss.driver.api.core.cql.SimpleStatement;
 import indie.outsource.model.ProductWithInfo;
 import indie.outsource.repositories.ProductRepository;
 import indie.outsource.repositories.cassandra.BaseRepository;
@@ -14,10 +16,10 @@ public class CassProductRepository extends BaseRepository implements ProductRepo
     private final BoundStatement deleteFromProductsById;
     private final BoundStatement updateProductsById;
 
-    public CassProductRepository() {
-        super();
+    public CassProductRepository(CqlSession session) {
+        super(session);
 
-        createProductTables();
+        createTables();
 
         ProductMapper productMapper = new ProductMapperBuilder(getSession()).build();
         productDao = productMapper.getProductDao();
@@ -27,8 +29,16 @@ public class CassProductRepository extends BaseRepository implements ProductRepo
         updateProductsById = ProductStatementFactory.prepareUpdateProductById(getSession());
     }
 
-    private void createProductTables() {
+    public void createTables() {
         getSession().execute(ProductStatementFactory.createProductsByIdTable);
+    }
+
+    public void dropTables() {
+        getSession().execute(ProductStatementFactory.dropProductByIdTable);
+    }
+
+    public void truncateTables() {
+        getSession().execute(ProductStatementFactory.truncateProductByIdTable);
     }
 
     //This could be done with default DAO remove, but then if we add more tables for products (like product_by_quantity)

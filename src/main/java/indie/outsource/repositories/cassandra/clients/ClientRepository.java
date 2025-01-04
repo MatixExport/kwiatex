@@ -1,5 +1,6 @@
 package indie.outsource.repositories.cassandra.clients;
 
+import com.datastax.oss.driver.api.core.CqlSession;
 import com.datastax.oss.driver.api.core.cql.BatchStatement;
 import com.datastax.oss.driver.api.core.cql.BoundStatement;
 import com.datastax.oss.driver.api.core.cql.DefaultBatchType;
@@ -18,10 +19,10 @@ public class ClientRepository extends BaseRepository {
     private final BoundStatement deleteFromClientsByName;
     private final BoundStatement updateClientsById;
 
-    public ClientRepository() {
-        super();
+    public ClientRepository(CqlSession session) {
+        super(session);
 
-        createClientTables();
+        createTables();
 
         ClientMapper clientMapper = new ClientMapperBuilder(getSession()).build();
         clientDao = clientMapper.getClientDao();
@@ -33,9 +34,19 @@ public class ClientRepository extends BaseRepository {
         updateClientsById = ClientStatementFactory.prepareUpdateClientsById(getSession());
     }
 
-    private void createClientTables() {
+    public void createTables() {
         getSession().execute(ClientStatementFactory.createClientsByNameTable);
         getSession().execute(ClientStatementFactory.createClientsByIdTable);
+    }
+
+    public void dropTables() {
+        getSession().execute(ClientStatementFactory.dropClientsByNameTable);
+        getSession().execute(ClientStatementFactory.dropClientsByIdTable);
+    }
+
+    public void truncateTables(){
+        getSession().execute(ClientStatementFactory.truncateClientsByNameTable);
+        getSession().execute(ClientStatementFactory.truncateClientsByIdTable);
     }
 
 

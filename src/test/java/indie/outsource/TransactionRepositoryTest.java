@@ -5,6 +5,7 @@ import indie.outsource.model.ProductWithInfo;
 import indie.outsource.model.Transaction;
 import indie.outsource.model.TransactionItem;
 import indie.outsource.model.products.Tree;
+import indie.outsource.repositories.cassandra.ApplicationContext;
 import indie.outsource.repositories.cassandra.clients.ClientRepository;
 import indie.outsource.repositories.cassandra.products.CassProductRepository;
 import indie.outsource.repositories.cassandra.transactions.CassTransactionRepository;
@@ -24,17 +25,17 @@ public class TransactionRepositoryTest {
 
     @Before
     public void setUp() {
-        clientRepository = new ClientRepository();
-        transactionRepository = new CassTransactionRepository();
-        productRepository = new CassProductRepository();
+        ApplicationContext applicationContext = ApplicationContext.getInstance();
+        clientRepository = applicationContext.getClientRepository();
+        transactionRepository = applicationContext.getTransactionRepository();
+        productRepository = applicationContext.getProductRepository();
     }
 
     @After
     public void tearDown() {
-        clientRepository.dropAllTables();
-        clientRepository.close();
-        transactionRepository.close();
-        productRepository.close();
+        clientRepository.truncateTables();
+        transactionRepository.truncateTables();
+        productRepository.truncateTables();
     }
 
     @Test

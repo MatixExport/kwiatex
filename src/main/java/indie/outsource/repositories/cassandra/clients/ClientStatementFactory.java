@@ -29,6 +29,12 @@ public final class ClientStatementFactory {
                     .withColumn(ClientConsts.ADDRESS, DataTypes.TEXT)
                     .build();
 
+    public static SimpleStatement dropClientsByIdTable = SimpleStatement.newInstance("drop table if exists clients_by_id;");
+    public static SimpleStatement dropClientsByNameTable = SimpleStatement.newInstance("drop table if exists clients_by_name;");
+
+    public static SimpleStatement truncateClientsByIdTable = SimpleStatement.newInstance("truncate table clients_by_id;");
+    public static SimpleStatement truncateClientsByNameTable = SimpleStatement.newInstance("truncate table clients_by_name;");
+
     public static BoundStatement prepareInsert(String tableName, CqlSession session) {
         SimpleStatement simpleInsert = QueryBuilder.insertInto(tableName)
                 .value(ClientConsts.ID, QueryBuilder.bindMarker(ClientConsts.ID))
@@ -41,6 +47,7 @@ public final class ClientStatementFactory {
         PreparedStatement preparedInsert = session.prepare(simpleInsert);
         return preparedInsert.boundStatementBuilder().build();
     }
+
 
     public static BoundStatement prepareUpdateClientsById(CqlSession session) {
         SimpleStatement simpleUpdate = QueryBuilder.update(ClientConsts.BY_ID_TABLE_NAME)

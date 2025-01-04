@@ -44,6 +44,13 @@ public final class TransactionStatementFactory {
                     .withColumn(ProductConsts.QUANTITY, DataTypes.INT)
                     .build();
 
+    public static SimpleStatement dropTransactionsByClientTable = SimpleStatement.newInstance("drop table if exists transactions_by_client ;");
+    public static SimpleStatement dropTransactionsByIdTable = SimpleStatement.newInstance("drop table if exists transactions_by_id;");
+    public static SimpleStatement dropItemsByTransactionTable =SimpleStatement.newInstance("drop table if exists items_by_transaction;");
+
+    public static SimpleStatement truncateTransactionsByClientTable = SimpleStatement.newInstance("truncate table transactions_by_client ;");
+    public static SimpleStatement truncateTransactionsByIdTable = SimpleStatement.newInstance("truncate table transactions_by_id;");
+    public static SimpleStatement truncateItemsByTransactionTable =SimpleStatement.newInstance("truncate table items_by_transaction;");
 
     public static BoundStatement prepareInsertTransaction(String tableName, CqlSession session) {
         SimpleStatement simpleInsert = QueryBuilder.insertInto(tableName)

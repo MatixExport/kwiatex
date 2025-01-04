@@ -1,6 +1,7 @@
 package indie.outsource.repositories.cassandra.transactions;
 
 
+import com.datastax.oss.driver.api.core.CqlSession;
 import com.datastax.oss.driver.api.core.cql.BatchStatement;
 import com.datastax.oss.driver.api.core.cql.BatchType;
 import com.datastax.oss.driver.api.core.cql.BoundStatement;
@@ -23,10 +24,10 @@ public class CassTransactionRepository extends BaseRepository {
     BoundStatement insertIntoTransactionsById;
     BoundStatement insertIntoItemsByTransaction;
 
-    public CassTransactionRepository() {
-        super();
+    public CassTransactionRepository(CqlSession session) {
+        super(session);
 
-        createTransactionTables();
+        createTables();
 
         TransactionMapper transactionMapper = new TransactionMapperBuilder(getSession()).build();
         transactionDao = transactionMapper.getTransactionDao();
@@ -39,10 +40,22 @@ public class CassTransactionRepository extends BaseRepository {
         insertIntoItemsByTransaction = TransactionStatementFactory.prepareInsertItem(TransactionConsts.ITEMS_BY_TRANSACTION_TABLE_NAME, getSession());
     }
 
-    private void createTransactionTables() {
+    public void createTables() {
         getSession().execute(TransactionStatementFactory.createTransactionsByIdTable);
         getSession().execute(TransactionStatementFactory.createTransactionsByClientTable);
         getSession().execute(TransactionStatementFactory.createItemsByTransactionTable);
+    }
+
+    public void dropTables(){
+        getSession().execute(TransactionStatementFactory.dropItemsByTransactionTable);
+        getSession().execute(TransactionStatementFactory.dropTransactionsByIdTable);
+        getSession().execute(TransactionStatementFactory.dropTransactionsByClientTable);
+    }
+
+    public void truncateTables(){
+        getSession().execute(TransactionStatementFactory.truncateTransactionsByIdTable);
+        getSession().execute(TransactionStatementFactory.truncateTransactionsByClientTable);
+        getSession().execute(TransactionStatementFactory.truncateItemsByTransactionTable);
     }
 
 
