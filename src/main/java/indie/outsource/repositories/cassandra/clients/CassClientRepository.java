@@ -9,7 +9,7 @@ import indie.outsource.repositories.cassandra.BaseRepository;
 
 import java.util.List;
 
-public class ClientRepository extends BaseRepository {
+public class CassClientRepository extends BaseRepository {
 
     private final ClientDao clientDao;
 
@@ -19,7 +19,7 @@ public class ClientRepository extends BaseRepository {
     private final BoundStatement deleteFromClientsByName;
     private final BoundStatement updateClientsById;
 
-    public ClientRepository(CqlSession session) {
+    public CassClientRepository(CqlSession session) {
         super(session);
 
         createTables();

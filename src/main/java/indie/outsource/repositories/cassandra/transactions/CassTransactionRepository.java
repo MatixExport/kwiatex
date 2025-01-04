@@ -7,18 +7,18 @@ import com.datastax.oss.driver.api.core.cql.BatchType;
 import com.datastax.oss.driver.api.core.cql.BoundStatement;
 import indie.outsource.model.Transaction;
 import indie.outsource.model.TransactionItem;
+import indie.outsource.repositories.cassandra.ApplicationContext;
 import indie.outsource.repositories.cassandra.BaseRepository;
-import indie.outsource.repositories.cassandra.clients.ClientDao;
-import indie.outsource.repositories.cassandra.clients.ClientMapper;
-import indie.outsource.repositories.cassandra.clients.ClientMapperBuilder;
+import indie.outsource.repositories.cassandra.clients.CassClientRepository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 public class CassTransactionRepository extends BaseRepository {
 
     private final TransactionDao transactionDao;
-    private final ClientDao clientDao;
+    private final CassClientRepository clientRepository = ApplicationContext.getInstance().getCassClientRepository();
 
     BoundStatement insertIntoTransactionsByClient;
     BoundStatement insertIntoTransactionsById;
@@ -31,9 +31,6 @@ public class CassTransactionRepository extends BaseRepository {
 
         TransactionMapper transactionMapper = new TransactionMapperBuilder(getSession()).build();
         transactionDao = transactionMapper.getTransactionDao();
-
-        ClientMapper clientMapper = new ClientMapperBuilder(getSession()).build();
-        clientDao = clientMapper.getClientDao();
 
         insertIntoTransactionsByClient = TransactionStatementFactory.prepareInsertTransaction(TransactionConsts.BY_CLIENT_TABLE_NAME, getSession());
         insertIntoTransactionsById = TransactionStatementFactory.prepareInsertTransaction(TransactionConsts.BY_ID_TABLE_NAME, getSession());
@@ -87,22 +84,24 @@ public class CassTransactionRepository extends BaseRepository {
         if(transaction == null) {
             return null;
         }
-        return new CassTransaction(transaction.getTransactionId(), clientDao.findById(transaction.getTransactionId()), transactionDao);
+        return new CassTransaction(transaction.getTransactionId(), clientRepository.findById(transaction.getTransactionId()));
     }
 
     public List<Transaction> getTransactionByClientId(int clientId) {
-        List<CassTransaction> cassTransactions = transactionDao.findByClientId(clientId)
-                .map(transaction ->{
-                            return new CassTransaction(
-                                    transaction.getTransactionId(),
-                                    clientDao.findById(transaction.getClientId()),
-                                    transactionDao);
+        List<CassTransactionEntity> cassTransactions = transactionDao.findByClientId(clientId).toList();
+        List<Transaction> transactions = new ArrayList<>();
+        for (CassTransactionEntity cassTransactionEntity : cassTransactions) {
+            transactions.add(
+                    new CassTransaction(
+                            cassTransactionEntity.getTransactionId(),
+                            clientRepository.findById(cassTransactionEntity.getClientId()))
+            );
+        }
 
-                }
-
-                ).toList();
-
-        return new ArrayList<>(cassTransactions);
+        return transactions;
     }
 
+    public Stream<CassTransactionProduct> findItemsByTransactionId(int id) {
+        return transactionDao.findItemsByTransactionId(id);
+    }
 }

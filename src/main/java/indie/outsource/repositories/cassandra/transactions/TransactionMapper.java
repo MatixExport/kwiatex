@@ -7,7 +7,4 @@ import com.datastax.oss.driver.api.mapper.annotations.Mapper;
 public interface TransactionMapper {
     @DaoFactory
     TransactionDao getTransactionDao();
-
-    @DaoFactory
-    TransactionItemDao getTransactionItemDao();
 }

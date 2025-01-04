@@ -6,7 +6,7 @@ import indie.outsource.model.Transaction;
 import indie.outsource.model.TransactionItem;
 import indie.outsource.model.products.Tree;
 import indie.outsource.repositories.cassandra.ApplicationContext;
-import indie.outsource.repositories.cassandra.clients.ClientRepository;
+import indie.outsource.repositories.cassandra.clients.CassClientRepository;
 import indie.outsource.repositories.cassandra.products.CassProductRepository;
 import indie.outsource.repositories.cassandra.transactions.CassTransactionRepository;
 import org.junit.After;
@@ -19,14 +19,14 @@ import static org.junit.Assert.assertEquals;
 
 public class TransactionRepositoryTest {
 
-    ClientRepository clientRepository;
+    CassClientRepository clientRepository;
     CassTransactionRepository transactionRepository;
     CassProductRepository productRepository;
 
     @Before
     public void setUp() {
         ApplicationContext applicationContext = ApplicationContext.getInstance();
-        clientRepository = applicationContext.getClientRepository();
+        clientRepository = applicationContext.getCassClientRepository();
         transactionRepository = applicationContext.getTransactionRepository();
         productRepository = applicationContext.getProductRepository();
     }

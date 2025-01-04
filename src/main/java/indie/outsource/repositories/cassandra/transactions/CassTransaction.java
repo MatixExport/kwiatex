@@ -3,17 +3,17 @@ package indie.outsource.repositories.cassandra.transactions;
 import indie.outsource.model.Client;
 import indie.outsource.model.Transaction;
 import indie.outsource.model.TransactionItem;
+import indie.outsource.repositories.cassandra.ApplicationContext;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class CassTransaction extends Transaction {
 
-    private final TransactionDao transactionDao;
+    private final CassTransactionRepository transactionRepository = ApplicationContext.getInstance().getTransactionRepository();
 
-    public CassTransaction(int id, Client client, TransactionDao transactionDao) {
+    public CassTransaction(int id, Client client) {
         super(id, client);
-        this.transactionDao = transactionDao;
     }
 
     @Override
@@ -22,7 +22,7 @@ public class CassTransaction extends Transaction {
             return super.getItems();
         }
         List<TransactionItem> items = new ArrayList<TransactionItem>();
-        List<CassTransactionProduct> cassItems = transactionDao.findItemsByTransactionId(this.getId()).toList();
+        List<CassTransactionProduct> cassItems = transactionRepository.findItemsByTransactionId(this.getId()).toList();
         for (CassTransactionProduct cassItem : cassItems) {
             TransactionItem transactionItem = cassItem.toTransactionItem();
             items.add(transactionItem);

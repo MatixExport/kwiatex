@@ -3,8 +3,6 @@ package indie.outsource.repositories.cassandra;
 import com.datastax.oss.driver.api.core.CqlSession;
 import lombok.Getter;
 
-import java.io.Closeable;
-
 @Getter
 public class BaseRepository {
 

@@ -2,7 +2,7 @@ package indie.outsource;
 
 import indie.outsource.model.Client;
 import indie.outsource.repositories.cassandra.ApplicationContext;
-import indie.outsource.repositories.cassandra.clients.ClientRepository;
+import indie.outsource.repositories.cassandra.clients.CassClientRepository;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -12,12 +12,12 @@ import static org.junit.Assert.assertNull;
 
 public class ClientRepositoryTest {
 
-    ClientRepository clientRepository;
+    CassClientRepository clientRepository;
 
     @Before
     public void setUp() {
         ApplicationContext applicationContext = ApplicationContext.getInstance();
-        clientRepository = applicationContext.getClientRepository();
+        clientRepository = applicationContext.getCassClientRepository();
     }
 
     @After

@@ -2,14 +2,12 @@ package indie.outsource.repositories.cassandra.products;
 
 import com.datastax.oss.driver.api.core.CqlSession;
 import com.datastax.oss.driver.api.core.cql.BoundStatement;
-import com.datastax.oss.driver.api.core.cql.SimpleStatement;
 import indie.outsource.model.ProductWithInfo;
-import indie.outsource.repositories.ProductRepository;
 import indie.outsource.repositories.cassandra.BaseRepository;
 
 import java.util.List;
 
-public class CassProductRepository extends BaseRepository implements ProductRepository {
+public class CassProductRepository extends BaseRepository {
 
     private final ProductDao productDao;
     private final BoundStatement insertIntoProductsById;
@@ -43,7 +41,6 @@ public class CassProductRepository extends BaseRepository implements ProductRepo
 
     //This could be done with default DAO remove, but then if we add more tables for products (like product_by_quantity)
     //that approach would no longer be valid
-    @Override
     public void remove(int id) {
         getSession().execute(
                 deleteFromProductsById.setInt(
@@ -52,21 +49,18 @@ public class CassProductRepository extends BaseRepository implements ProductRepo
         );
     }
 
-    @Override
     public List<ProductWithInfo> getAll() {
         return productDao.findAll()
                 .map(CassProduct::toDomainModel)
                 .toList();
     }
 
-    @Override
     public ProductWithInfo getById(int id) {
         CassProduct product = productDao.findProductById(id);
         if(product == null) return null;
         return productDao.findProductById(id).toDomainModel();
     }
 
-    @Override
     public ProductWithInfo save(ProductWithInfo productWithInfo) {
         getSession().execute(
                 productDao.bind(
