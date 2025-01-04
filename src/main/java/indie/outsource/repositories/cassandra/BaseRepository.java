@@ -46,6 +46,15 @@ public class BaseRepository implements Closeable {
                 .build();
     }
 
+    public void dropAllTables(){
+        session.execute(SimpleStatement.newInstance("drop table if exists clients_by_id;"));
+        session.execute(SimpleStatement.newInstance("drop table if exists clients_by_name;"));
+        session.execute(SimpleStatement.newInstance("drop table if exists items_by_transaction;"));
+        session.execute(SimpleStatement.newInstance("drop table if exists products_by_id;"));
+        session.execute(SimpleStatement.newInstance("drop table if exists transactions_by_client;"));
+        session.execute(SimpleStatement.newInstance("drop table if exists transactions_by_id;"));
+    }
+
 
     @Override
     public void close() {

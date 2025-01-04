@@ -8,6 +8,7 @@ import indie.outsource.model.products.Tree;
 import indie.outsource.repositories.cassandra.clients.ClientRepository;
 import indie.outsource.repositories.cassandra.products.CassProductRepository;
 import indie.outsource.repositories.cassandra.transactions.CassTransactionRepository;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -28,6 +29,14 @@ public class TransactionRepositoryTest {
         productRepository = new CassProductRepository();
     }
 
+    @After
+    public void tearDown() {
+        clientRepository.dropAllTables();
+        clientRepository.close();
+        transactionRepository.close();
+        productRepository.close();
+    }
+
     @Test
     public void insertTest() {
         Client client = new Client("Imie", "Nazwisko", 10, "al politechniki");
@@ -36,7 +45,7 @@ public class TransactionRepositoryTest {
         Tree tree = new Tree(5,"Dąb",15,2,2);
         productRepository.save(new ProductWithInfo(5,tree));
 
-        Transaction transaction = new Transaction(1, client);
+        Transaction transaction = new Transaction(2, client);
         transaction.addTransactionItem(new TransactionItem(1, 1, tree, 15));
 
         transactionRepository.save(transaction);
