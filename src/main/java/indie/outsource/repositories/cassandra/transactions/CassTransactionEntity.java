@@ -1,5 +1,6 @@
 package indie.outsource.repositories.cassandra.transactions;
 
+import com.datastax.oss.driver.api.mapper.annotations.CqlName;
 import com.datastax.oss.driver.api.mapper.annotations.Entity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,7 +14,9 @@ import lombok.Setter;
 @Entity
 public class CassTransactionEntity {
 
-    private int transaction_id;
-    private int client_id;
+    @CqlName("transaction_id")
+    private int transactionId;
+    @CqlName("client_id")
+    private int clientId;
 
 }

@@ -74,15 +74,15 @@ public class CassTransactionRepository extends BaseRepository {
         if(transaction == null) {
             return null;
         }
-        return new CassTransaction(transaction.getTransaction_id(), clientDao.findById(transaction.getTransaction_id()), transactionDao);
+        return new CassTransaction(transaction.getTransactionId(), clientDao.findById(transaction.getTransactionId()), transactionDao);
     }
 
     public List<Transaction> getTransactionByClientId(int clientId) {
         List<CassTransaction> cassTransactions = transactionDao.findByClientId(clientId)
                 .map(transaction ->{
                             return new CassTransaction(
-                                    transaction.getTransaction_id(),
-                                    clientDao.findById(transaction.getClient_id()),
+                                    transaction.getTransactionId(),
+                                    clientDao.findById(transaction.getClientId()),
                                     transactionDao);
 
                 }
