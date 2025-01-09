@@ -58,6 +58,7 @@ public class TransactionRepositoryTest {
 
         assertEquals(tree.getProductInfo(), transactionItem.getProduct().getProductInfo());
 
+        assertEquals(4, productRepository.getById(5).getQuantity());
     }
     @Test
     public void findByClientIdTest() {

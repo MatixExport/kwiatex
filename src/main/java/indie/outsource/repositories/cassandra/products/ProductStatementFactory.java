@@ -68,6 +68,16 @@ public final class ProductStatementFactory {
         return preparedUpdate.boundStatementBuilder().build();
     }
 
+    public static BoundStatement prepareUpdateQuantityById(CqlSession session) {
+        SimpleStatement simpleUpdate = QueryBuilder.update(ProductConsts.BY_ID_TABLE_NAME)
+                .setColumn(ProductConsts.QUANTITY, QueryBuilder.bindMarker(ProductConsts.QUANTITY))
+                .whereColumn(ProductConsts.ID).isEqualTo(QueryBuilder.bindMarker(ProductConsts.ID))
+                .build();
+
+        PreparedStatement preparedUpdate = session.prepare(simpleUpdate);
+        return preparedUpdate.boundStatementBuilder().build();
+    }
+
     public static BoundStatement prepareDeleteFromProductsById(CqlSession session) {
         SimpleStatement simpleDelete = QueryBuilder.deleteFrom(ProductConsts.BY_ID_TABLE_NAME)
                 .whereColumn(ProductConsts.ID).isEqualTo(QueryBuilder.bindMarker(ProductConsts.ID))
