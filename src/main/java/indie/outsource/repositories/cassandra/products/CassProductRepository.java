@@ -41,12 +41,12 @@ public class CassProductRepository extends BaseRepository {
 
     //This could be done with default DAO remove, but then if we add more tables for products (like product_by_quantity)
     //that approach would no longer be valid
-    public void remove(int id) {
-        getSession().execute(
+    public boolean remove(int id) {
+        return getSession().execute(
                 deleteFromProductsById.setInt(
                     ProductConsts.ID,id
                 )
-        );
+        ).wasApplied();
     }
 
     public List<ProductWithInfo> getAll() {
@@ -70,14 +70,14 @@ public class CassProductRepository extends BaseRepository {
         return productWithInfo;
     }
 
-    public void update(ProductWithInfo productWithInfo) {
-        getSession().execute(
+    public boolean update(ProductWithInfo productWithInfo) {
+        return getSession().execute(
                 productDao.bind(
                         new CassProduct(productWithInfo),
                         updateProductsById
                 )
 
-        );
+        ).wasApplied();
     }
 
 }

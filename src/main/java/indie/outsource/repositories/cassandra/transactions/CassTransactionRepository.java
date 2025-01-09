@@ -63,7 +63,7 @@ public class CassTransactionRepository extends BaseRepository {
     }
 
 
-    public void save(Transaction transaction) {
+    public boolean save(Transaction transaction) {
         CassProductRepository productRepository = ApplicationContext.getInstance().getProductRepository();
         ArrayList<ProductWithInfo> products = new ArrayList<>();
         for(TransactionItem item : transaction.getItems()) {
@@ -94,7 +94,7 @@ public class CassTransactionRepository extends BaseRepository {
                         .setInt(TransactionConsts.CLIENT_ID, transaction.getClient().getId())
         );
 
-        System.out.println(getSession().execute(batch).wasApplied());
+        return getSession().execute(batch).wasApplied();
     }
 
     public Transaction getTransactionById(int id) {

@@ -8,7 +8,6 @@ services:
       - "9042:9042"
     volumes:
         - ./cassandra1_data:/bitnami
-#        - ./cassandra1_conf:/etc/cassandra
         - ./cassandra1_conf:/opt/bitnami/cassandra/conf
     networks:
       - cassandranet
@@ -17,7 +16,7 @@ services:
       - CASSANDRA_BROADCAST_ADDRESS=cassandra1
       - CASSANDRA_SEEDS=cassandra1, cassandra2
       - CASSANDRA_CLUSTER_NAME=kwiatex-cluster
-      - CASSANDRA_DATACENTER = kwiatex-datacenter #no effect datacenter id dc1
+      - CASSANDRA_DATACENTER = dc1
       - CASSANDRA_PASSWORD_SEEDER=yes
       - CASSANDRA_ENDPOINT_SNITCH=GossipingPropertyFileSnitch
       - CASSANDRA_USER = cassandra
@@ -38,7 +37,6 @@ services:
         - "9043:9042"
       volumes:
         - ./cassandra2_data:/bitnami
-#        - ./cassandra2_conf:/etc/cassandra
         - ./cassandra2_conf:/opt/bitnami/cassandra/conf
       networks:
         - cassandranet
@@ -47,7 +45,7 @@ services:
         - CASSANDRA_BROADCAST_ADDRESS=cassandra2
         - CASSANDRA_SEEDS=cassandra1,cassandra2
         - CASSANDRA_CLUSTER_NAME=kwiatex-cluster
-        - CASSANDRA_DATACENTER = kwiatex-datacenter #no effect datacenter id dc1
+        - CASSANDRA_DATACENTER = dc1
         - CASSANDRA_PASSWORD_SEEDER=yes
         - CASSANDRA_ENDPOINT_SNITCH=GossipingPropertyFileSnitch
         - CASSANDRA_USER = cassandra

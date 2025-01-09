@@ -68,7 +68,7 @@ public class CassClientRepository extends BaseRepository {
         getSession().execute(batch);
     }
 
-    public void delete(Client client) {
+    public boolean delete(Client client) {
         BatchStatement batch =
                 BatchStatement.newInstance(
                         DefaultBatchType.LOGGED,
@@ -80,10 +80,10 @@ public class CassClientRepository extends BaseRepository {
                                 .setInt(ClientConsts.ID, client.getId())
                                 .setLong("timestamp", System.currentTimeMillis())
                 );
-        getSession().execute(batch);
+        return getSession().execute(batch).wasApplied();
     }
 
-    public void update(Client client) {
+    public boolean update(Client client) {
         String name = clientDao.findById(client.getId()).getName();
         BatchStatement batch =
                 BatchStatement.newInstance(
@@ -95,6 +95,6 @@ public class CassClientRepository extends BaseRepository {
                                 .setLong("timestamp", System.currentTimeMillis()),
                         clientDao.bind(client, insertIntoClientsByName).setLong("timestamp", System.currentTimeMillis())
                 );
-        getSession().execute(batch);
+        return getSession().execute(batch).wasApplied();
     }
 }
