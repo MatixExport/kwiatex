@@ -1,5 +1,6 @@
 package indie.outsource.repositories.cassandra.products;
 
+import com.datastax.oss.driver.api.core.ConsistencyLevel;
 import com.datastax.oss.driver.api.core.CqlIdentifier;
 import com.datastax.oss.driver.api.core.CqlSession;
 import com.datastax.oss.driver.api.core.cql.BoundStatement;
@@ -27,9 +28,13 @@ public final class ProductStatementFactory {
                     .withColumn(ProductConsts.QUANTITY, DataTypes.INT)
                     .build();
 
-    public static SimpleStatement dropProductByIdTable = SimpleStatement.newInstance("drop table if exists products_by_id;");
+    public static SimpleStatement dropProductByIdTable = SimpleStatement
+            .newInstance("drop table if exists products_by_id;")
+            .setConsistencyLevel(ConsistencyLevel.ALL);
 
-    public static SimpleStatement truncateProductByIdTable = SimpleStatement.newInstance("truncate table products_by_id;");
+    public static SimpleStatement truncateProductByIdTable = SimpleStatement
+            .newInstance("truncate table products_by_id;")
+            .setConsistencyLevel(ConsistencyLevel.ALL);
 
 
     public static BoundStatement prepareInsert(CqlSession session) {
@@ -47,7 +52,10 @@ public final class ProductStatementFactory {
                 .build();
 
         PreparedStatement preparedInsert = session.prepare(simpleInsert);
-        return preparedInsert.boundStatementBuilder().build();
+        return preparedInsert.boundStatementBuilder()
+                .setConsistencyLevel(ConsistencyLevel.ALL)
+                .build();
+
     }
 
     public static BoundStatement prepareUpdateProductById(CqlSession session) {
@@ -65,7 +73,9 @@ public final class ProductStatementFactory {
                 .build();
 
         PreparedStatement preparedUpdate = session.prepare(simpleUpdate);
-        return preparedUpdate.boundStatementBuilder().build();
+        return preparedUpdate.boundStatementBuilder()
+                .setConsistencyLevel(ConsistencyLevel.ALL)
+                .build();
     }
 
     public static BoundStatement prepareUpdateQuantityById(CqlSession session) {
@@ -75,7 +85,9 @@ public final class ProductStatementFactory {
                 .build();
 
         PreparedStatement preparedUpdate = session.prepare(simpleUpdate);
-        return preparedUpdate.boundStatementBuilder().build();
+        return preparedUpdate.boundStatementBuilder()
+                .setConsistencyLevel(ConsistencyLevel.ALL)
+                .build();
     }
 
     public static BoundStatement prepareDeleteFromProductsById(CqlSession session) {
@@ -83,8 +95,11 @@ public final class ProductStatementFactory {
                 .whereColumn(ProductConsts.ID).isEqualTo(QueryBuilder.bindMarker(ProductConsts.ID))
                 .build();
 
+
         PreparedStatement preparedDelete = session.prepare(simpleDelete);
-        return preparedDelete.boundStatementBuilder().build();
+        return preparedDelete.boundStatementBuilder()
+                .setConsistencyLevel(ConsistencyLevel.ALL)
+                .build();
     }
 
     public static BoundStatement prepareSelectFromProductsById(CqlSession session) {
@@ -94,7 +109,9 @@ public final class ProductStatementFactory {
                 .where(Relation.column(ProductConsts.ID).isEqualTo(QueryBuilder.bindMarker(ProductConsts.ID)))
                 .build();
         PreparedStatement preparedSelect = session.prepare(select);
-        return preparedSelect.boundStatementBuilder().build();
+        return preparedSelect.boundStatementBuilder()
+                .setConsistencyLevel(ConsistencyLevel.ALL)
+                .build();
     }
 
     public static BoundStatement prepareSelectFromProducts(CqlSession session) {
@@ -103,7 +120,10 @@ public final class ProductStatementFactory {
                 .all()
                 .build();
         PreparedStatement preparedSelect = session.prepare(select);
-        return preparedSelect.boundStatementBuilder().build();
+        return preparedSelect.boundStatementBuilder()
+                .setConsistencyLevel(ConsistencyLevel.ALL)
+                .build();
+
     }
 }
 

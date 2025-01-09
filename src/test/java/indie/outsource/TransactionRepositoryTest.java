@@ -66,7 +66,7 @@ public class TransactionRepositoryTest {
         clientRepository.save(client);
 
         Client client1 = new Client("Imie", "Nazwisko", 15, "al politechniki");
-        clientRepository.save(client);
+        clientRepository.save(client1);
 
         Tree tree = new Tree(5,"Dąb",15,2,2);
         productRepository.save(new ProductWithInfo(5,tree));

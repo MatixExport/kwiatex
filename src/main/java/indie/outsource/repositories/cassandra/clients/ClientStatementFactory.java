@@ -1,5 +1,6 @@
 package indie.outsource.repositories.cassandra.clients;
 
+import com.datastax.oss.driver.api.core.ConsistencyLevel;
 import com.datastax.oss.driver.api.core.CqlIdentifier;
 import com.datastax.oss.driver.api.core.CqlSession;
 import com.datastax.oss.driver.api.core.cql.BoundStatement;
@@ -29,11 +30,21 @@ public final class ClientStatementFactory {
                     .withColumn(ClientConsts.ADDRESS, DataTypes.TEXT)
                     .build();
 
-    public static SimpleStatement dropClientsByIdTable = SimpleStatement.newInstance("drop table if exists clients_by_id;");
-    public static SimpleStatement dropClientsByNameTable = SimpleStatement.newInstance("drop table if exists clients_by_name;");
+    public static SimpleStatement dropClientsByIdTable = SimpleStatement
+            .newInstance("drop table if exists clients_by_id;")
+            .setConsistencyLevel(ConsistencyLevel.ALL);
+    public static SimpleStatement dropClientsByNameTable = SimpleStatement
+            .newInstance("drop table if exists clients_by_name;")
+            .setConsistencyLevel(ConsistencyLevel.ALL);
 
-    public static SimpleStatement truncateClientsByIdTable = SimpleStatement.newInstance("truncate table clients_by_id;");
-    public static SimpleStatement truncateClientsByNameTable = SimpleStatement.newInstance("truncate table clients_by_name;");
+
+    public static SimpleStatement truncateClientsByIdTable = SimpleStatement
+            .newInstance("truncate table clients_by_id;")
+            .setConsistencyLevel(ConsistencyLevel.ALL);
+
+    public static SimpleStatement truncateClientsByNameTable = SimpleStatement
+            .newInstance("truncate table clients_by_name;")
+            .setConsistencyLevel(ConsistencyLevel.ALL);
 
     public static BoundStatement prepareInsert(String tableName, CqlSession session) {
         SimpleStatement simpleInsert = QueryBuilder.insertInto(tableName)
@@ -45,7 +56,9 @@ public final class ClientStatementFactory {
                 .build();
 
         PreparedStatement preparedInsert = session.prepare(simpleInsert);
-        return preparedInsert.boundStatementBuilder().build();
+        return preparedInsert.boundStatementBuilder()
+                .setConsistencyLevel(ConsistencyLevel.ALL)
+                .build();
     }
 
 
@@ -59,7 +72,9 @@ public final class ClientStatementFactory {
                 .build();
 
         PreparedStatement preparedUpdate = session.prepare(simpleUpdate);
-        return preparedUpdate.boundStatementBuilder().build();
+        return preparedUpdate.boundStatementBuilder()
+                .setConsistencyLevel(ConsistencyLevel.ALL)
+                .build();
     }
 
     public static BoundStatement prepareDeleteFromClientsById(CqlSession session) {
@@ -69,7 +84,9 @@ public final class ClientStatementFactory {
                 .build();
 
         PreparedStatement preparedDelete = session.prepare(simpleDelete);
-        return preparedDelete.boundStatementBuilder().build();
+        return preparedDelete.boundStatementBuilder()
+                .setConsistencyLevel(ConsistencyLevel.ALL)
+                .build();
     }
 
     public static BoundStatement prepareDeleteFromClientsByName(CqlSession session) {
@@ -80,6 +97,8 @@ public final class ClientStatementFactory {
                 .build();
 
         PreparedStatement preparedDelete = session.prepare(simpleDelete);
-        return preparedDelete.boundStatementBuilder().build();
+        return preparedDelete.boundStatementBuilder()
+                .setConsistencyLevel(ConsistencyLevel.ALL)
+                .build();
     }
 }

@@ -2,6 +2,8 @@ package indie.outsource.repositories.cassandra;
 
 import com.datastax.oss.driver.api.core.CqlIdentifier;
 import com.datastax.oss.driver.api.core.CqlSession;
+import com.datastax.oss.driver.api.core.config.DefaultDriverOption;
+import com.datastax.oss.driver.api.core.config.DriverConfigLoader;
 import com.datastax.oss.driver.api.core.cql.SimpleStatement;
 import com.datastax.oss.driver.internal.core.metadata.DefaultEndPoint;
 import indie.outsource.repositories.cassandra.clients.CassClientRepository;
@@ -19,6 +21,7 @@ public final class ApplicationContext  implements Closeable {
     private static final String username = "cassandra";
     private static final String password = "cassandrapassword";
 
+
     private final CqlSession session;
     private ApplicationContext() {
         SimpleStatement createKeyspaceStatement = createKeyspace(CqlIdentifier.fromCql("kwiatex"))
@@ -35,6 +38,7 @@ public final class ApplicationContext  implements Closeable {
                 .build()) {
             session1.execute(createKeyspaceStatement);
         }
+
 
         session = CqlSession.builder()
                 .addContactEndPoint(new DefaultEndPoint(new InetSocketAddress("127.0.0.1", 9042)))
