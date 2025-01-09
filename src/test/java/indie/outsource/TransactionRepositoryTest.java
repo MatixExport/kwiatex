@@ -16,6 +16,7 @@ import org.junit.Test;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThrows;
 
 public class TransactionRepositoryTest {
 
@@ -59,6 +60,10 @@ public class TransactionRepositoryTest {
         assertEquals(tree.getProductInfo(), transactionItem.getProduct().getProductInfo());
 
         assertEquals(4, productRepository.getById(5).getQuantity());
+
+        Transaction transaction2 = new Transaction(3, client);
+        transaction2.addTransactionItem(new TransactionItem(2, 10, tree, 15));
+        assertThrows(RuntimeException.class, () -> transactionRepository.save(transaction2));
     }
     @Test
     public void findByClientIdTest() {

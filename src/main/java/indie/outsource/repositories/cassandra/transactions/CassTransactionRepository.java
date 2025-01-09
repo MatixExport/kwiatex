@@ -68,6 +68,9 @@ public class CassTransactionRepository extends BaseRepository {
         ArrayList<ProductWithInfo> products = new ArrayList<>();
         for(TransactionItem item : transaction.getItems()) {
             products.add(productRepository.getById(item.getProduct().getId()));
+            if(products.getLast().getQuantity() < item.getAmount()){
+                throw new RuntimeException("Not enough products in storage");
+            }
         }
 
         BatchStatement batch = BatchStatement.newInstance(BatchType.LOGGED);
