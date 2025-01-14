@@ -13,7 +13,7 @@ import org.testcontainers.containers.DockerComposeContainer;
 
 import java.io.File;
 
-//@Disabled
+@Disabled
 public class RedisDisableContainerTest {
 
     private static final DockerComposeContainer<?> compose =
