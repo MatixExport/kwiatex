@@ -122,6 +122,11 @@
             <version>1.0-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>org.apache.kafka</groupId>
+            <artifactId>kafka-clients</artifactId>
+            <version>7.0.1-ccs</version>
+        </dependency>
     </dependencies>
 
 

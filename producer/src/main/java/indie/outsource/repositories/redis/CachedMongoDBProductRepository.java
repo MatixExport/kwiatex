@@ -27,7 +27,7 @@ public class CachedMongoDBProductRepository implements ProductRepository {
     }
 
     public CachedMongoDBProductRepository(String mongoConnectionString, String redisConnectionPropertiesFile){
-        MongoClient mongoClient = new DefaultMongoConnection(mongoConnectionString).getMongoClient();
+        MongoClient mongoClient = new DefaultMongoConnection(mongoConnectionString,"KWIATEX").getMongoClient();
         mongoRepository = new ProductMongoDbRepository(mongoClient.getDatabase("KWIATEX"));
         try{
             redisRepository = new ProductRedisRepository(redisConnectionPropertiesFile);

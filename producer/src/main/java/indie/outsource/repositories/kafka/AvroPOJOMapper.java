@@ -35,11 +35,9 @@ public class AvroPOJOMapper {
         if (value == null) {
             return null;
         }
-
         switch (schema.getType()) {
             case RECORD:
                 return mapToGenericRecord(schema, value);
-
             case ARRAY:
                 Schema elementType = schema.getElementType();
                 Collection<?> collection = (Collection<?>) value;

@@ -1,5 +1,6 @@
 package indie.outsource.factories;
 
+import indie.outsource.kafkaModel.KfClient;
 import indie.outsource.kafkaModel.KfShopTransaction;
 import indie.outsource.model.Client;
 import indie.outsource.model.ProductInfo;
@@ -19,6 +20,11 @@ public class RandomDataFactory {
     }
     static public Client getRandomClient() {
         return Instancio.of(Client.class)
+                .create();
+    }
+
+    static public KfClient getRandomKfClient() {
+        return Instancio.of(KfClient.class)
                 .create();
     }
     static public Tree getRandomProduct() {
@@ -62,10 +68,10 @@ public class RandomDataFactory {
 
     static public KfShopTransaction getRandomKfTransaction() {
         KfShopTransaction shopTransaction =  Instancio.of(KfShopTransaction.class)
-                .ignore(field(ShopTransaction::getClient))
-                .ignore(field(ShopTransaction::getItems))
+                .ignore(field(KfShopTransaction::getClient))
+                .ignore(field(KfShopTransaction::getItems))
                 .create();
-        shopTransaction.setClient(getRandomClient());
+        shopTransaction.setClient(getRandomKfClient());
         return shopTransaction;
     }
     static public KfShopTransaction getRandomKfTransactionWithItems(int quantity) {

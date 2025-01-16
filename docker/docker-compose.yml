@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   kafka1:
-    image: docker.io/bitnami/kafka:latest
+    image: docker.io/bitnami/kafka:3.6
     hostname: kafka1
     container_name: kafka1
     ports:
@@ -14,7 +14,9 @@ services:
         protocol: tcp
     environment:
       - KAFKA_CFG_NODE_ID=1
+      - KAFKA_CFG_BROKER_ID=1
       - KAFKA_CFG_BROKER_RACK=RACK1
+      - KAFKA_ENABLE_KRAFT=yes
       - KAFKA_CFG_PROCESS_ROLES=broker,controller
       - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER
       - KAFKA_CFG_LISTENERS=CONTROLLER://:9193,DOCKER_EXTERNAL://kafka1:9192,DOCKER_INTERNAL://kafka1:19192
@@ -22,9 +24,9 @@ services:
       - KAFKA_CFG_INTER_BROKER_LISTENER_NAME=DOCKER_INTERNAL
       - KAFKA_CFG_ADVERTISED_LISTENERS=DOCKER_EXTERNAL://kafka1:9192,DOCKER_INTERNAL://kafka1:19192
       - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=1@kafka1:9193,2@kafka2:9293,3@kafka3:9393
-      - KAFKA_KRAFT_CLUSTER_ID=NTg2OWZhNzY3NDhjMTFLZG
+      - KAFKA_KRAFT_CLUSTER_ID=NTg2OWZhNzY3NDhjMTFlZG
       - ALLOW_PLAINTEXT_LISTENER=yes
-      - KAFKA_OPTS=-Dlog4j.rootLogger=DEBUG
+#      - KAFKA_OPTS=-Dlog4j.rootLogger=DEBUG
     volumes:
       - kafka1_data:/bitnami/kafka
     networks:
@@ -32,58 +34,62 @@ services:
 
 
   kafka2:
-    image: docker.io/bitnami/kafka:latest
+    image: docker.io/bitnami/kafka:3.6
     hostname: kafka2
     container_name: kafka2
     ports:
-      - target: 9192
+      - target: 9292
         published: 9292
         protocol: tcp
-      - target: 9193
+      - target: 9293
         published: 9293
         protocol: tcp
     environment:
       - KAFKA_CFG_NODE_ID=2
+      - KAFKA_CFG_BROKER_ID=2
       - KAFKA_CFG_BROKER_RACK=RACK1
+      - KAFKA_ENABLE_KRAFT=yes
       - KAFKA_CFG_PROCESS_ROLES=broker,controller
       - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER
-      - KAFKA_CFG_LISTENERS=CONTROLLER://:9293,DOCKER_EXTERNAL://kafka2:9292,DOCKER_INTERNAL://kafka2:19192
+      - KAFKA_CFG_LISTENERS=CONTROLLER://:9293,DOCKER_EXTERNAL://kafka2:9292,DOCKER_INTERNAL://kafka2:19292
       - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CONTROLLER:PLAINTEXT,DOCKER_EXTERNAL:PLAINTEXT,DOCKER_INTERNAL:PLAINTEXT
       - KAFKA_CFG_INTER_BROKER_LISTENER_NAME=DOCKER_INTERNAL
-      - KAFKA_CFG_ADVERTISED_LISTENERS=DOCKER_EXTERNAL://kafka2:9292,DOCKER_INTERNAL://kafka2:19192
+      - KAFKA_CFG_ADVERTISED_LISTENERS=DOCKER_EXTERNAL://kafka2:9292,DOCKER_INTERNAL://kafka2:19292
       - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=1@kafka1:9193,2@kafka2:9293,3@kafka3:9393
-      - KAFKA_KRAFT_CLUSTER_ID=NTg2OWZhNzY3NDhjMTFLZG
+      - KAFKA_KRAFT_CLUSTER_ID=NTg2OWZhNzY3NDhjMTFlZG
       - ALLOW_PLAINTEXT_LISTENER=yes
-      - KAFKA_OPTS=-Dlog4j.rootLogger=DEBUG
+#      - KAFKA_OPTS=-Dlog4j.rootLogger=DEBUG
     volumes:
       - kafka2_data:/bitnami/kafka
     networks:
       - kafkanet
 
   kafka3:
-    image: docker.io/bitnami/kafka:latest
+    image: docker.io/bitnami/kafka:3.6
     hostname: kafka3
     container_name: kafka3
     ports:
-      - target: 9192
+      - target: 9392
         published: 9392
         protocol: tcp
-      - target: 9193
+      - target: 9393
         published: 9393
         protocol: tcp
     environment:
       - KAFKA_CFG_NODE_ID=3
+      - KAFKA_CFG_BROKER_ID=3
       - KAFKA_CFG_BROKER_RACK=RACK1
+      - KAFKA_ENABLE_KRAFT=yes
       - KAFKA_CFG_PROCESS_ROLES=broker,controller
       - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER
-      - KAFKA_CFG_LISTENERS=CONTROLLER://:9393,DOCKER_EXTERNAL://kafka3:9392,DOCKER_INTERNAL://kafka3:19192
+      - KAFKA_CFG_LISTENERS=CONTROLLER://:9393,DOCKER_EXTERNAL://kafka3:9392,DOCKER_INTERNAL://kafka3:19392
       - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CONTROLLER:PLAINTEXT,DOCKER_EXTERNAL:PLAINTEXT,DOCKER_INTERNAL:PLAINTEXT
       - KAFKA_CFG_INTER_BROKER_LISTENER_NAME=DOCKER_INTERNAL
-      - KAFKA_CFG_ADVERTISED_LISTENERS=DOCKER_EXTERNAL://kafka3:9392,DOCKER_INTERNAL://kafka3:19192
+      - KAFKA_CFG_ADVERTISED_LISTENERS=DOCKER_EXTERNAL://kafka3:9392,DOCKER_INTERNAL://kafka3:19392
       - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=1@kafka1:9193,2@kafka2:9293,3@kafka3:9393
-      - KAFKA_KRAFT_CLUSTER_ID=NTg2OWZhNzY3NDhjMTFLZG
+      - KAFKA_KRAFT_CLUSTER_ID=NTg2OWZhNzY3NDhjMTFlZG
       - ALLOW_PLAINTEXT_LISTENER=yes
-      - KAFKA_OPTS=-Dlog4j.rootLogger=DEBUG
+#      - KAFKA_OPTS=-Dlog4j.rootLogger=DEBUG
     volumes:
       - kafka3_data:/bitnami/kafka
     networks:
@@ -108,110 +114,110 @@ services:
       SCHEMA_REGISTRY_LISTENERS: http://0.0.0.0:8081
 
 
-#  redis-stack:
-#    image: redis/redis-stack:latest
-#    volumes:
-#      - redis-stack-data:/bitnami/redis/data
-#    ports:
-#      - "8001:8001"
-#      - "6379:6379"
-#    networks:
-#      - redisnet
-#
-#  mongo_1:
-#    build:
-#      context: .
-#      dockerfile: customMongoDB
-#    container_name: mongo1
-#
-#    hostname: mongo1
-#    networks:
-#      - mongonet
-#    ports:
-#      - "27017:27017"
-#    environment:
-#      - MONGO_INITDB_ROOT_USERNAME=ADMIN
-#      - MONGO_INITDB_ROOT_PASSWORD=ADMINPASSWORD
-#      - MONGO_INITDB_DATABASE=KWIATEX
-#    command: --config /etc/mongod.conf --port 27017
-#    healthcheck:
-#      test: ["CMD","mongosh", "--port", "27017", "--eval", "db.adminCommand('ping')"]
-#      interval: 10s
-#      timeout: 2s
-#      retries: 5
-#  mongo_2:
-#    build:
-#      context: .
-#      dockerfile: customMongoDB
-#    container_name: mongo2
-#    hostname: mongo2
-#    networks:
-#      - mongonet
-#    ports:
-#      - "27018:27018"
-#    environment:
-#      - MONGO_INITDB_ROOT_USERNAME=ADMIN
-#      - MONGO_INITDB_ROOT_PASSWORD=ADMINPASSWORD
-#      - MONGO_INITDB_DATABASE=KWIATEX
-#    command: --config /etc/mongod.conf --port 27018
-#    healthcheck:
-#      test: ["CMD","mongosh", "--port", "27018", "--eval", "db.adminCommand('ping')"]
-#      interval: 10s
-#      timeout: 2s
-#      retries: 5
-#  mongo_3:
-#    build:
-#      context: .
-#      dockerfile: customMongoDB
-#    container_name: mongo3
-#    hostname: mongo3
-#    networks:
-#      - mongonet
-#    ports:
-#      - "27019:27019"
-#    environment:
-#      - MONGO_INITDB_ROOT_USERNAME=ADMIN
-#      - MONGO_INITDB_ROOT_PASSWORD=ADMINPASSWORD
-#      - MONGO_INITDB_DATABASE=KWIATEX
-#    command: --config /etc/mongod.conf --port 27019
-#    healthcheck:
-#      test: ["CMD","mongosh", "--port", "27019", "--eval", "db.adminCommand('ping')"]
-#      interval: 10s
-#      timeout: 2s
-#      retries: 5
-#
-#  mongoinit:
-#    build:
-#      context: .
-#      dockerfile: customMongoDB
-#    hostname: mongodbinit
-#    container_name: mongodbinit
-#    networks:
-#      - mongonet
-#    depends_on:
-#      mongo_1:
-#        condition: service_healthy
-#      mongo_2:
-#        condition: service_healthy
-#      mongo_3:
-#        condition: service_healthy
-#
-#    command: >
-#      mongosh --host mongo1:27017 --username ADMIN --password ADMINPASSWORD --authenticationDatabase admin --eval
-#      '
-#      rs.initiate(
-#        {
-#          _id: "replica_set_single",
-#          version: 1,
-#          members: [
-#            {_id:0, host : "mongo1:27017" },
-#            {_id:1, host : "mongo2:27018" },
-#            {_id:2, host : "mongo3:27019" }
-#          ]
-#        }
-#      );
-#      '
-#
+  redis-stack:
+    image: redis/redis-stack:latest
+    volumes:
+      - redis-stack-data:/bitnami/redis/data
+    ports:
+      - "8001:8001"
+      - "6379:6379"
+    networks:
+      - redisnet
+
+  mongo_1:
+    build:
+      context: .
+      dockerfile: customMongoDB
+    container_name: mongo1
+
+    hostname: mongo1
+    networks:
+      - mongonet
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=ADMIN
+      - MONGO_INITDB_ROOT_PASSWORD=ADMINPASSWORD
+      - MONGO_INITDB_DATABASE=KWIATEX
+    command: --config /etc/mongod.conf --port 27017
+    healthcheck:
+      test: ["CMD","mongosh", "--port", "27017", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 2s
+      retries: 5
+  mongo_2:
+    build:
+      context: .
+      dockerfile: customMongoDB
+    container_name: mongo2
+    hostname: mongo2
+    networks:
+      - mongonet
+    ports:
+      - "27018:27018"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=ADMIN
+      - MONGO_INITDB_ROOT_PASSWORD=ADMINPASSWORD
+      - MONGO_INITDB_DATABASE=KWIATEX
+    command: --config /etc/mongod.conf --port 27018
+    healthcheck:
+      test: ["CMD","mongosh", "--port", "27018", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 2s
+      retries: 5
+  mongo_3:
+    build:
+      context: .
+      dockerfile: customMongoDB
+    container_name: mongo3
+    hostname: mongo3
+    networks:
+      - mongonet
+    ports:
+      - "27019:27019"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=ADMIN
+      - MONGO_INITDB_ROOT_PASSWORD=ADMINPASSWORD
+      - MONGO_INITDB_DATABASE=KWIATEX
+    command: --config /etc/mongod.conf --port 27019
+    healthcheck:
+      test: ["CMD","mongosh", "--port", "27019", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 2s
+      retries: 5
+
+  mongoinit:
+    build:
+      context: .
+      dockerfile: customMongoDB
+    hostname: mongodbinit
+    container_name: mongodbinit
+    networks:
+      - mongonet
+    depends_on:
+      mongo_1:
+        condition: service_healthy
+      mongo_2:
+        condition: service_healthy
+      mongo_3:
+        condition: service_healthy
+
+    command: >
+      mongosh --host mongo1:27017 --username ADMIN --password ADMINPASSWORD --authenticationDatabase admin --eval
+      '
+      rs.initiate(
+        {
+          _id: "replica_set_single",
+          version: 1,
+          members: [
+            {_id:0, host : "mongo1:27017" },
+            {_id:1, host : "mongo2:27018" },
+            {_id:2, host : "mongo3:27019" }
+          ]
+        }
+      );
+      '
+
 
 volumes:
   redis-stack-data:

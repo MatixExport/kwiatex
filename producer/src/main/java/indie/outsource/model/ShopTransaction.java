@@ -6,6 +6,7 @@ import jakarta.persistence.AccessType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.bson.codecs.pojo.annotations.BsonCreator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +27,7 @@ public class ShopTransaction extends AbstractEntity {
     }
 
 
+    @BsonCreator
     public ShopTransaction(
            UUID id,
            Client client,

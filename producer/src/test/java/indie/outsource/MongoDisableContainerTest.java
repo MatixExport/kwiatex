@@ -31,7 +31,7 @@ public class MongoDisableContainerTest {
         compose.start();
         dockerClient = DockerClientFactory.instance().client();
         DefaultMongoConnection mongoConnection = new DefaultMongoConnection(
-                "mongodb://mongo1:2017,mongo2:2018,mongo3:2019/?replicaSet=replica_set_single");
+                "mongodb://mongo1:2017,mongo2:2018,mongo3:2019/?replicaSet=replica_set_single","KWIATEX");
         mongoClient = mongoConnection.getMongoClient();
     }
 

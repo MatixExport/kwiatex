@@ -21,6 +21,7 @@ import java.util.List;
 @Getter
 public class DefaultMongoConnection implements MongoConnection {
     private String connString = "mongodb://mongo1:27017,mongo2:27018,mongo3:27019/?replicaSet=replica_set_single";
+    private String dbName = "KWIATEX";
 
     private final MongoCredential mongoCredential = MongoCredential.createCredential(
         "ADMIN", "admin", "ADMINPASSWORD".toCharArray()
@@ -56,7 +57,7 @@ public class DefaultMongoConnection implements MongoConnection {
             ).build();
 
         mongoClient = MongoClients.create(settings);
-        mongoDatabase = mongoClient.getDatabase("KWIATEX");
+        mongoDatabase = mongoClient.getDatabase(dbName);
     }
     private void initCollections(){
         CreateCollectionOptions createCollectionOptions = new CreateCollectionOptions()
@@ -70,8 +71,9 @@ public class DefaultMongoConnection implements MongoConnection {
         initCollections();
     }
 
-    public DefaultMongoConnection(String connString) {
+    public DefaultMongoConnection(String connString,String dbname) {
         this.connString = connString;
+        this.dbName = dbname;
         initDbConnection();
         initCollections();
     }

@@ -13,12 +13,14 @@ public class KafkaProducerTest {
 
     @BeforeEach
     public void setUp() {
+//        org.apache.avro.specific.SpecificData.get().addLogicalTypeConversion(null);
         producer = new KafkaTransactionProducer();
     }
 
     @Test
     public void topicCreationTest() throws IOException, ExecutionException, InterruptedException, IllegalAccessException {
-        producer.sendTransaction(RandomDataFactory.getRandomKfTransactionWithItems(2));
+
+        producer.sendTransaction(RandomDataFactory.getRandomTransactionWithItems(2));
     }
 
 }

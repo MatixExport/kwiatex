@@ -4,6 +4,7 @@ import indie.outsource.model.Client;
 import jakarta.persistence.Access;
 import jakarta.persistence.AccessType;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.bson.codecs.pojo.annotations.BsonCreator;
 import org.bson.codecs.pojo.annotations.BsonProperty;
@@ -14,6 +15,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @Access(AccessType.FIELD)
+@NoArgsConstructor
 public class ClientDoc extends AbstractEntityDoc {
 
     @BsonProperty("name")
