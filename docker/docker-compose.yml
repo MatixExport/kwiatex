@@ -108,110 +108,110 @@ services:
       SCHEMA_REGISTRY_LISTENERS: http://0.0.0.0:8081
 
 
-  redis-stack:
-    image: redis/redis-stack:latest
-    volumes:
-      - redis-stack-data:/bitnami/redis/data
-    ports:
-      - "8001:8001"
-      - "6379:6379"
-    networks:
-      - redisnet
-
-  mongo_1:
-    build:
-      context: .
-      dockerfile: customMongoDB
-    container_name: mongo1
-
-    hostname: mongo1
-    networks:
-      - mongonet
-    ports:
-      - "27017:27017"
-    environment:
-      - MONGO_INITDB_ROOT_USERNAME=ADMIN
-      - MONGO_INITDB_ROOT_PASSWORD=ADMINPASSWORD
-      - MONGO_INITDB_DATABASE=KWIATEX
-    command: --config /etc/mongod.conf --port 27017
-    healthcheck:
-      test: ["CMD","mongosh", "--port", "27017", "--eval", "db.adminCommand('ping')"]
-      interval: 10s
-      timeout: 2s
-      retries: 5
-  mongo_2:
-    build:
-      context: .
-      dockerfile: customMongoDB
-    container_name: mongo2
-    hostname: mongo2
-    networks:
-      - mongonet
-    ports:
-      - "27018:27018"
-    environment:
-      - MONGO_INITDB_ROOT_USERNAME=ADMIN
-      - MONGO_INITDB_ROOT_PASSWORD=ADMINPASSWORD
-      - MONGO_INITDB_DATABASE=KWIATEX
-    command: --config /etc/mongod.conf --port 27018
-    healthcheck:
-      test: ["CMD","mongosh", "--port", "27018", "--eval", "db.adminCommand('ping')"]
-      interval: 10s
-      timeout: 2s
-      retries: 5
-  mongo_3:
-    build:
-      context: .
-      dockerfile: customMongoDB
-    container_name: mongo3
-    hostname: mongo3
-    networks:
-      - mongonet
-    ports:
-      - "27019:27019"
-    environment:
-      - MONGO_INITDB_ROOT_USERNAME=ADMIN
-      - MONGO_INITDB_ROOT_PASSWORD=ADMINPASSWORD
-      - MONGO_INITDB_DATABASE=KWIATEX
-    command: --config /etc/mongod.conf --port 27019
-    healthcheck:
-      test: ["CMD","mongosh", "--port", "27019", "--eval", "db.adminCommand('ping')"]
-      interval: 10s
-      timeout: 2s
-      retries: 5
-
-  mongoinit:
-    build:
-      context: .
-      dockerfile: customMongoDB
-    hostname: mongodbinit
-    container_name: mongodbinit
-    networks:
-      - mongonet
-    depends_on:
-      mongo_1:
-        condition: service_healthy
-      mongo_2:
-        condition: service_healthy
-      mongo_3:
-        condition: service_healthy
-
-    command: >
-      mongosh --host mongo1:27017 --username ADMIN --password ADMINPASSWORD --authenticationDatabase admin --eval
-      '
-      rs.initiate(
-        {
-          _id: "replica_set_single",
-          version: 1,
-          members: [
-            {_id:0, host : "mongo1:27017" },
-            {_id:1, host : "mongo2:27018" },
-            {_id:2, host : "mongo3:27019" }
-          ]
-        }
-      );
-      '
-      
+#  redis-stack:
+#    image: redis/redis-stack:latest
+#    volumes:
+#      - redis-stack-data:/bitnami/redis/data
+#    ports:
+#      - "8001:8001"
+#      - "6379:6379"
+#    networks:
+#      - redisnet
+#
+#  mongo_1:
+#    build:
+#      context: .
+#      dockerfile: customMongoDB
+#    container_name: mongo1
+#
+#    hostname: mongo1
+#    networks:
+#      - mongonet
+#    ports:
+#      - "27017:27017"
+#    environment:
+#      - MONGO_INITDB_ROOT_USERNAME=ADMIN
+#      - MONGO_INITDB_ROOT_PASSWORD=ADMINPASSWORD
+#      - MONGO_INITDB_DATABASE=KWIATEX
+#    command: --config /etc/mongod.conf --port 27017
+#    healthcheck:
+#      test: ["CMD","mongosh", "--port", "27017", "--eval", "db.adminCommand('ping')"]
+#      interval: 10s
+#      timeout: 2s
+#      retries: 5
+#  mongo_2:
+#    build:
+#      context: .
+#      dockerfile: customMongoDB
+#    container_name: mongo2
+#    hostname: mongo2
+#    networks:
+#      - mongonet
+#    ports:
+#      - "27018:27018"
+#    environment:
+#      - MONGO_INITDB_ROOT_USERNAME=ADMIN
+#      - MONGO_INITDB_ROOT_PASSWORD=ADMINPASSWORD
+#      - MONGO_INITDB_DATABASE=KWIATEX
+#    command: --config /etc/mongod.conf --port 27018
+#    healthcheck:
+#      test: ["CMD","mongosh", "--port", "27018", "--eval", "db.adminCommand('ping')"]
+#      interval: 10s
+#      timeout: 2s
+#      retries: 5
+#  mongo_3:
+#    build:
+#      context: .
+#      dockerfile: customMongoDB
+#    container_name: mongo3
+#    hostname: mongo3
+#    networks:
+#      - mongonet
+#    ports:
+#      - "27019:27019"
+#    environment:
+#      - MONGO_INITDB_ROOT_USERNAME=ADMIN
+#      - MONGO_INITDB_ROOT_PASSWORD=ADMINPASSWORD
+#      - MONGO_INITDB_DATABASE=KWIATEX
+#    command: --config /etc/mongod.conf --port 27019
+#    healthcheck:
+#      test: ["CMD","mongosh", "--port", "27019", "--eval", "db.adminCommand('ping')"]
+#      interval: 10s
+#      timeout: 2s
+#      retries: 5
+#
+#  mongoinit:
+#    build:
+#      context: .
+#      dockerfile: customMongoDB
+#    hostname: mongodbinit
+#    container_name: mongodbinit
+#    networks:
+#      - mongonet
+#    depends_on:
+#      mongo_1:
+#        condition: service_healthy
+#      mongo_2:
+#        condition: service_healthy
+#      mongo_3:
+#        condition: service_healthy
+#
+#    command: >
+#      mongosh --host mongo1:27017 --username ADMIN --password ADMINPASSWORD --authenticationDatabase admin --eval
+#      '
+#      rs.initiate(
+#        {
+#          _id: "replica_set_single",
+#          version: 1,
+#          members: [
+#            {_id:0, host : "mongo1:27017" },
+#            {_id:1, host : "mongo2:27018" },
+#            {_id:2, host : "mongo3:27019" }
+#          ]
+#        }
+#      );
+#      '
+#
 
 volumes:
   redis-stack-data:
