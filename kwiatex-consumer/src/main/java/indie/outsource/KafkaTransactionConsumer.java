@@ -41,11 +41,10 @@ public class KafkaTransactionConsumer {
         props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, UUIDDeserializer.class.getName());
         props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
         props.put(ConsumerConfig.GROUP_ID_CONFIG, Topics.TRANSACTION_CONSUMER_GROUP_NAME);
-        props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
-        props.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, false);
+//        props.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, false);
 //        props.put("schema.registry.url", "http://localhost:8081");
-
-        for(int i=0;i<1;i++){
+//        props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
+        for(int i=0;i<3;i++){
             KafkaConsumer<UUID,String> consumer = new KafkaConsumer<>(props);
             consumer.subscribe(List.of(Topics.TRANSACTION_TOPIC));
             consumerGroup.add(consumer);
@@ -53,16 +52,19 @@ public class KafkaTransactionConsumer {
     }
 
 
-    public void consumeWithGroup() throws InterruptedException {
+    public void consumeWithGroup() {
         try(ExecutorService executor = Executors.newFixedThreadPool(consumerGroup.size())){
             for(KafkaConsumer<UUID,String> consumer : consumerGroup){
                 executor.execute(()->consume(consumer));
             }
-            Thread.sleep(5000);
+            Thread.sleep(50000);
             for(KafkaConsumer<UUID,String> consumer : consumerGroup){
                 consumer.wakeup();
             }
             executor.shutdown();
+        }
+        catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
     }
 

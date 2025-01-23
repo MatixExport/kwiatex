@@ -25,21 +25,21 @@ public class KafkaTransactionProducer {
 
 
     public KafkaTransactionProducer() {
+        Topics.createTopic();
         Properties props = new Properties();
         props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "kafka1:9192,kafka2:9292,kafka3:9392");
-        props.put(ProducerConfig.ACKS_CONFIG, "all");
+//        props.put(ProducerConfig.ACKS_CONFIG, "all");
         props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, UUIDSerializer.class.getName());
         props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
+        props.put(ProducerConfig.ENABLE_IDEMPOTENCE_CONFIG, "true");
 //        props.put("schema.registry.url", "http://localhost:8081");
         props.put(ProducerConfig.CLIENT_ID_CONFIG, "local");
         producer = new KafkaProducer<>(props);
-        Topics.createTopic();
     }
 
 
 
     public boolean sendTransaction(ShopTransaction transaction) throws IOException, ExecutionException, InterruptedException {
-
         ProducerRecord<UUID, String> record = new ProducerRecord<>(
                 Topics.TRANSACTION_TOPIC,
                 UUID.randomUUID(),
