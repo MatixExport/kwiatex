@@ -1,0 +1,99 @@
+version: '3.8'
+
+services:
+  mongo_4:
+    build:
+      context: .
+      dockerfile: customMongoDB
+    container_name: mongo4
+    hostname: mongo4
+    networks:
+      - mongonet
+    ports:
+      - "37017:37017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=ADMIN
+      - MONGO_INITDB_ROOT_PASSWORD=ADMINPASSWORD
+      - MONGO_INITDB_DATABASE=KWIATEX
+    command: --config /etc/mongod.conf --port 37017
+    healthcheck:
+      test: ["CMD","mongosh", "--port", "37017", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 2s
+      retries: 5
+  mongo_5:
+    build:
+      context: .
+      dockerfile: customMongoDB
+    container_name: mongo5
+    hostname: mongo5
+    networks:
+      - mongonet
+    ports:
+      - "37018:37018"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=ADMIN
+      - MONGO_INITDB_ROOT_PASSWORD=ADMINPASSWORD
+      - MONGO_INITDB_DATABASE=KWIATEX
+    command: --config /etc/mongod.conf --port 37018
+    healthcheck:
+      test: ["CMD","mongosh", "--port", "37018", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 2s
+      retries: 5
+  mongo_6:
+    build:
+      context: .
+      dockerfile: customMongoDB
+    container_name: mongo6
+    hostname: mongo6
+    networks:
+      - mongonet
+    ports:
+      - "37019:37019"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=ADMIN
+      - MONGO_INITDB_ROOT_PASSWORD=ADMINPASSWORD
+      - MONGO_INITDB_DATABASE=KWIATEX
+    command: --config /etc/mongod.conf --port 37019
+    healthcheck:
+      test: ["CMD","mongosh", "--port", "37019", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 2s
+      retries: 5
+
+  mongoinit:
+    build:
+      context: .
+      dockerfile: customMongoDB
+    hostname: mongodbinit2
+    container_name: mongodbinit2
+    networks:
+      - mongonet
+    depends_on:
+      mongo_4:
+        condition: service_healthy
+      mongo_5:
+        condition: service_healthy
+      mongo_6:
+        condition: service_healthy
+
+    command: >
+      mongosh --host mongo1:37017 --username ADMIN --password ADMINPASSWORD --authenticationDatabase admin --eval
+      '
+      rs.initiate(
+        {
+          _id: "replica_set_single",
+          version: 1,
+          members: [
+            {_id:0, host : "mongo1:37017" },
+            {_id:1, host : "mongo2:37018" },
+            {_id:2, host : "mongo3:37019" }
+          ]
+        }
+      );
+      '
+
+
+networks:
+  mongonet: {}
